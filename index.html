@@ -389,7 +389,8 @@ function parseStripeRows(rows) {
   const iDecline  = idx('decline reason');
   const iStatus   = idx('status');
   const iEmail    = idx('customer email');
-  const iFee      = idx('usd fee');
+  // Stripe: columna se llama "Fee" (no "USD Fee")
+  const iFee      = header.findIndex(h => h.trim() === 'fee');
 
   return rows.slice(1).map((r, i) => {
     if (!r[iDate]) return null;
@@ -867,8 +868,9 @@ function buildFeeCompare(){
   const dPaid = filteredData.filter(r=>r.gateway==='dlocal'&&isPaid(r));
   const sRev  = sPaid.reduce((s,r)=>s+r.usd,0);
   const dRev  = dPaid.reduce((s,r)=>s+r.usd,0);
-  const sFee  = filteredData.filter(r=>r.gateway==='stripe').reduce((s,r)=>s+(r.feeUsd||0),0);
-  const dFee  = filteredData.filter(r=>r.gateway==='dlocal').reduce((s,r)=>s+(r.feeUsd||0),0);
+  // Fee: solo transacciones exitosas, columna correcta por pasarela
+  const sFee  = sPaid.reduce((s,r)=>s+(r.feeUsd||0),0);
+  const dFee  = dPaid.reduce((s,r)=>s+(r.feeUsd||0),0);
   const sPct  = sRev>0 ? (sFee/sRev*100) : 0;
   const dPct  = dRev>0 ? (dFee/dRev*100) : 0;
 
