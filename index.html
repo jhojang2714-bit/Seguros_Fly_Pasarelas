@@ -178,6 +178,14 @@
   <div class="filter-bar">
     <div class="filter-group"><label>Fecha inicio</label><input type="date" id="dateFrom"/></div>
     <div class="filter-group"><label>Fecha fin</label><input type="date" id="dateTo"/></div>
+    <div class="filter-group"><label>Agrupar gráficas</label>
+      <select id="filterGranularity" onchange="updateAll()">
+        <option value="day">Día</option>
+        <option value="week">Semana</option>
+        <option value="month">Mes</option>
+        <option value="quarter">Quarter</option>
+      </select>
+    </div>
     <div class="filter-group"><label>Año</label><select id="filterYear"><option value="">Todos</option></select></div>
     <div class="filter-group"><label>Moneda</label><select id="filterCurrency"><option value="">Todas</option></select></div>
     <div class="filter-group"><label>Estado</label>
@@ -607,30 +615,168 @@ const bO = (e={}) => ({
   ...e
 });
 
+
+function getMonday(date) {
+  const d = new Date(date + 'T00:00:00');
+  const day = d.getDay(); // 0 domingo, 1 lunes...
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  d.setDate(diff);
+  return d;
+}
+
+function formatDateKey(dateObj) {
+  return dateObj.toISOString().slice(0, 10);
+}
+
+function getQuarterKey(date) {
+  const d = new Date(date + 'T00:00:00');
+  const q = Math.floor(d.getMonth() / 3) + 1;
+  return `${d.getFullYear()}-Q${q}`;
+}
+
+function getMonthKey(date) {
+  return date.slice(0, 7);
+}
+
+function getWeekKey(date) {
+  const monday = getMonday(date);
+  const sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+  return `${formatDateKey(monday)} al ${formatDateKey(sunday)}`;
+}
+
+function getDateGroup(date) {
+  const granularity = document.getElementById('filterGranularity')?.value || 'day';
+  if (granularity === 'week') return getWeekKey(date);
+  if (granularity === 'month') return getMonthKey(date);
+  if (granularity === 'quarter') return getQuarterKey(date);
+  return date;
+}
+
+function sortDateGroups(keys) {
+  return keys.sort((a, b) => {
+    const getSortable = (key) => {
+      if (key.includes(' al ')) return key.split(' al ')[0];
+      if (key.includes('-Q')) return key.replace('-Q', '-0');
+      return key;
+    };
+    return getSortable(a).localeCompare(getSortable(b));
+  });
+}
+
 function buildRevLine(){
   dc('rl');
-  const s=filteredData.filter(r=>r.gateway==='stripe'&&isPaid(r));
-  const d=filteredData.filter(r=>r.gateway==='dlocal'&&isPaid(r));
-  const dates=[...new Set([...s,...d].map(r=>r.date))].sort();
-  const sm={},dm={};
-  s.forEach(r=>{sm[r.date]=(sm[r.date]||0)+r.usd;});
-  d.forEach(r=>{dm[r.date]=(dm[r.date]||0)+r.usd;});
-  const ds=[];
-  if(activeGW!=='dlocal') ds.push({label:'Stripe',data:dates.map(x=>sm[x]||0),borderColor:'#6772E5',backgroundColor:'rgba(103,114,229,.08)',fill:true,tension:.4,pointRadius:3,pointHoverRadius:5});
-  if(activeGW!=='stripe') ds.push({label:'dLocal',data:dates.map(x=>dm[x]||0),borderColor:'#00B14F',backgroundColor:'rgba(0,177,79,.07)',fill:true,tension:.4,pointRadius:3,pointHoverRadius:5});
-  charts.rl=new Chart(document.getElementById('cRevLine'),{type:'line',data:{labels:dates,datasets:ds},options:{...bO(),plugins:{legend:{display:ds.length>1,position:'top',labels:{boxWidth:9,font:{size:9}}},tooltip:{callbacks:{label:ctx=>' $'+fmt(ctx.parsed.y,2)},backgroundColor:'#0F172A',bodyColor:'#94A3B8',padding:9,cornerRadius:8}}}});
+  const s = filteredData.filter(r => r.gateway === 'stripe' && isPaid(r));
+  const d = filteredData.filter(r => r.gateway === 'dlocal' && isPaid(r));
+  const sm = {}, dm = {};
+
+  s.forEach(r => {
+    const key = getDateGroup(r.date);
+    sm[key] = (sm[key] || 0) + r.usd;
+  });
+
+  d.forEach(r => {
+    const key = getDateGroup(r.date);
+    dm[key] = (dm[key] || 0) + r.usd;
+  });
+
+  const dates = sortDateGroups([...new Set([...Object.keys(sm), ...Object.keys(dm)])]);
+  const ds = [];
+
+  if(activeGW !== 'dlocal') ds.push({
+    label:'Stripe',
+    data:dates.map(x => sm[x] || 0),
+    borderColor:'#6772E5',
+    backgroundColor:'rgba(103,114,229,.08)',
+    fill:true,
+    tension:.4,
+    pointRadius:3,
+    pointHoverRadius:5
+  });
+
+  if(activeGW !== 'stripe') ds.push({
+    label:'dLocal',
+    data:dates.map(x => dm[x] || 0),
+    borderColor:'#00B14F',
+    backgroundColor:'rgba(0,177,79,.07)',
+    fill:true,
+    tension:.4,
+    pointRadius:3,
+    pointHoverRadius:5
+  });
+
+  charts.rl = new Chart(document.getElementById('cRevLine'), {
+    type:'line',
+    data:{labels:dates,datasets:ds},
+    options:{
+      ...bO(),
+      plugins:{
+        legend:{display:ds.length>1,position:'top',labels:{boxWidth:9,font:{size:9}}},
+        tooltip:{
+          callbacks:{label:ctx=>' $'+fmt(ctx.parsed.y,2)},
+          backgroundColor:'#0F172A',
+          bodyColor:'#94A3B8',
+          padding:9,
+          cornerRadius:8
+        }
+      }
+    }
+  });
 }
 
 function buildTxLine(){
   dc('tl');
-  const dates=[...new Set(filteredData.map(r=>r.date))].sort();
-  const sm={},dm={};
-  filteredData.filter(r=>r.gateway==='stripe').forEach(r=>{sm[r.date]=(sm[r.date]||0)+1;});
-  filteredData.filter(r=>r.gateway==='dlocal').forEach(r=>{dm[r.date]=(dm[r.date]||0)+1;});
-  const ds=[];
-  if(activeGW!=='dlocal') ds.push({label:'Stripe',data:dates.map(x=>sm[x]||0),borderColor:'#6772E5',backgroundColor:'rgba(103,114,229,.08)',fill:true,tension:.4,pointRadius:3});
-  if(activeGW!=='stripe') ds.push({label:'dLocal',data:dates.map(x=>dm[x]||0),borderColor:'#00B14F',backgroundColor:'rgba(0,177,79,.07)',fill:true,tension:.4,pointRadius:3});
-  charts.tl=new Chart(document.getElementById('cTxLine'),{type:'line',data:{labels:dates,datasets:ds},options:{...bO(),plugins:{legend:{display:ds.length>1,position:'top',labels:{boxWidth:9,font:{size:9}}},tooltip:{backgroundColor:'#0F172A',bodyColor:'#94A3B8',padding:9,cornerRadius:8}}}});
+  const sm = {}, dm = {};
+
+  filteredData.filter(r => r.gateway === 'stripe').forEach(r => {
+    const key = getDateGroup(r.date);
+    sm[key] = (sm[key] || 0) + 1;
+  });
+
+  filteredData.filter(r => r.gateway === 'dlocal').forEach(r => {
+    const key = getDateGroup(r.date);
+    dm[key] = (dm[key] || 0) + 1;
+  });
+
+  const dates = sortDateGroups([...new Set([...Object.keys(sm), ...Object.keys(dm)])]);
+  const ds = [];
+
+  if(activeGW !== 'dlocal') ds.push({
+    label:'Stripe',
+    data:dates.map(x => sm[x] || 0),
+    borderColor:'#6772E5',
+    backgroundColor:'rgba(103,114,229,.08)',
+    fill:true,
+    tension:.4,
+    pointRadius:3
+  });
+
+  if(activeGW !== 'stripe') ds.push({
+    label:'dLocal',
+    data:dates.map(x => dm[x] || 0),
+    borderColor:'#00B14F',
+    backgroundColor:'rgba(0,177,79,.07)',
+    fill:true,
+    tension:.4,
+    pointRadius:3
+  });
+
+  charts.tl = new Chart(document.getElementById('cTxLine'), {
+    type:'line',
+    data:{labels:dates,datasets:ds},
+    options:{
+      ...bO(),
+      plugins:{
+        legend:{display:ds.length>1,position:'top',labels:{boxWidth:9,font:{size:9}}},
+        tooltip:{
+          backgroundColor:'#0F172A',
+          bodyColor:'#94A3B8',
+          padding:9,
+          cornerRadius:8
+        }
+      }
+    }
+  });
 }
 
 function buildGwBar(){
