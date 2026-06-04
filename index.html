@@ -141,19 +141,6 @@
     .insight-month{font-size:.78rem;font-weight:700;margin-bottom:2px;}
     .insight-val{font-size:.75rem;color:var(--muted);}
     .tz-badge{background:#FEF9C3;color:#854D0E;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid #FDE68A;}
-    .month-multi-wrap{position:relative;min-width:160px;}
-    .month-multi-btn{border:1px solid var(--border);border-radius:8px;padding:7px 28px 7px 10px;font-size:.82rem;background:var(--surface2);color:var(--text);cursor:pointer;width:100%;text-align:left;position:relative;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-    .month-multi-btn::after{content:'▾';position:absolute;right:9px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.7rem;}
-    .month-multi-btn.active-filter{border-color:var(--accent);background:#EFF6FF;color:var(--accent);}
-    .month-dropdown{position:absolute;top:calc(100% + 4px);left:0;z-index:200;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow-lg);padding:6px;min-width:200px;display:none;flex-direction:column;gap:2px;}
-    .month-dropdown.open{display:flex;}
-    .month-opt{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:6px;cursor:pointer;font-size:.8rem;color:var(--text);transition:.1s;}
-    .month-opt:hover{background:var(--surface2);}
-    .month-opt input[type=checkbox]{accent-color:var(--accent);width:13px;height:13px;cursor:pointer;}
-    .month-opt.checked{background:#EFF6FF;color:var(--accent);font-weight:600;}
-    .month-dd-footer{display:flex;gap:5px;padding:5px 4px 2px;border-top:1px solid var(--border);margin-top:3px;}
-    .month-dd-footer button{flex:1;padding:4px 0;border-radius:6px;border:1px solid var(--border);background:var(--surface2);font-size:.72rem;cursor:pointer;font-weight:600;color:var(--muted);}
-    .month-dd-footer button:hover{background:var(--border);}
     .combo-legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:10px;font-size:.72rem;color:var(--muted);}
     .combo-legend span{display:flex;align-items:center;gap:5px;}
     .leg-bar{width:12px;height:12px;border-radius:3px;display:inline-block;flex-shrink:0;}
@@ -178,29 +165,6 @@
     <div class="filter-group"><label>Fecha inicio</label><input type="date" id="dateFrom"/></div>
     <div class="filter-group"><label>Fecha fin</label><input type="date" id="dateTo"/></div>
     <div class="filter-group"><label>Año</label><select id="filterYear"><option value="">Todos</option></select></div>
-    <div class="filter-group"><label>Mes</label>
-      <div class="month-multi-wrap" id="monthMultiWrap">
-        <button class="month-multi-btn" id="monthMultiBtn" onclick="toggleMonthDropdown(event)">Todos los meses</button>
-        <div class="month-dropdown" id="monthDropdown">
-          <div class="month-opt" onclick="toggleMonthOpt(this,'01')"><input type="checkbox" id="mck01"><label for="mck01" style="cursor:pointer">Enero</label></div>
-          <div class="month-opt" onclick="toggleMonthOpt(this,'02')"><input type="checkbox" id="mck02"><label for="mck02" style="cursor:pointer">Febrero</label></div>
-          <div class="month-opt" onclick="toggleMonthOpt(this,'03')"><input type="checkbox" id="mck03"><label for="mck03" style="cursor:pointer">Marzo</label></div>
-          <div class="month-opt" onclick="toggleMonthOpt(this,'04')"><input type="checkbox" id="mck04"><label for="mck04" style="cursor:pointer">Abril</label></div>
-          <div class="month-opt" onclick="toggleMonthOpt(this,'05')"><input type="checkbox" id="mck05"><label for="mck05" style="cursor:pointer">Mayo</label></div>
-          <div class="month-opt" onclick="toggleMonthOpt(this,'06')"><input type="checkbox" id="mck06"><label for="mck06" style="cursor:pointer">Junio</label></div>
-          <div class="month-opt" onclick="toggleMonthOpt(this,'07')"><input type="checkbox" id="mck07"><label for="mck07" style="cursor:pointer">Julio</label></div>
-          <div class="month-opt" onclick="toggleMonthOpt(this,'08')"><input type="checkbox" id="mck08"><label for="mck08" style="cursor:pointer">Agosto</label></div>
-          <div class="month-opt" onclick="toggleMonthOpt(this,'09')"><input type="checkbox" id="mck09"><label for="mck09" style="cursor:pointer">Septiembre</label></div>
-          <div class="month-opt" onclick="toggleMonthOpt(this,'10')"><input type="checkbox" id="mck10"><label for="mck10" style="cursor:pointer">Octubre</label></div>
-          <div class="month-opt" onclick="toggleMonthOpt(this,'11')"><input type="checkbox" id="mck11"><label for="mck11" style="cursor:pointer">Noviembre</label></div>
-          <div class="month-opt" onclick="toggleMonthOpt(this,'12')"><input type="checkbox" id="mck12"><label for="mck12" style="cursor:pointer">Diciembre</label></div>
-          <div class="month-dd-footer">
-            <button onclick="selectAllMonths()">Todos</button>
-            <button onclick="clearAllMonths()">Limpiar</button>
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="filter-group"><label>Moneda</label><select id="filterCurrency"><option value="">Todas</option></select></div>
     <div class="filter-group"><label>Estado</label><select id="filterStatus"><option value="">Todos</option><option value="paid">Pagado / Completada</option><option value="failed">Fallido / Cancelada</option><option value="pending">Pendiente</option></select></div>
     <div class="filter-group"><label>País</label><select id="filterCountry"><option value="">Todos</option></select></div>
@@ -416,50 +380,6 @@ function utcStringToColombiaDate(raw) {
 }
 // ────────────────────────────────────────────────────────────────────────────
 
-// ── Mes multi-select ─────────────────────────────────────────────────────────
-let selectedMonths = new Set(); // vacío = todos
-
-function toggleMonthDropdown(e){
-  e.stopPropagation();
-  document.getElementById('monthDropdown').classList.toggle('open');
-}
-document.addEventListener('click', function(e){
-  const wrap = document.getElementById('monthMultiWrap');
-  if(wrap && !wrap.contains(e.target)){
-    document.getElementById('monthDropdown').classList.remove('open');
-  }
-});
-function toggleMonthOpt(el, mm){
-  const cb = el.querySelector('input[type=checkbox]');
-  const next = !selectedMonths.has(mm);
-  cb.checked = next;
-  el.classList.toggle('checked', next);
-  if(next) selectedMonths.add(mm); else selectedMonths.delete(mm);
-  updateMonthBtn();
-}
-function selectAllMonths(){
-  selectedMonths.clear();
-  document.querySelectorAll('.month-opt').forEach(el=>{
-    el.querySelector('input').checked=false;
-    el.classList.remove('checked');
-  });
-  updateMonthBtn();
-}
-function clearAllMonths(){ selectAllMonths(); }
-function updateMonthBtn(){
-  const btn = document.getElementById('monthMultiBtn');
-  const MNAMES=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-  if(selectedMonths.size===0){
-    btn.textContent='Todos los meses';
-    btn.classList.remove('active-filter');
-  } else {
-    const labels=[...selectedMonths].sort().map(m=>MNAMES[+m-1]).join(', ');
-    btn.textContent=labels;
-    btn.classList.add('active-filter');
-  }
-}
-// ─────────────────────────────────────────────────────────────────────────────
-
 function parseCSV(text){const rows=[];let cur='',inQ=false,row=[];for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'){inQ=!inQ;continue;}if(c===','&&!inQ){row.push(cur.trim());cur='';continue;}if((c==='\n'||c==='\r')&&!inQ){if(cur||row.length){row.push(cur.trim());rows.push(row);}cur='';row=[];if(c==='\r'&&text[i+1]==='\n')i++;continue;}cur+=c;}if(cur||row.length){row.push(cur.trim());rows.push(row);}return rows;}
 
 function parseStripeRows(rows){
@@ -485,95 +405,28 @@ function parseStripeRows(rows){
   }).filter(Boolean);
 }
 
-function toNumberSafe(v){
-  if(v===null||v===undefined) return 0;
-  const n = parseFloat(String(v).replace(/,/g,'').trim());
-  return isNaN(n) ? 0 : n;
-}
-
-/**
- * Convierte fechas de dLocal a YYYY-MM-DD Colombia.
- * dLocal puede llegar como:
- * - MM/DD/YYYY HH:mm:ss
- * - YYYY-MM-DD HH:mm:ss
- * En algunos exports de Google Sheets/Excel las fechas MM/DD/YYYY se invierten
- * y quedan como YYYY-DD-MM. Por eso, si la fecha ISO cae en el futuro pero la
- * versión invertida no, usamos la invertida.
- */
-function dlocalStringToColombiaDate(raw){
-  if(!raw) return '';
-  raw = String(raw).trim();
-  let d;
-
-  if(/^\d{1,2}\/\d{1,2}\/\d{4}/.test(raw)){
-    const parts = raw.split(/\s+/);
-    const [m, day, y] = parts[0].split('/');
-    const time = parts[1] || '00:00:00';
-    d = new Date(`${y}-${m.padStart(2,'0')}-${day.padStart(2,'0')}T${time}Z`);
-  } else if(/^\d{4}-\d{1,2}-\d{1,2}/.test(raw)){
-    const parts = raw.split(/\s+/);
-    const [y, a, b] = parts[0].split('-');
-    const time = parts[1] || '00:00:00';
-
-    const isoCandidate = new Date(`${y}-${a.padStart(2,'0')}-${b.padStart(2,'0')}T${time}Z`);
-    const swappedCandidate = new Date(`${y}-${b.padStart(2,'0')}-${a.padStart(2,'0')}T${time}Z`);
-
-    const nowPlus7 = new Date(Date.now() + 7*24*60*60*1000);
-
-    if(!isNaN(swappedCandidate.getTime()) && !isNaN(isoCandidate.getTime()) && isoCandidate > nowPlus7 && swappedCandidate <= nowPlus7){
-      d = swappedCandidate;
-    } else {
-      d = isoCandidate;
-    }
-  } else {
-    return raw.slice(0,10);
-  }
-
-  if(isNaN(d.getTime())) return '';
-
-  const colombiaMs = d.getTime() - TZ_OFFSET_MS;
-  const co = new Date(colombiaMs);
-  const yyyy = co.getUTCFullYear();
-  const mm = String(co.getUTCMonth()+1).padStart(2,'0');
-  const dd = String(co.getUTCDate()).padStart(2,'0');
-  return `${yyyy}-${mm}-${dd}`;
-}
-
 function parseDlocalRows(rows){
   let hIdx=rows.findIndex(r=>r.some(c=>c.toLowerCase().includes('status')&&r.some(c2=>c2.toLowerCase().includes('país'))));
   if(hIdx<0)hIdx=0;
   const h=rows[hIdx].map(x=>x.toLowerCase().trim());
   const idx=n=>h.findIndex(x=>x.includes(n));
-
   const iStat=idx('status'),iCtry=h.findIndex(x=>x==='país'||x.includes('pa\u00eds'));
   const iCurr=idx('checkout currency'),iAmt=idx('monto pagado'),iMeth=idx('método de pago');
-
-  // Revenue correcto dLocal: USD Total Amount.
-  // Fallback a Balance Total Amount porque en algunos exports representa el mismo bruto.
-  const iUSD=h.findIndex(x=>x.trim()==='usd total amount')>=0
-    ? h.findIndex(x=>x.trim()==='usd total amount')
-    : h.findIndex(x=>x.includes('balance total amount'));
-
-  const iEmail=h.findIndex(x=>x.includes('correo')||x.includes('email'));
-  const iDate=h.findIndex(x=>x.includes('created date'));
-  const iFee=h.findIndex(x=>x.trim()==='usd fee');
-
+  const iUSD=idx('usd amount'),iEmail=h.findIndex(x=>x.includes('correo')||x.includes('email'));
+  const iDate=h.findIndex(x=>x.includes('created date')),iFee=idx('usd fee');
   return rows.slice(hIdx+1).map((r,i)=>{
     if(!r[iDate]&&!r[iAmt])return null;
-
-    const rs=(r[iStat]||'').toLowerCase().trim();
+    const rs=(r[iStat]||'').toLowerCase();
     let status='pending';
-    if(rs==='completada'||rs==='paid'||rs==='completed'||rs==='success'||rs==='approved')status='paid';
-    else if(rs==='cancelada'||rs==='failed'||rs==='canceled'||rs==='cancelled')status='failed';
-
+    if(rs==='completada'||rs==='paid')status='paid';
+    else if(rs==='cancelada'||rs==='failed')status='failed';
+    // ★ AJUSTE UTC→Colombia: restar 5 horas al timestamp UTC de dLocal
+    // dLocal usa formato "MM/DD/YYYY HH:MM:SS"
     const dateRaw = (r[iDate]||'').trim();
-    const dateCo  = dlocalStringToColombiaDate(dateRaw);
-
-    const revenueUsd = iUSD>=0 ? toNumberSafe(r[iUSD]) : 0;
-    const feeUsd = iFee>=0 ? toNumberSafe(r[iFee]) : 0;
-
-    return{id:`d${i}`,date:dateCo,currency:(r[iCurr]||'').toLowerCase(),amount:toNumberSafe(r[iAmt]),
-      usd:status==='paid'?revenueUsd:0,feeUsd:status==='paid'?feeUsd:0,status,
+    const dateCo  = utcStringToColombiaDate(dateRaw);
+    const usd=parseFloat(r[iUSD]||0)||0;
+    return{id:`d${i}`,date:dateCo,currency:(r[iCurr]||'').toLowerCase(),amount:parseFloat(r[iAmt]||0)||0,
+      usd:status==='paid'?usd:0,feeUsd:iFee>=0?(parseFloat(r[iFee]||0)||0):0,status,
       declineReason:status==='failed'?'Cancelada':'',email:r[iEmail]||'',
       method:r[iMeth]||'',country:r[iCtry]||'',gateway:'dlocal'};
   }).filter(Boolean);
@@ -624,10 +477,10 @@ function setGateway(gw,btn){
 
 function initFilters(){
   const VALID_DATE=/^\d{4}-\d{2}-\d{2}$/;
-  const pool=allData(),dates=pool.map(d=>d.date).filter(d=>d&&VALID_DATE.test((d||'').trim())).sort();
+  const pool=allData(),dates=pool.map(d=>d.date).filter(d=>d&&VALID_DATE.test(d)).sort();
   if(dates.length){document.getElementById('dateFrom').value=dates[0];document.getElementById('dateTo').value=dates[dates.length-1];}
   const yS=document.getElementById('filterYear');yS.innerHTML='<option value="">Todos</option>';
-  [...new Set(pool.filter(d=>d.date&&VALID_DATE.test(d.date.trim())).map(d=>d.date.trim().slice(0,4)))].sort().reverse().forEach(y=>{const o=document.createElement('option');o.value=y;o.textContent=y;yS.appendChild(o);});
+  [...new Set(pool.filter(d=>d.date&&VALID_DATE.test(d)).map(d=>d.date.slice(0,4)))].sort().reverse().forEach(y=>{const o=document.createElement('option');o.value=y;o.textContent=y;yS.appendChild(o);});
   const cS=document.getElementById('filterCurrency');cS.innerHTML='<option value="">Todas</option>';
   [...new Set(pool.map(d=>d.currency))].sort().forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c.toUpperCase();cS.appendChild(o);});
   const ctS=document.getElementById('filterCountry');ctS.innerHTML='<option value="">Todos</option>';
@@ -642,9 +495,7 @@ function applyFilters(){
   filteredData=allData().filter(r=>{
     if(!r.date||!VDATE.test(r.date))return false;
     if(from&&r.date<from)return false;if(to&&r.date>to)return false;
-    if(year&&r.date.slice(0,4)!==year)return false;
-    if(selectedMonths.size>0&&!selectedMonths.has(r.date.slice(5,7)))return false;
-    if(curr&&r.currency!==curr)return false;
+    if(year&&r.date.slice(0,4)!==year)return false;if(curr&&r.currency!==curr)return false;
     if(country&&r.country!==country)return false;
     if(status==='paid'&&!isPaid(r))return false;if(status==='failed'&&!isFailed(r))return false;if(status==='pending'&&!isPending(r))return false;
     return true;
@@ -652,11 +503,9 @@ function applyFilters(){
 }
 
 function resetFilters(){
-  initFilters();currentPage=1;
+  initFilters();filteredData=allData();currentPage=1;
   ['filterStatus','filterYear','filterCurrency','filterCountry','tableStatusFilter'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  selectAllMonths();
-  const ts=document.getElementById('tableSearch');if(ts)ts.value='';
-  applyFilters(); // usa applyFilters para que VDATE y todos los guards se apliquen
+  const ts=document.getElementById('tableSearch');if(ts)ts.value='';updateAll();
 }
 
 function updateKPIs(){
@@ -844,3 +693,4 @@ document.addEventListener('DOMContentLoaded',reloadData);
 </script>
 </body>
 </html>
+
