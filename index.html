@@ -497,6 +497,7 @@ function parseDlocalRows(rows){
   const iDate=h.findIndex(x=>x.includes('created date')),iFee=idx('usd fee');
   return rows.slice(hIdx+1).map((r,i)=>{
     if(!r[iDate]&&!r[iAmt])return null;
+    if(!r[iDate]||!r[iDate].trim())return null; // descartar sin fecha
     const rs=(r[iStat]||'').toLowerCase();
     let status='pending';
     if(rs==='completada'||rs==='paid')status='paid';
@@ -586,10 +587,11 @@ function applyFilters(){
 }
 
 function resetFilters(){
-  initFilters();filteredData=allData();currentPage=1;
+  initFilters();currentPage=1;
   ['filterStatus','filterYear','filterCurrency','filterCountry','tableStatusFilter'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   selectAllMonths();
-  const ts=document.getElementById('tableSearch');if(ts)ts.value='';updateAll();
+  const ts=document.getElementById('tableSearch');if(ts)ts.value='';
+  applyFilters(); // usa applyFilters para que VDATE y todos los guards se apliquen
 }
 
 function updateKPIs(){
