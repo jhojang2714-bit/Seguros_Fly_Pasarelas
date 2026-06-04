@@ -476,10 +476,11 @@ function setGateway(gw,btn){
 }
 
 function initFilters(){
-  const pool=allData(),dates=pool.map(d=>d.date).filter(Boolean).sort();
+  const VALID_DATE=/^\d{4}-\d{2}-\d{2}$/;
+  const pool=allData(),dates=pool.map(d=>d.date).filter(d=>d&&VALID_DATE.test(d)).sort();
   if(dates.length){document.getElementById('dateFrom').value=dates[0];document.getElementById('dateTo').value=dates[dates.length-1];}
   const yS=document.getElementById('filterYear');yS.innerHTML='<option value="">Todos</option>';
-  [...new Set(pool.map(d=>d.date.slice(0,4)))].sort().reverse().forEach(y=>{const o=document.createElement('option');o.value=y;o.textContent=y;yS.appendChild(o);});
+  [...new Set(pool.filter(d=>d.date&&VALID_DATE.test(d)).map(d=>d.date.slice(0,4)))].sort().reverse().forEach(y=>{const o=document.createElement('option');o.value=y;o.textContent=y;yS.appendChild(o);});
   const cS=document.getElementById('filterCurrency');cS.innerHTML='<option value="">Todas</option>';
   [...new Set(pool.map(d=>d.currency))].sort().forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c.toUpperCase();cS.appendChild(o);});
   const ctS=document.getElementById('filterCountry');ctS.innerHTML='<option value="">Todos</option>';
@@ -490,7 +491,9 @@ function applyFilters(){
   const from=document.getElementById('dateFrom').value,to=document.getElementById('dateTo').value;
   const year=document.getElementById('filterYear').value,curr=document.getElementById('filterCurrency').value;
   const status=document.getElementById('filterStatus').value,country=document.getElementById('filterCountry').value;
+  const VDATE=/^\d{4}-\d{2}-\d{2}$/;
   filteredData=allData().filter(r=>{
+    if(!r.date||!VDATE.test(r.date))return false;
     if(from&&r.date<from)return false;if(to&&r.date>to)return false;
     if(year&&r.date.slice(0,4)!==year)return false;if(curr&&r.currency!==curr)return false;
     if(country&&r.country!==country)return false;
@@ -536,9 +539,11 @@ function monthKey(d){return d.slice(0,7);}
 function quarterKey(d){const[y,m]=d.split('-').map(Number);return`${y}-Q${Math.ceil(m/3)}`;}
 function groupKey(d,g){if(g==='week')return weekKey(d);if(g==='month')return monthKey(d);if(g==='quarter')return quarterKey(d);return d;}
 function weekLabel(mon){const m=new Date(mon+'T00:00:00'),s=new Date(m);s.setDate(s.getDate()+6);return`${m.getDate()}/${m.getMonth()+1}–${s.getDate()}/${s.getMonth()+1}`;}
+function isValidDate(d){return d&&/^\d{4}-\d{2}-\d{2}/.test(d);}
 function groupLabel(k,g){
+  if(!k||k==='undefined'||!isValidDate(k.length>=10?k.slice(0,10):k))return k||'';
   if(g==='week')return weekLabel(k);
-  if(g==='month'){const[y,m]=k.split('-');return`${MONTH_NAMES[+m-1]} ${y}`;}
+  if(g==='month'){const[y,m]=k.split('-');return`${MONTH_NAMES[+m-1]||''} ${y}`;}
   if(g==='quarter')return k.replace('-',' ');return k;
 }
 
@@ -553,7 +558,9 @@ function buildCombo(){
   dc('combo');
   const sRev={},dRev={},sTx={},dTx={};
   filteredData.forEach(r=>{
+    if(!r.date||!/^\d{4}-\d{2}-\d{2}/.test(r.date))return;
     const k=groupKey(r.date,comboGroup);
+    if(!k||k==='NaN-NaN-NaN')return;
     if(r.gateway==='stripe'){
       sTx[k]=(sTx[k]||0)+1;
       if(isPaid(r)) sRev[k]=(sRev[k]||0)+r.usd;
@@ -582,7 +589,7 @@ function setTotalGroup(group,btn){
 function buildTotal(){
   dc('total');
   const rev={},tx={};
-  filteredData.forEach(r=>{const k=groupKey(r.date,totalGroup);tx[k]=(tx[k]||0)+1;if(isPaid(r))rev[k]=(rev[k]||0)+r.usd;});
+  filteredData.forEach(r=>{if(!r.date||!/^\d{4}-\d{2}-\d{2}/.test(r.date))return;const k=groupKey(r.date,totalGroup);if(!k||k==='NaN-NaN-NaN')return;tx[k]=(tx[k]||0)+1;if(isPaid(r))rev[k]=(rev[k]||0)+r.usd;});
   const keys=Object.keys(rev).length||Object.keys(tx).length?[...new Set([...Object.keys(rev),...Object.keys(tx)])].sort():[];
   const labels=keys.map(k=>groupLabel(k,totalGroup));
   charts.total=new Chart(document.getElementById('cTotal'),{type:'bar',data:{labels,datasets:[{type:'bar',label:'Revenue Total',data:keys.map(k=>+(rev[k]||0).toFixed(2)),backgroundColor:'rgba(37,99,235,0.55)',borderColor:'#2563EB',borderWidth:1.5,borderRadius:4,borderSkipped:false,yAxisID:'yRev',order:2},{type:'line',label:'Tx Totales',data:keys.map(k=>tx[k]||0),borderColor:'#7C3AED',backgroundColor:'rgba(124,58,237,0.12)',borderWidth:2.5,pointRadius:4,pointHoverRadius:6,pointBackgroundColor:'#7C3AED',tension:.4,fill:false,yAxisID:'yTx',order:1}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:10,cornerRadius:8,callbacks:{label:ctx=>{if(ctx.dataset.label==='Revenue Total')return` Revenue: $${fmt(ctx.parsed.y,2)}`;return` Transacciones: ${fmt(ctx.parsed.y)} tx`;}}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:10}}},yRev:{type:'linear',position:'left',grid:{color:'#F1F5F9'},ticks:{color:'#2563EB',font:{size:10},callback:v=>'$'+fmt(v,0)},title:{display:true,text:'Revenue (USD)',color:'#94A3B8',font:{size:9}}},yTx:{type:'linear',position:'right',grid:{display:false},ticks:{color:'#7C3AED',font:{size:10},callback:v=>fmt(v)+' tx'},title:{display:true,text:'N° Transacciones',color:'#94A3B8',font:{size:9}}}}}});
@@ -628,7 +635,7 @@ function buildDayOfMonth(){
   dc('dom');
   const source=dayMetric==='revenue'?filteredData.filter(isPaid):filteredData;
   const byMonth={};
-  source.forEach(r=>{const mk=r.date.slice(0,7),day=parseInt(r.date.slice(8,10));if(!byMonth[mk])byMonth[mk]=Array(32).fill(0);byMonth[mk][day]+=(dayMetric==='revenue'?r.usd:1);});
+  source.forEach(r=>{if(!r.date||!/^\d{4}-\d{2}-\d{2}/.test(r.date))return;const mk=r.date.slice(0,7),day=parseInt(r.date.slice(8,10));if(!mk||!day)return;if(!byMonth[mk])byMonth[mk]=Array(32).fill(0);byMonth[mk][day]+=(dayMetric==='revenue'?r.usd:1);});
   const months=Object.keys(byMonth).sort(),labels=Array.from({length:31},(_,i)=>String(i+1));
   const datasets=months.map((mk,idx)=>{const[y,m]=mk.split('-'),color=MONTH_COLORS[idx%MONTH_COLORS.length];return{label:`${MONTH_NAMES[+m-1]} ${y}`,data:Array.from({length:31},(_,i)=>byMonth[mk][i+1]||null),borderColor:color,backgroundColor:color+'18',borderWidth:2,pointRadius:3,pointHoverRadius:5,tension:.35,hidden:dayHidden.has(mk),monthKey:mk};});
   charts.dom=new Chart(document.getElementById('cDayOfMonth'),{type:'line',data:{labels,datasets},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:9,cornerRadius:8,callbacks:{label:ctx=>{if(ctx.parsed.y===null)return null;return` ${ctx.dataset.label}: ${dayMetric==='revenue'?fmtUSD(ctx.parsed.y):fmt(ctx.parsed.y)+' tx'}`;},title:items=>`Día ${items[0].label} del mes`}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:10}},title:{display:true,text:'Día del mes',color:'#94A3B8',font:{size:10}}},y:{grid:{color:'#F1F5F9'},ticks:{color:'#94A3B8',font:{size:10},callback:v=>dayMetric==='revenue'?'$'+fmt(v,0):fmt(v)}}}}});
@@ -642,7 +649,7 @@ function buildWeekOfMonth(){
   dc('wom');
   const source=weekMetric==='revenue'?filteredData.filter(isPaid):filteredData;
   const byMonth={};
-  source.forEach(r=>{const mk=r.date.slice(0,7),day=parseInt(r.date.slice(8,10)),wk=weekOfMonth(day);if(!byMonth[mk])byMonth[mk]=[0,0,0,0,0];byMonth[mk][wk]+=(weekMetric==='revenue'?r.usd:1);});
+  source.forEach(r=>{if(!r.date||!/^\d{4}-\d{2}-\d{2}/.test(r.date))return;const mk=r.date.slice(0,7),day=parseInt(r.date.slice(8,10)),wk=weekOfMonth(day);if(!mk||!day)return;if(!byMonth[mk])byMonth[mk]=[0,0,0,0,0];byMonth[mk][wk]+=(weekMetric==='revenue'?r.usd:1);});
   const months=Object.keys(byMonth).sort();
   const wLabels=['Week 1 (1–7)','Week 2 (8–14)','Week 3 (15–21)','Week 4 (22–28)','Week 5 (29–31)'];
   const datasets=months.map((mk,idx)=>{const[y,m]=mk.split('-'),color=MONTH_COLORS[idx%MONTH_COLORS.length];return{label:`${MONTH_NAMES[+m-1]} ${y}`,data:[...byMonth[mk]],borderColor:color,backgroundColor:color+'18',borderWidth:2,pointRadius:5,pointHoverRadius:7,tension:.35,hidden:weekHidden.has(mk),monthKey:mk};});
