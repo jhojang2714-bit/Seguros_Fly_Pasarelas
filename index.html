@@ -374,17 +374,23 @@ const TZ_OFFSET_MS = 5 * 60 * 60 * 1000; // 5 horas en milisegundos
  * Devuelve "YYYY-MM-DD" en hora Colombia.
  */
 function utcStringToColombiaDate(raw) {
-  if (!raw) return '';
-  raw = raw.trim();
+  if (raw === undefined || raw === null || raw === '') return '';
+  raw = String(raw).trim();
 
   let d;
 
+  // ✅ Soporte para fechas seriales de Excel/Google Sheets, ej: 46027.521886574075
+  // Esto evita que el dashboard descarte filas cuando la fecha llega como número.
+  if (/^\d{5}(\.\d+)?$/.test(raw)) {
+    const serial = Number(raw);
+    const utcMs = (serial - 25569) * 86400 * 1000;
+    d = new Date(utcMs);
+  }
   // Formato dLocal: "11/27/2025 03:01:49" o "11/27/2025 3:01:49"
-  if (/^\d{1,2}\/\d{1,2}\/\d{4}/.test(raw)) {
+  else if (/^\d{1,2}\/\d{1,2}\/\d{4}/.test(raw)) {
     const parts = raw.split(' ');
     const [m, day, y] = parts[0].split('/');
     const time = parts[1] || '00:00:00';
-    // Construir ISO string explícito en UTC
     const isoStr = `${y}-${m.padStart(2,'0')}-${day.padStart(2,'0')}T${time}Z`;
     d = new Date(isoStr);
   }
@@ -392,11 +398,9 @@ function utcStringToColombiaDate(raw) {
   else if (/^\d{4}-\d{2}-\d{2}/.test(raw)) {
     const hasTime = raw.includes(' ') || raw.includes('T');
     if (hasTime) {
-      // Reemplazar espacio por T y añadir Z para indicar UTC
       const isoStr = raw.replace(' ', 'T').replace(/Z?$/, 'Z');
       d = new Date(isoStr);
     } else {
-      // Solo fecha, sin hora → no hay ambigüedad de zona horaria
       return raw.slice(0, 10);
     }
   } else {
@@ -405,7 +409,6 @@ function utcStringToColombiaDate(raw) {
 
   if (isNaN(d.getTime())) return raw.slice(0, 10);
 
-  // Restar 5 horas (UTC → Colombia)
   const colombiaMs = d.getTime() - TZ_OFFSET_MS;
   const co = new Date(colombiaMs);
 
@@ -513,6 +516,7 @@ function parseDlocalRows(rows){
   const iFee=findExact(['usd fee']);
   const iEmail=h.findIndex(x=>x.includes('correo')||x.includes('email'));
   const iDate=h.findIndex(x=>x.includes('created date'));
+  const iUpdated=h.findIndex(x=>x.includes('last updated'));
 
   // ── DEBUG: log de índices y primeras filas para diagnóstico ──
   console.log('[dLocal parser] hIdx='+hIdx+' cols total='+h.length);
@@ -522,8 +526,9 @@ function parseDlocalRows(rows){
   // ────────────────────────────────────────────────────────────
 
   return rows.slice(hIdx+1).map((r,i)=>{
-    if(!r[iDate]&&!r[iAmt])return null;
-    if(!r[iDate]||!r[iDate].trim())return null; // descartar sin fecha
+    const rawDateValue = iDate >= 0 ? r[iDate] : (iUpdated >= 0 ? r[iUpdated] : '');
+    if((rawDateValue === undefined || rawDateValue === null || String(rawDateValue).trim() === '') && !r[iAmt])return null;
+    if(rawDateValue === undefined || rawDateValue === null || String(rawDateValue).trim() === '')return null; // descartar solo si realmente no hay fecha
 
     const rs=(r[iStat]||'').toLowerCase().trim();
     let status='pending';
@@ -532,7 +537,7 @@ function parseDlocalRows(rows){
 
     // ★ AJUSTE UTC→Colombia: restar 5 horas al timestamp UTC de dLocal
     // dLocal usa formato "MM/DD/YYYY HH:MM:SS"
-    const dateRaw = (r[iDate]||'').trim();
+    const dateRaw = String(rawDateValue).trim();
     const dateCo  = utcStringToColombiaDate(dateRaw);
 
     const revenueUsd=iRevenue>=0?parseNum(r[iRevenue]):0; // USD Total Amount = bruto
