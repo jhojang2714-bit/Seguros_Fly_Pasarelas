@@ -140,8 +140,7 @@
     .insight-week{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:4px;}
     .insight-month{font-size:.78rem;font-weight:700;margin-bottom:2px;}
     .insight-val{font-size:.75rem;color:var(--muted);}
-
-    /* ── Leyenda inline para gráficas combinadas ── */
+    .tz-badge{background:#FEF9C3;color:#854D0E;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid #FDE68A;}
     .combo-legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:10px;font-size:.72rem;color:var(--muted);}
     .combo-legend span{display:flex;align-items:center;gap:5px;}
     .leg-bar{width:12px;height:12px;border-radius:3px;display:inline-block;flex-shrink:0;}
@@ -156,11 +155,12 @@
   <div class="nav-brand"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>SegurosFly · <span style="color:var(--muted);font-weight:400">Payment Analytics</span></div>
   <div class="nav-right">
     <div class="gw-tabs"><button class="gw-tab active-all" onclick="setGateway('all',this)">Todas</button><button class="gw-tab" onclick="setGateway('stripe',this)">💳 Stripe</button><button class="gw-tab" onclick="setGateway('dlocal',this)">🌎 dLocal</button></div>
+    <span class="tz-badge">🕐 UTC−5 Colombia</span>
     <span class="live-badge">🟢 EN VIVO</span><div class="live-dot"></div><span id="lastUpdated">Cargando…</span>
   </div>
 </nav>
 <main>
-  <div class="page-header"><h1>Dashboard de Pasarelas de Pago</h1><p id="gwSub">Stripe + dLocal · Análisis · SegurosFly</p></div>
+  <div class="page-header"><h1>Dashboard de Pasarelas de Pago</h1><p id="gwSub">Stripe + dLocal · Análisis · SegurosFly · Fechas ajustadas a UTC−5 (Colombia)</p></div>
   <div class="filter-bar">
     <div class="filter-group"><label>Fecha inicio</label><input type="date" id="dateFrom"/></div>
     <div class="filter-group"><label>Fecha fin</label><input type="date" id="dateTo"/></div>
@@ -180,17 +180,12 @@
     <div class="kpi-card c-dlocal"><div class="kpi-icon">🌎</div><div class="kpi-label">dLocal Revenue</div><div class="kpi-value" id="kpiDlocalRev">—</div><div class="kpi-sub" id="kpiDlocalSub">—</div><span class="kpi-badge bg-dlocal" id="kpiDlocalCount">—</span></div>
   </div>
 
-  <!-- ══════════════════════════════════════════════════════════ -->
-  <!-- NUEVA SECCIÓN: TENDENCIAS TEMPORALES — 2 GRÁFICAS COMBINADAS -->
-  <!-- ══════════════════════════════════════════════════════════ -->
   <div class="sdiv">Tendencias temporales</div>
-
-  <!-- Gráfica 1: Por pasarela (Stripe vs dLocal) -->
   <div class="cc" style="margin-bottom:13px">
     <div class="ch" style="flex-wrap:wrap;gap:8px">
       <div>
         <div class="ct">Revenue (USD) y Transacciones por Pasarela</div>
-        <div class="cs">Barras = Revenue USD (eje izq.) · Línea = N° transacciones (eje der.) · Solo exitosas para revenue, todos los estados para Tx</div>
+        <div class="cs">Barras = Revenue USD (eje izq.) · Línea = N° transacciones (eje der.) · Fechas en hora Colombia (UTC−5)</div>
       </div>
       <div class="tg-bar">
         <button class="tg-btn active" onclick="setComboGroup('day',this)">Día</button>
@@ -199,7 +194,6 @@
         <button class="tg-btn" onclick="setComboGroup('quarter',this)">Trimestre</button>
       </div>
     </div>
-    <!-- Leyenda manual -->
     <div class="combo-legend">
       <span><span class="leg-bar" style="background:rgba(103,114,229,.6);border:1.5px solid #6772E5"></span>Revenue Stripe</span>
       <span><span class="leg-bar" style="background:rgba(0,177,79,.55);border:1.5px solid #00B14F"></span>Revenue dLocal</span>
@@ -211,7 +205,6 @@
     </div>
   </div>
 
-  <!-- Gráfica 2: Total combinado (Stripe + dLocal) -->
   <div class="cc" style="margin-bottom:13px">
     <div class="ch" style="flex-wrap:wrap;gap:8px">
       <div>
@@ -233,7 +226,6 @@
       <canvas id="cTotal" role="img" aria-label="Gráfica combinada de revenue total y transacciones totales"></canvas>
     </div>
   </div>
-  <!-- FIN NUEVA SECCIÓN -->
 
   <div class="sdiv">Comparación por pasarela</div>
   <div class="g3">
@@ -286,7 +278,7 @@
   <div class="sdiv">Revenue por día del mes — comparado por mes</div>
   <div class="cc full" style="margin-bottom:13px">
     <div class="ch">
-      <div><div class="ct">Revenue por Día del Mes vs Mes del Año</div><div class="cs">Cada línea = un mes · eje X = día del mes 1–31 · clic en píldoras para mostrar/ocultar</div></div>
+      <div><div class="ct">Revenue por Día del Mes vs Mes del Año</div><div class="cs">Cada línea = un mes · eje X = día del mes 1–31 · fechas en hora Colombia (UTC−5)</div></div>
       <div class="tg-bar"><button class="tg-btn active" onclick="setDayMetric('revenue',this)">Revenue</button><button class="tg-btn" onclick="setDayMetric('count',this)">N° Pagos</button></div>
     </div>
     <canvas id="cDayOfMonth" height="180"></canvas>
@@ -307,7 +299,7 @@
   <div class="sdiv">Detalle de transacciones</div>
   <div class="tc">
     <div class="ttb">
-      <div class="tt">Registro completo · <span id="tableGwLabel" style="color:var(--muted);font-weight:400">Todas</span></div>
+      <div class="tt">Registro completo · <span id="tableGwLabel" style="color:var(--muted);font-weight:400">Todas</span> <span style="color:var(--muted);font-size:.7rem;font-weight:400">· hora Colombia (UTC−5)</span></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <input type="text" class="search-input" id="tableSearch" placeholder="Buscar email, método, país…" oninput="renderTable()">
         <select class="search-input" id="tableStatusFilter" onchange="renderTable()" style="width:135px"><option value="">Todos</option><option value="paid">Pagado/Completada</option><option value="failed">Fallido/Cancelada</option><option value="pending">Pendiente</option></select>
@@ -315,7 +307,7 @@
     </div>
     <div style="overflow-x:auto">
       <table><thead><tr>
-        <th onclick="sortTable('date')">Fecha ↕</th><th>Pasarela</th><th onclick="sortTable('currency')">Moneda ↕</th>
+        <th onclick="sortTable('date')">Fecha (CO) ↕</th><th>Pasarela</th><th onclick="sortTable('currency')">Moneda ↕</th>
         <th onclick="sortTable('country')">País ↕</th><th onclick="sortTable('amount')">Monto orig.</th>
         <th onclick="sortTable('usd')">USD ↕</th><th onclick="sortTable('status')">Estado ↕</th>
         <th>Método / Razón</th><th>Email</th>
@@ -324,13 +316,69 @@
     <div class="tf"><span id="tableInfo">—</span><div class="pag" id="pagination"></div></div>
   </div>
 </main>
-<footer><strong>SegurosFly</strong> · Dashboard en vivo · Los datos se leen directamente desde Google Sheets.<br>Sheet ID: <span class="sheet-id">1jxhWM3-ULgKBqnZ0EHuKPvNhXUD3MVcXzT1xp97xqFw</span> · Hoja Stripe: <span class="sheet-id">gid=0</span> · Hoja dLocal: <span class="sheet-id">gid=<span id="dlocalGid">detectando…</span></span></footer>
+<footer><strong>SegurosFly</strong> · Dashboard en vivo · Los datos se leen directamente desde Google Sheets.<br>Fechas ajustadas de UTC a <strong>UTC−5 (Colombia)</strong> · Sheet ID: <span class="sheet-id">1jxhWM3-ULgKBqnZ0EHuKPvNhXUD3MVcXzT1xp97xqFw</span> · Hoja Stripe: <span class="sheet-id">gid=0</span> · Hoja dLocal: <span class="sheet-id">gid=<span id="dlocalGid">detectando…</span></span></footer>
 
 <script>
 const SHEET_ID='1jxhWM3-ULgKBqnZ0EHuKPvNhXUD3MVcXzT1xp97xqFw',GID_STRIPE='0',GID_DLOCAL='1125754235';
 const csvURL=gid=>`https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}`;
 const MONTH_COLORS=['#2563EB','#0EA5E9','#7C3AED','#10B981','#F59E0B','#EF4444','#EC4899','#14B8A6','#F97316','#84CC16','#6366F1','#D97706'];
 const MONTH_NAMES=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+// ─── AJUSTE DE ZONA HORARIA ─────────────────────────────────────────────────
+// Ambas fuentes (Stripe y dLocal) entregan timestamps en UTC.
+// Colombia es UTC−5, por lo que restamos 5 horas antes de extraer la fecha.
+const TZ_OFFSET_MS = 5 * 60 * 60 * 1000; // 5 horas en milisegundos
+
+/**
+ * Convierte un string de fecha/hora UTC a la fecha local Colombia (UTC-5).
+ * Acepta formatos:
+ *   "2025-11-05 3:36:31"   → Stripe (Created date UTC)
+ *   "11/27/2025 03:01:49"  → dLocal (Created Date) — M/D/YYYY HH:MM:SS
+ *   "2025-11-05"           → solo fecha (se deja igual, sin ajuste de hora)
+ * Devuelve "YYYY-MM-DD" en hora Colombia.
+ */
+function utcStringToColombiaDate(raw) {
+  if (!raw) return '';
+  raw = raw.trim();
+
+  let d;
+
+  // Formato dLocal: "11/27/2025 03:01:49" o "11/27/2025 3:01:49"
+  if (/^\d{1,2}\/\d{1,2}\/\d{4}/.test(raw)) {
+    const parts = raw.split(' ');
+    const [m, day, y] = parts[0].split('/');
+    const time = parts[1] || '00:00:00';
+    // Construir ISO string explícito en UTC
+    const isoStr = `${y}-${m.padStart(2,'0')}-${day.padStart(2,'0')}T${time}Z`;
+    d = new Date(isoStr);
+  }
+  // Formato Stripe: "2025-11-05 3:36:31" o "2025-11-05"
+  else if (/^\d{4}-\d{2}-\d{2}/.test(raw)) {
+    const hasTime = raw.includes(' ') || raw.includes('T');
+    if (hasTime) {
+      // Reemplazar espacio por T y añadir Z para indicar UTC
+      const isoStr = raw.replace(' ', 'T').replace(/Z?$/, 'Z');
+      d = new Date(isoStr);
+    } else {
+      // Solo fecha, sin hora → no hay ambigüedad de zona horaria
+      return raw.slice(0, 10);
+    }
+  } else {
+    return raw.slice(0, 10);
+  }
+
+  if (isNaN(d.getTime())) return raw.slice(0, 10);
+
+  // Restar 5 horas (UTC → Colombia)
+  const colombiaMs = d.getTime() - TZ_OFFSET_MS;
+  const co = new Date(colombiaMs);
+
+  const yyyy = co.getUTCFullYear();
+  const mm   = String(co.getUTCMonth() + 1).padStart(2, '0');
+  const dd   = String(co.getUTCDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+}
+// ────────────────────────────────────────────────────────────────────────────
 
 function parseCSV(text){const rows=[];let cur='',inQ=false,row=[];for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'){inQ=!inQ;continue;}if(c===','&&!inQ){row.push(cur.trim());cur='';continue;}if((c==='\n'||c==='\r')&&!inQ){if(cur||row.length){row.push(cur.trim());rows.push(row);}cur='';row=[];if(c==='\r'&&text[i+1]==='\n')i++;continue;}cur+=c;}if(cur||row.length){row.push(cur.trim());rows.push(row);}return rows;}
 
@@ -347,7 +395,10 @@ function parseStripeRows(rows){
     const status=rs==='paid'?'paid':rs==='failed'?'failed':'pending';
     const ca=parseFloat(r[iConvAmt]||0)||0;
     const usd=(r[iConvCurr]||'').toLowerCase()==='usd'?ca:0;
-    return{id:`s${i}`,date:(r[iDate]||'').slice(0,10),currency:(r[iCurr]||'').toLowerCase(),
+    // ★ AJUSTE UTC→Colombia: restar 5 horas al timestamp UTC de Stripe
+    const dateRaw = (r[iDate]||'').slice(0,19); // "YYYY-MM-DD HH:MM:SS"
+    const dateCo  = utcStringToColombiaDate(dateRaw);
+    return{id:`s${i}`,date:dateCo,currency:(r[iCurr]||'').toLowerCase(),
       amount:parseFloat(r[iAmt]||0)||0,usd,feeUsd:iFee>=0?(parseFloat(r[iFee]||0)||0):0,
       status,declineReason:r[iDec]||'',email:r[iEmail]||'',method:'card',
       country:guessCountry((r[iCurr]||'').toLowerCase()),gateway:'stripe'};
@@ -369,10 +420,12 @@ function parseDlocalRows(rows){
     let status='pending';
     if(rs==='completada'||rs==='paid')status='paid';
     else if(rs==='cancelada'||rs==='failed')status='failed';
-    let date=(r[iDate]||'').slice(0,10);
-    if(date.includes('/')){const p=date.split('/');date=`${p[2]}-${p[0].padStart(2,'0')}-${p[1].padStart(2,'0')}`;}
+    // ★ AJUSTE UTC→Colombia: restar 5 horas al timestamp UTC de dLocal
+    // dLocal usa formato "MM/DD/YYYY HH:MM:SS"
+    const dateRaw = (r[iDate]||'').trim();
+    const dateCo  = utcStringToColombiaDate(dateRaw);
     const usd=parseFloat(r[iUSD]||0)||0;
-    return{id:`d${i}`,date,currency:(r[iCurr]||'').toLowerCase(),amount:parseFloat(r[iAmt]||0)||0,
+    return{id:`d${i}`,date:dateCo,currency:(r[iCurr]||'').toLowerCase(),amount:parseFloat(r[iAmt]||0)||0,
       usd:status==='paid'?usd:0,feeUsd:iFee>=0?(parseFloat(r[iFee]||0)||0):0,status,
       declineReason:status==='failed'?'Cancelada':'',email:r[iEmail]||'',
       method:r[iMeth]||'',country:r[iCtry]||'',gateway:'dlocal'};
@@ -417,13 +470,13 @@ async function reloadData(){
 
 function setGateway(gw,btn){
   activeGW=gw;document.querySelectorAll('.gw-tab').forEach(t=>t.className='gw-tab');btn.classList.add(`active-${gw}`);
-  document.getElementById('gwSub').textContent={all:'Stripe + dLocal · Análisis · SegurosFly',stripe:'Stripe · Card payments · SegurosFly',dlocal:'dLocal · Métodos de pago locales · SegurosFly'}[gw];
+  document.getElementById('gwSub').textContent={all:'Stripe + dLocal · Análisis · SegurosFly · Fechas ajustadas a UTC−5 (Colombia)',stripe:'Stripe · Card payments · SegurosFly · Fechas UTC−5',dlocal:'dLocal · Métodos de pago locales · SegurosFly · Fechas UTC−5'}[gw];
   document.getElementById('tableGwLabel').textContent={all:'Todas',stripe:'Solo Stripe',dlocal:'Solo dLocal'}[gw];
   resetFilters();
 }
 
 function initFilters(){
-  const pool=allData(),dates=pool.map(d=>d.date).sort();
+  const pool=allData(),dates=pool.map(d=>d.date).filter(Boolean).sort();
   if(dates.length){document.getElementById('dateFrom').value=dates[0];document.getElementById('dateTo').value=dates[dates.length-1];}
   const yS=document.getElementById('filterYear');yS.innerHTML='<option value="">Todos</option>';
   [...new Set(pool.map(d=>d.date.slice(0,4)))].sort().reverse().forEach(y=>{const o=document.createElement('option');o.value=y;o.textContent=y;yS.appendChild(o);});
@@ -476,10 +529,8 @@ function updateKPIs(){
 const P=['#2563EB','#0EA5E9','#7C3AED','#10B981','#F59E0B','#EF4444','#EC4899','#14B8A6','#F97316','#84CC16'];
 function dc(id){if(charts[id]){charts[id].destroy();delete charts[id];}}
 
-/* ── Opciones base compartidas ── */
 const bO=(e={})=>({responsive:true,plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:9,cornerRadius:8}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:10}}},y:{grid:{color:'#F1F5F9'},ticks:{color:'#94A3B8',font:{size:10}}}},...e});
 
-/* ── Utilidades de agrupación temporal ── */
 function weekKey(dateStr){const d=new Date(dateStr+'T00:00:00'),day=d.getDay(),diff=day===0?-6:1-day;d.setDate(d.getDate()+diff);return d.toISOString().slice(0,10);}
 function monthKey(d){return d.slice(0,7);}
 function quarterKey(d){const[y,m]=d.split('-').map(Number);return`${y}-Q${Math.ceil(m/3)}`;}
@@ -491,9 +542,6 @@ function groupLabel(k,g){
   if(g==='quarter')return k.replace('-',' ');return k;
 }
 
-/* ══════════════════════════════════════════════
-   GRÁFICA 1: Revenue (barras) + Tx (línea) por pasarela
-   ══════════════════════════════════════════════ */
 function setComboGroup(group,btn){
   btn.closest('.tg-bar').querySelectorAll('.tg-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
@@ -503,8 +551,6 @@ function setComboGroup(group,btn){
 
 function buildCombo(){
   dc('combo');
-
-  /* Acumular revenue (solo paid) y tx (todos) por pasarela y periodo */
   const sRev={},dRev={},sTx={},dTx={};
   filteredData.forEach(r=>{
     const k=groupKey(r.date,comboGroup);
@@ -516,101 +562,16 @@ function buildCombo(){
       if(isPaid(r)) dRev[k]=(dRev[k]||0)+r.usd;
     }
   });
-
   const keys=[...new Set([...Object.keys(sRev),...Object.keys(dRev),...Object.keys(sTx),...Object.keys(dTx)])].sort();
   const labels=keys.map(k=>groupLabel(k,comboGroup));
-
-  /* Decidir qué series mostrar según gateway activo */
   const datasets=[];
-
-  /* Barras de Revenue */
-  if(activeGW!=='dlocal'){
-    datasets.push({
-      type:'bar',label:'Revenue Stripe',
-      data:keys.map(k=>+(sRev[k]||0).toFixed(2)),
-      backgroundColor:'rgba(103,114,229,0.60)',
-      borderColor:'#6772E5',borderWidth:1.5,
-      borderRadius:4,borderSkipped:false,
-      yAxisID:'yRev',order:2
-    });
-  }
-  if(activeGW!=='stripe'){
-    datasets.push({
-      type:'bar',label:'Revenue dLocal',
-      data:keys.map(k=>+(dRev[k]||0).toFixed(2)),
-      backgroundColor:'rgba(0,177,79,0.55)',
-      borderColor:'#00B14F',borderWidth:1.5,
-      borderRadius:4,borderSkipped:false,
-      yAxisID:'yRev',order:2
-    });
-  }
-
-  /* Líneas de Transacciones */
-  if(activeGW!=='dlocal'){
-    datasets.push({
-      type:'line',label:'Tx Stripe',
-      data:keys.map(k=>sTx[k]||0),
-      borderColor:'#6772E5',backgroundColor:'rgba(103,114,229,0.12)',
-      borderWidth:2.5,pointRadius:4,pointHoverRadius:6,
-      pointBackgroundColor:'#6772E5',
-      tension:.4,fill:false,
-      yAxisID:'yTx',order:1
-    });
-  }
-  if(activeGW!=='stripe'){
-    datasets.push({
-      type:'line',label:'Tx dLocal',
-      data:keys.map(k=>dTx[k]||0),
-      borderColor:'#00B14F',backgroundColor:'rgba(0,177,79,0.12)',
-      borderWidth:2.5,pointRadius:4,pointHoverRadius:6,
-      pointBackgroundColor:'#00B14F',
-      tension:.4,fill:false,
-      yAxisID:'yTx',order:1
-    });
-  }
-
-  charts.combo=new Chart(document.getElementById('cCombo'),{
-    type:'bar',
-    data:{labels,datasets},
-    options:{
-      responsive:true,
-      maintainAspectRatio:false,
-      interaction:{mode:'index',intersect:false},
-      plugins:{
-        legend:{display:false},
-        tooltip:{
-          backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:10,cornerRadius:8,
-          callbacks:{
-            label:ctx=>{
-              if(ctx.dataset.label.startsWith('Revenue'))
-                return ` ${ctx.dataset.label}: $${fmt(ctx.parsed.y,2)}`;
-              return ` ${ctx.dataset.label}: ${fmt(ctx.parsed.y)} tx`;
-            }
-          }
-        }
-      },
-      scales:{
-        x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:10}},stacked:false},
-        yRev:{
-          type:'linear',position:'left',
-          grid:{color:'#F1F5F9'},
-          ticks:{color:'#6772E5',font:{size:10},callback:v=>'$'+fmt(v,0)},
-          title:{display:true,text:'Revenue (USD)',color:'#94A3B8',font:{size:9}}
-        },
-        yTx:{
-          type:'linear',position:'right',
-          grid:{display:false},
-          ticks:{color:'#94A3B8',font:{size:10},callback:v=>fmt(v)+' tx'},
-          title:{display:true,text:'N° Transacciones',color:'#94A3B8',font:{size:9}}
-        }
-      }
-    }
-  });
+  if(activeGW!=='dlocal'){datasets.push({type:'bar',label:'Revenue Stripe',data:keys.map(k=>+(sRev[k]||0).toFixed(2)),backgroundColor:'rgba(103,114,229,0.60)',borderColor:'#6772E5',borderWidth:1.5,borderRadius:4,borderSkipped:false,yAxisID:'yRev',order:2});}
+  if(activeGW!=='stripe'){datasets.push({type:'bar',label:'Revenue dLocal',data:keys.map(k=>+(dRev[k]||0).toFixed(2)),backgroundColor:'rgba(0,177,79,0.55)',borderColor:'#00B14F',borderWidth:1.5,borderRadius:4,borderSkipped:false,yAxisID:'yRev',order:2});}
+  if(activeGW!=='dlocal'){datasets.push({type:'line',label:'Tx Stripe',data:keys.map(k=>sTx[k]||0),borderColor:'#6772E5',backgroundColor:'rgba(103,114,229,0.12)',borderWidth:2.5,pointRadius:4,pointHoverRadius:6,pointBackgroundColor:'#6772E5',tension:.4,fill:false,yAxisID:'yTx',order:1});}
+  if(activeGW!=='stripe'){datasets.push({type:'line',label:'Tx dLocal',data:keys.map(k=>dTx[k]||0),borderColor:'#00B14F',backgroundColor:'rgba(0,177,79,0.12)',borderWidth:2.5,pointRadius:4,pointHoverRadius:6,pointBackgroundColor:'#00B14F',tension:.4,fill:false,yAxisID:'yTx',order:1});}
+  charts.combo=new Chart(document.getElementById('cCombo'),{type:'bar',data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:10,cornerRadius:8,callbacks:{label:ctx=>{if(ctx.dataset.label.startsWith('Revenue'))return` ${ctx.dataset.label}: $${fmt(ctx.parsed.y,2)}`;return` ${ctx.dataset.label}: ${fmt(ctx.parsed.y)} tx`;}}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:10}},stacked:false},yRev:{type:'linear',position:'left',grid:{color:'#F1F5F9'},ticks:{color:'#6772E5',font:{size:10},callback:v=>'$'+fmt(v,0)},title:{display:true,text:'Revenue (USD)',color:'#94A3B8',font:{size:9}}},yTx:{type:'linear',position:'right',grid:{display:false},ticks:{color:'#94A3B8',font:{size:10},callback:v=>fmt(v)+' tx'},title:{display:true,text:'N° Transacciones',color:'#94A3B8',font:{size:9}}}}}});
 }
 
-/* ══════════════════════════════════════════════
-   GRÁFICA 2: Revenue total + Tx total (Stripe + dLocal)
-   ══════════════════════════════════════════════ */
 function setTotalGroup(group,btn){
   btn.closest('.tg-bar').querySelectorAll('.tg-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
@@ -620,80 +581,13 @@ function setTotalGroup(group,btn){
 
 function buildTotal(){
   dc('total');
-
   const rev={},tx={};
-  filteredData.forEach(r=>{
-    const k=groupKey(r.date,totalGroup);
-    tx[k]=(tx[k]||0)+1;
-    if(isPaid(r)) rev[k]=(rev[k]||0)+r.usd;
-  });
-
-  const keys=Object.keys(rev).length||Object.keys(tx).length
-    ? [...new Set([...Object.keys(rev),...Object.keys(tx)])].sort()
-    : [];
+  filteredData.forEach(r=>{const k=groupKey(r.date,totalGroup);tx[k]=(tx[k]||0)+1;if(isPaid(r))rev[k]=(rev[k]||0)+r.usd;});
+  const keys=Object.keys(rev).length||Object.keys(tx).length?[...new Set([...Object.keys(rev),...Object.keys(tx)])].sort():[];
   const labels=keys.map(k=>groupLabel(k,totalGroup));
-
-  charts.total=new Chart(document.getElementById('cTotal'),{
-    type:'bar',
-    data:{
-      labels,
-      datasets:[
-        {
-          type:'bar',label:'Revenue Total',
-          data:keys.map(k=>+(rev[k]||0).toFixed(2)),
-          backgroundColor:'rgba(37,99,235,0.55)',
-          borderColor:'#2563EB',borderWidth:1.5,
-          borderRadius:4,borderSkipped:false,
-          yAxisID:'yRev',order:2
-        },
-        {
-          type:'line',label:'Tx Totales',
-          data:keys.map(k=>tx[k]||0),
-          borderColor:'#7C3AED',backgroundColor:'rgba(124,58,237,0.12)',
-          borderWidth:2.5,pointRadius:4,pointHoverRadius:6,
-          pointBackgroundColor:'#7C3AED',
-          tension:.4,fill:false,
-          yAxisID:'yTx',order:1
-        }
-      ]
-    },
-    options:{
-      responsive:true,
-      maintainAspectRatio:false,
-      interaction:{mode:'index',intersect:false},
-      plugins:{
-        legend:{display:false},
-        tooltip:{
-          backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:10,cornerRadius:8,
-          callbacks:{
-            label:ctx=>{
-              if(ctx.dataset.label==='Revenue Total')
-                return ` Revenue: $${fmt(ctx.parsed.y,2)}`;
-              return ` Transacciones: ${fmt(ctx.parsed.y)} tx`;
-            }
-          }
-        }
-      },
-      scales:{
-        x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:10}}},
-        yRev:{
-          type:'linear',position:'left',
-          grid:{color:'#F1F5F9'},
-          ticks:{color:'#2563EB',font:{size:10},callback:v=>'$'+fmt(v,0)},
-          title:{display:true,text:'Revenue (USD)',color:'#94A3B8',font:{size:9}}
-        },
-        yTx:{
-          type:'linear',position:'right',
-          grid:{display:false},
-          ticks:{color:'#7C3AED',font:{size:10},callback:v=>fmt(v)+' tx'},
-          title:{display:true,text:'N° Transacciones',color:'#94A3B8',font:{size:9}}
-        }
-      }
-    }
-  });
+  charts.total=new Chart(document.getElementById('cTotal'),{type:'bar',data:{labels,datasets:[{type:'bar',label:'Revenue Total',data:keys.map(k=>+(rev[k]||0).toFixed(2)),backgroundColor:'rgba(37,99,235,0.55)',borderColor:'#2563EB',borderWidth:1.5,borderRadius:4,borderSkipped:false,yAxisID:'yRev',order:2},{type:'line',label:'Tx Totales',data:keys.map(k=>tx[k]||0),borderColor:'#7C3AED',backgroundColor:'rgba(124,58,237,0.12)',borderWidth:2.5,pointRadius:4,pointHoverRadius:6,pointBackgroundColor:'#7C3AED',tension:.4,fill:false,yAxisID:'yTx',order:1}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:10,cornerRadius:8,callbacks:{label:ctx=>{if(ctx.dataset.label==='Revenue Total')return` Revenue: $${fmt(ctx.parsed.y,2)}`;return` Transacciones: ${fmt(ctx.parsed.y)} tx`;}}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:10}}},yRev:{type:'linear',position:'left',grid:{color:'#F1F5F9'},ticks:{color:'#2563EB',font:{size:10},callback:v=>'$'+fmt(v,0)},title:{display:true,text:'Revenue (USD)',color:'#94A3B8',font:{size:9}}},yTx:{type:'linear',position:'right',grid:{display:false},ticks:{color:'#7C3AED',font:{size:10},callback:v=>fmt(v)+' tx'},title:{display:true,text:'N° Transacciones',color:'#94A3B8',font:{size:9}}}}}});
 }
 
-/* ── Resto de gráficas (sin cambios) ── */
 function buildGwBar(){dc('gb');const sR=filteredData.filter(r=>r.gateway==='stripe'&&isPaid(r)).reduce((s,r)=>s+r.usd,0),dR=filteredData.filter(r=>r.gateway==='dlocal'&&isPaid(r)).reduce((s,r)=>s+r.usd,0);const sTx=filteredData.filter(r=>r.gateway==='stripe').length,dTx=filteredData.filter(r=>r.gateway==='dlocal').length;charts.gb=new Chart(document.getElementById('cGwBar'),{type:'bar',data:{labels:['Stripe','dLocal'],datasets:[{data:[sR,dR],backgroundColor:['rgba(103,114,229,.2)','rgba(0,177,79,.18)'],borderColor:['#6772E5','#00B14F'],borderWidth:2,borderRadius:8,borderSkipped:false}]},options:{...bO(),plugins:{legend:{display:false},tooltip:{callbacks:{afterLabel:ctx=>`${[sTx,dTx][ctx.dataIndex]} transacciones`},backgroundColor:'#0F172A',bodyColor:'#94A3B8',padding:9,cornerRadius:8}}}});}
 function buildPayMethod(){dc('pm');const pool=filteredData.filter(r=>r.gateway==='dlocal'&&r.method),cnt={};pool.forEach(r=>{cnt[r.method]=(cnt[r.method]||0)+1;});const lbs=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]).slice(0,10);charts.pm=new Chart(document.getElementById('cPayMethod'),{type:'bar',data:{labels:lbs,datasets:[{data:lbs.map(l=>cnt[l]),backgroundColor:lbs.map((_,i)=>P[i%P.length]+'33'),borderColor:lbs.map((_,i)=>P[i%P.length]),borderWidth:1.5,borderRadius:6,borderSkipped:false}]},options:{...bO(),indexAxis:'y'}});}
 function buildStatusDough(){dc('sd');const paid=filteredData.filter(isPaid).length,failed=filteredData.filter(isFailed).length,pending=filteredData.filter(isPending).length,total=filteredData.length||1;charts.sd=new Chart(document.getElementById('cStatusDough'),{type:'doughnut',data:{labels:['Exitosas','Fallidas','Pendientes'],datasets:[{data:[paid,failed,pending],backgroundColor:['#10B981','#EF4444','#F59E0B'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,cutout:'72%',plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',bodyColor:'#94A3B8',padding:9,cornerRadius:8}}}});const leg=document.getElementById('statusLegend'),items=[{l:'Exitosas',c:paid,p:(paid/total*100).toFixed(1),col:'#10B981'},{l:'Fallidas',c:failed,p:(failed/total*100).toFixed(1),col:'#EF4444'},{l:'Pendientes',c:pending,p:(pending/total*100).toFixed(1),col:'#F59E0B'}];leg.innerHTML=items.map(it=>`<div class="mini-stat"><span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:${it.col};display:inline-block"></span>${it.l}</span><span style="font-weight:700">${it.c} <span style="color:var(--muted);font-weight:400">(${it.p}%)</span></span></div><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:${it.p}%;background:${it.col}"></div></div>`).join('');}
@@ -709,11 +603,7 @@ function buildFeeCompare(){
   const sPct=sRev>0?(sFee/sRev*100):0,dPct=dRev>0?(dFee/dRev*100):0;
   document.getElementById('fcStripeRev').textContent=fmtUSD(sRev);document.getElementById('fcStripeFee').textContent=fmtUSD(sFee);document.getElementById('fcStripePct').textContent=fmt(sPct,2)+'%';
   document.getElementById('fcDlocalRev').textContent=fmtUSD(dRev);document.getElementById('fcDlocalFee').textContent=fmtUSD(dFee);document.getElementById('fcDlocalPct').textContent=fmt(dPct,2)+'%';
-  charts.fc=new Chart(document.getElementById('cFeeCompare'),{type:'bar',data:{labels:['Stripe','dLocal'],datasets:[
-    {type:'bar',label:'Revenue USD',data:[sRev,dRev],backgroundColor:['rgba(103,114,229,.18)','rgba(0,177,79,.15)'],borderColor:['#6772E5','#00B14F'],borderWidth:2,borderRadius:7,borderSkipped:false,yAxisID:'yLeft',order:2},
-    {type:'bar',label:'Fee USD',data:[sFee,dFee],backgroundColor:['rgba(239,68,68,.18)','rgba(239,68,68,.18)'],borderColor:['#EF4444','#EF4444'],borderWidth:2,borderRadius:7,borderSkipped:false,yAxisID:'yLeft',order:2},
-    {type:'line',label:'Fee %',data:[sPct,dPct],borderColor:'#7C3AED',backgroundColor:'rgba(124,58,237,.12)',borderWidth:2.5,pointRadius:7,pointHoverRadius:9,pointBackgroundColor:'#7C3AED',tension:0,yAxisID:'yRight',order:1}
-  ]},options:{responsive:true,plugins:{legend:{display:true,position:'top',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:10,cornerRadius:8,callbacks:{label:ctx=>{if(ctx.dataset.label==='Fee %')return` Fee %: ${fmt(ctx.parsed.y,2)}%`;return` ${ctx.dataset.label}: $${fmt(ctx.parsed.y,2)}`;}}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:11}}},yLeft:{position:'left',grid:{color:'#F1F5F9'},ticks:{color:'#94A3B8',font:{size:10},callback:v=>'$'+fmt(v,0)}},yRight:{position:'right',grid:{display:false},ticks:{color:'#7C3AED',font:{size:10},callback:v=>fmt(v,2)+'%'}}}}});
+  charts.fc=new Chart(document.getElementById('cFeeCompare'),{type:'bar',data:{labels:['Stripe','dLocal'],datasets:[{type:'bar',label:'Revenue USD',data:[sRev,dRev],backgroundColor:['rgba(103,114,229,.18)','rgba(0,177,79,.15)'],borderColor:['#6772E5','#00B14F'],borderWidth:2,borderRadius:7,borderSkipped:false,yAxisID:'yLeft',order:2},{type:'bar',label:'Fee USD',data:[sFee,dFee],backgroundColor:['rgba(239,68,68,.18)','rgba(239,68,68,.18)'],borderColor:['#EF4444','#EF4444'],borderWidth:2,borderRadius:7,borderSkipped:false,yAxisID:'yLeft',order:2},{type:'line',label:'Fee %',data:[sPct,dPct],borderColor:'#7C3AED',backgroundColor:'rgba(124,58,237,.12)',borderWidth:2.5,pointRadius:7,pointHoverRadius:9,pointBackgroundColor:'#7C3AED',tension:0,yAxisID:'yRight',order:1}]},options:{responsive:true,plugins:{legend:{display:true,position:'top',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:10,cornerRadius:8,callbacks:{label:ctx=>{if(ctx.dataset.label==='Fee %')return` Fee %: ${fmt(ctx.parsed.y,2)}%`;return` ${ctx.dataset.label}: $${fmt(ctx.parsed.y,2)}`;}}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:11}}},yLeft:{position:'left',grid:{color:'#F1F5F9'},ticks:{color:'#94A3B8',font:{size:10},callback:v=>'$'+fmt(v,0)}},yRight:{position:'right',grid:{display:false},ticks:{color:'#7C3AED',font:{size:10},callback:v=>fmt(v,2)+'%'}}}}});
 }
 
 function setTopSort(key,btn){topSortKey=key;document.querySelectorAll('.top-sort-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');buildTopClients();}
@@ -774,25 +664,4 @@ function statusChip(r){const cls=r.status==='paid'?'sc-paid':r.status==='failed'
 function renderTable(){
   const rows=getTableData(),total=rows.length,pages=Math.ceil(total/rowsPerPage)||1;currentPage=Math.min(currentPage,pages);
   const slice=rows.slice((currentPage-1)*rowsPerPage,currentPage*rowsPerPage);
-  document.getElementById('tableBody').innerHTML=slice.map(r=>`<tr><td style="color:var(--muted);font-size:.74rem">${r.date}</td><td>${r.gateway==='stripe'?'<span class="gwc gwc-s">Stripe</span>':'<span class="gwc gwc-d">dLocal</span>'}</td><td><span class="fb">${r.currency.toUpperCase()}</span></td><td style="font-size:.76rem;font-weight:600">${r.country||'—'}</td><td style="font-weight:600">${fmt(r.amount,r.amount<1000?2:0)}</td><td style="font-weight:700;color:var(--accent)">${r.usd>0?fmtUSD(r.usd):'—'}</td><td>${statusChip(r)}</td><td style="color:var(--muted);font-size:.74rem;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.method||(r.declineReason?r.declineReason.replace(/_/g,' '):'—')}</td><td style="color:var(--muted);font-size:.73rem;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.email}</td></tr>`).join('')||`<tr><td colspan="9" style="text-align:center;padding:22px;color:var(--muted)">Sin resultados</td></tr>`;
-  document.getElementById('tableInfo').textContent=`Mostrando ${Math.min(slice.length,rowsPerPage)} de ${total} filas`;
-  const pag=document.getElementById('pagination');pag.innerHTML='';
-  const start=Math.max(1,currentPage-3),end=Math.min(pages,start+6);
-  for(let p=start;p<=end;p++){const btn=document.createElement('button');btn.className='pb'+(p===currentPage?' act':'');btn.textContent=p;btn.onclick=()=>{currentPage=p;renderTable();};pag.appendChild(btn);}
-}
-
-function updateAll(){
-  updateKPIs();
-  buildCombo();
-  buildTotal();
-  buildGwBar();buildPayMethod();buildStatusDough();buildCurrBar();buildCountryBar();buildDeclineBar();buildHistogram();buildFeeCompare();
-  buildTopClients();
-  dayHidden=new Set();weekHidden=new Set();
-  buildDayOfMonth();buildWeekOfMonth();
-  renderTable();
-}
-
-document.addEventListener('DOMContentLoaded',reloadData);
-</script>
-</body>
-</html>
+  document.getElementById('tableBody').innerHTML=slice.map(r=>`<tr><td style="color:var(--muted);font-size:.74rem">${r.date}</td><td>${r.gateway==='stripe'?'<span class="gwc gwc
