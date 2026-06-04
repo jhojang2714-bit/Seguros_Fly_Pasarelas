@@ -664,4 +664,25 @@ function statusChip(r){const cls=r.status==='paid'?'sc-paid':r.status==='failed'
 function renderTable(){
   const rows=getTableData(),total=rows.length,pages=Math.ceil(total/rowsPerPage)||1;currentPage=Math.min(currentPage,pages);
   const slice=rows.slice((currentPage-1)*rowsPerPage,currentPage*rowsPerPage);
-  document.getElementById('tableBody').innerHTML=slice.map(r=>`<tr><td style="color:var(--muted);font-size:.74rem">${r.date}</td><td>${r.gateway==='stripe'?'<span class="gwc gwc
+  document.getElementById('tableBody').innerHTML=slice.map(r=>`<tr><td style="color:var(--muted);font-size:.74rem">${r.date}</td><td>${r.gateway==='stripe'?'<span class="gwc gwcgwc-s">Stripe</span>':'<span class="gwc gwc-d">dLocal</span>'}</td><td><span class="fb">${r.currency.toUpperCase()}</span></td><td style="font-size:.76rem;font-weight:600">${r.country||'—'}</td><td style="font-weight:600">${fmt(r.amount,r.amount<1000?2:0)}</td><td style="font-weight:700;color:var(--accent)">${r.usd>0?fmtUSD(r.usd):'—'}</td><td>${statusChip(r)}</td><td style="color:var(--muted);font-size:.74rem;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.method||(r.declineReason?r.declineReason.replace(/_/g,' '):'—')}</td><td style="color:var(--muted);font-size:.73rem;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.email}</td></tr>`).join('')||`<tr><td colspan="9" style="text-align:center;padding:22px;color:var(--muted)">Sin resultados</td></tr>`;
+  document.getElementById('tableInfo').textContent=`Mostrando ${Math.min(slice.length,rowsPerPage)} de ${total} filas`;
+  const pag=document.getElementById('pagination');pag.innerHTML='';
+  const start=Math.max(1,currentPage-3),end=Math.min(pages,start+6);
+  for(let p=start;p<=end;p++){const btn=document.createElement('button');btn.className='pb'+(p===currentPage?' act':'');btn.textContent=p;btn.onclick=()=>{currentPage=p;renderTable();};pag.appendChild(btn);}
+}
+
+function updateAll(){
+  updateKPIs();
+  buildCombo();
+  buildTotal();
+  buildGwBar();buildPayMethod();buildStatusDough();buildCurrBar();buildCountryBar();buildDeclineBar();buildHistogram();buildFeeCompare();
+  buildTopClients();
+  dayHidden=new Set();weekHidden=new Set();
+  buildDayOfMonth();buildWeekOfMonth();
+  renderTable();
+}
+
+document.addEventListener('DOMContentLoaded',reloadData);
+</script>
+</body>
+</html>
