@@ -495,6 +495,12 @@ function parseDlocalRows(rows){
   const iCurr=idx('checkout currency'),iAmt=idx('monto pagado'),iMeth=idx('método de pago');
   const iUSD=h.findIndex(x=>x.includes('balance total amount')||x.includes('usd amount')),iEmail=h.findIndex(x=>x.includes('correo')||x.includes('email'));
   const iDate=h.findIndex(x=>x.includes('created date')),iFee=idx('usd fee');
+  // ── DEBUG: log de índices y primeras filas para diagnóstico ──
+  console.log('[dLocal parser] hIdx='+hIdx+' cols total='+h.length);
+  console.log('[dLocal parser] iStat='+iStat+'('+h[iStat]+') iDate='+iDate+'('+h[iDate]+') iUSD='+iUSD+'('+h[iUSD]+') iFee='+iFee+'('+h[iFee]+')');
+  const _sample=rows.slice(hIdx+1,hIdx+4);
+  _sample.forEach((r,i)=>console.log('[dLocal row'+(hIdx+1+i)+'] status='+(r[iStat]||'?')+' usd_raw='+(r[iUSD]||'?')+' date='+(r[iDate]||'?')));
+  // ────────────────────────────────────────────────────────────
   return rows.slice(hIdx+1).map((r,i)=>{
     if(!r[iDate]&&!r[iAmt])return null;
     if(!r[iDate]||!r[iDate].trim())return null; // descartar sin fecha
