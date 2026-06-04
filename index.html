@@ -141,6 +141,19 @@
     .insight-month{font-size:.78rem;font-weight:700;margin-bottom:2px;}
     .insight-val{font-size:.75rem;color:var(--muted);}
     .tz-badge{background:#FEF9C3;color:#854D0E;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid #FDE68A;}
+    .month-multi-wrap{position:relative;min-width:160px;}
+    .month-multi-btn{border:1px solid var(--border);border-radius:8px;padding:7px 28px 7px 10px;font-size:.82rem;background:var(--surface2);color:var(--text);cursor:pointer;width:100%;text-align:left;position:relative;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .month-multi-btn::after{content:'▾';position:absolute;right:9px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.7rem;}
+    .month-multi-btn.active-filter{border-color:var(--accent);background:#EFF6FF;color:var(--accent);}
+    .month-dropdown{position:absolute;top:calc(100% + 4px);left:0;z-index:200;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow-lg);padding:6px;min-width:200px;display:none;flex-direction:column;gap:2px;}
+    .month-dropdown.open{display:flex;}
+    .month-opt{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:6px;cursor:pointer;font-size:.8rem;color:var(--text);transition:.1s;}
+    .month-opt:hover{background:var(--surface2);}
+    .month-opt input[type=checkbox]{accent-color:var(--accent);width:13px;height:13px;cursor:pointer;}
+    .month-opt.checked{background:#EFF6FF;color:var(--accent);font-weight:600;}
+    .month-dd-footer{display:flex;gap:5px;padding:5px 4px 2px;border-top:1px solid var(--border);margin-top:3px;}
+    .month-dd-footer button{flex:1;padding:4px 0;border-radius:6px;border:1px solid var(--border);background:var(--surface2);font-size:.72rem;cursor:pointer;font-weight:600;color:var(--muted);}
+    .month-dd-footer button:hover{background:var(--border);}
     .combo-legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:10px;font-size:.72rem;color:var(--muted);}
     .combo-legend span{display:flex;align-items:center;gap:5px;}
     .leg-bar{width:12px;height:12px;border-radius:3px;display:inline-block;flex-shrink:0;}
@@ -165,6 +178,29 @@
     <div class="filter-group"><label>Fecha inicio</label><input type="date" id="dateFrom"/></div>
     <div class="filter-group"><label>Fecha fin</label><input type="date" id="dateTo"/></div>
     <div class="filter-group"><label>Año</label><select id="filterYear"><option value="">Todos</option></select></div>
+    <div class="filter-group"><label>Mes</label>
+      <div class="month-multi-wrap" id="monthMultiWrap">
+        <button class="month-multi-btn" id="monthMultiBtn" onclick="toggleMonthDropdown(event)">Todos los meses</button>
+        <div class="month-dropdown" id="monthDropdown">
+          <div class="month-opt" onclick="toggleMonthOpt(this,'01')"><input type="checkbox" id="mck01"><label for="mck01" style="cursor:pointer">Enero</label></div>
+          <div class="month-opt" onclick="toggleMonthOpt(this,'02')"><input type="checkbox" id="mck02"><label for="mck02" style="cursor:pointer">Febrero</label></div>
+          <div class="month-opt" onclick="toggleMonthOpt(this,'03')"><input type="checkbox" id="mck03"><label for="mck03" style="cursor:pointer">Marzo</label></div>
+          <div class="month-opt" onclick="toggleMonthOpt(this,'04')"><input type="checkbox" id="mck04"><label for="mck04" style="cursor:pointer">Abril</label></div>
+          <div class="month-opt" onclick="toggleMonthOpt(this,'05')"><input type="checkbox" id="mck05"><label for="mck05" style="cursor:pointer">Mayo</label></div>
+          <div class="month-opt" onclick="toggleMonthOpt(this,'06')"><input type="checkbox" id="mck06"><label for="mck06" style="cursor:pointer">Junio</label></div>
+          <div class="month-opt" onclick="toggleMonthOpt(this,'07')"><input type="checkbox" id="mck07"><label for="mck07" style="cursor:pointer">Julio</label></div>
+          <div class="month-opt" onclick="toggleMonthOpt(this,'08')"><input type="checkbox" id="mck08"><label for="mck08" style="cursor:pointer">Agosto</label></div>
+          <div class="month-opt" onclick="toggleMonthOpt(this,'09')"><input type="checkbox" id="mck09"><label for="mck09" style="cursor:pointer">Septiembre</label></div>
+          <div class="month-opt" onclick="toggleMonthOpt(this,'10')"><input type="checkbox" id="mck10"><label for="mck10" style="cursor:pointer">Octubre</label></div>
+          <div class="month-opt" onclick="toggleMonthOpt(this,'11')"><input type="checkbox" id="mck11"><label for="mck11" style="cursor:pointer">Noviembre</label></div>
+          <div class="month-opt" onclick="toggleMonthOpt(this,'12')"><input type="checkbox" id="mck12"><label for="mck12" style="cursor:pointer">Diciembre</label></div>
+          <div class="month-dd-footer">
+            <button onclick="selectAllMonths()">Todos</button>
+            <button onclick="clearAllMonths()">Limpiar</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="filter-group"><label>Moneda</label><select id="filterCurrency"><option value="">Todas</option></select></div>
     <div class="filter-group"><label>Estado</label><select id="filterStatus"><option value="">Todos</option><option value="paid">Pagado / Completada</option><option value="failed">Fallido / Cancelada</option><option value="pending">Pendiente</option></select></div>
     <div class="filter-group"><label>País</label><select id="filterCountry"><option value="">Todos</option></select></div>
@@ -380,6 +416,51 @@ function utcStringToColombiaDate(raw) {
 }
 // ────────────────────────────────────────────────────────────────────────────
 
+// ── Mes multi-select ─────────────────────────────────────────────────────────
+let selectedMonths = new Set(); // vacío = todos
+
+function toggleMonthDropdown(e){
+  e.stopPropagation();
+  document.getElementById('monthDropdown').classList.toggle('open');
+}
+document.addEventListener('click', function(e){
+  const wrap = document.getElementById('monthMultiWrap');
+  if(wrap && !wrap.contains(e.target)){
+    document.getElementById('monthDropdown').classList.remove('open');
+  }
+});
+function toggleMonthOpt(el, mm){
+  // evitar doble toggle por el click en el label/checkbox
+  const cb = el.querySelector('input[type=checkbox]');
+  // Si el click fue directo en el checkbox, ya lo manejó el browser; sincronizar
+  cb.checked = !cb.checked;
+  el.classList.toggle('checked', cb.checked);
+  if(cb.checked) selectedMonths.add(mm); else selectedMonths.delete(mm);
+  updateMonthBtn();
+}
+function selectAllMonths(){
+  selectedMonths.clear();
+  document.querySelectorAll('.month-opt').forEach(el=>{
+    el.querySelector('input').checked=false;
+    el.classList.remove('checked');
+  });
+  updateMonthBtn();
+}
+function clearAllMonths(){ selectAllMonths(); }
+function updateMonthBtn(){
+  const btn = document.getElementById('monthMultiBtn');
+  const MNAMES=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  if(selectedMonths.size===0){
+    btn.textContent='Todos los meses';
+    btn.classList.remove('active-filter');
+  } else {
+    const labels=[...selectedMonths].sort().map(m=>MNAMES[+m-1]).join(', ');
+    btn.textContent=labels;
+    btn.classList.add('active-filter');
+  }
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 function parseCSV(text){const rows=[];let cur='',inQ=false,row=[];for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'){inQ=!inQ;continue;}if(c===','&&!inQ){row.push(cur.trim());cur='';continue;}if((c==='\n'||c==='\r')&&!inQ){if(cur||row.length){row.push(cur.trim());rows.push(row);}cur='';row=[];if(c==='\r'&&text[i+1]==='\n')i++;continue;}cur+=c;}if(cur||row.length){row.push(cur.trim());rows.push(row);}return rows;}
 
 function parseStripeRows(rows){
@@ -477,10 +558,10 @@ function setGateway(gw,btn){
 
 function initFilters(){
   const VALID_DATE=/^\d{4}-\d{2}-\d{2}$/;
-  const pool=allData(),dates=pool.map(d=>d.date).filter(d=>d&&VALID_DATE.test(d)).sort();
+  const pool=allData(),dates=pool.map(d=>d.date).filter(d=>d&&VALID_DATE.test((d||'').trim())).sort();
   if(dates.length){document.getElementById('dateFrom').value=dates[0];document.getElementById('dateTo').value=dates[dates.length-1];}
   const yS=document.getElementById('filterYear');yS.innerHTML='<option value="">Todos</option>';
-  [...new Set(pool.filter(d=>d.date&&VALID_DATE.test(d)).map(d=>d.date.slice(0,4)))].sort().reverse().forEach(y=>{const o=document.createElement('option');o.value=y;o.textContent=y;yS.appendChild(o);});
+  [...new Set(pool.filter(d=>d.date&&VALID_DATE.test(d.date.trim())).map(d=>d.date.trim().slice(0,4)))].sort().reverse().forEach(y=>{const o=document.createElement('option');o.value=y;o.textContent=y;yS.appendChild(o);});
   const cS=document.getElementById('filterCurrency');cS.innerHTML='<option value="">Todas</option>';
   [...new Set(pool.map(d=>d.currency))].sort().forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c.toUpperCase();cS.appendChild(o);});
   const ctS=document.getElementById('filterCountry');ctS.innerHTML='<option value="">Todos</option>';
@@ -495,7 +576,9 @@ function applyFilters(){
   filteredData=allData().filter(r=>{
     if(!r.date||!VDATE.test(r.date))return false;
     if(from&&r.date<from)return false;if(to&&r.date>to)return false;
-    if(year&&r.date.slice(0,4)!==year)return false;if(curr&&r.currency!==curr)return false;
+    if(year&&r.date.slice(0,4)!==year)return false;
+    if(selectedMonths.size>0&&!selectedMonths.has(r.date.slice(5,7)))return false;
+    if(curr&&r.currency!==curr)return false;
     if(country&&r.country!==country)return false;
     if(status==='paid'&&!isPaid(r))return false;if(status==='failed'&&!isFailed(r))return false;if(status==='pending'&&!isPending(r))return false;
     return true;
@@ -505,6 +588,7 @@ function applyFilters(){
 function resetFilters(){
   initFilters();filteredData=allData();currentPage=1;
   ['filterStatus','filterYear','filterCurrency','filterCountry','tableStatusFilter'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  selectAllMonths();
   const ts=document.getElementById('tableSearch');if(ts)ts.value='';updateAll();
 }
 
