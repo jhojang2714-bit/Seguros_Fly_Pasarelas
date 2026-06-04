@@ -493,7 +493,7 @@ function parseDlocalRows(rows){
   const idx=n=>h.findIndex(x=>x.includes(n));
   const iStat=idx('status'),iCtry=h.findIndex(x=>x==='país'||x.includes('pa\u00eds'));
   const iCurr=idx('checkout currency'),iAmt=idx('monto pagado'),iMeth=idx('método de pago');
-  const iUSD=idx('usd amount'),iEmail=h.findIndex(x=>x.includes('correo')||x.includes('email'));
+  const iUSD=h.findIndex(x=>x.includes('balance total amount')||x.includes('usd amount')),iEmail=h.findIndex(x=>x.includes('correo')||x.includes('email'));
   const iDate=h.findIndex(x=>x.includes('created date')),iFee=idx('usd fee');
   return rows.slice(hIdx+1).map((r,i)=>{
     if(!r[iDate]&&!r[iAmt])return null;
