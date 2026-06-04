@@ -141,19 +141,6 @@
     .insight-month{font-size:.78rem;font-weight:700;margin-bottom:2px;}
     .insight-val{font-size:.75rem;color:var(--muted);}
     .tz-badge{background:#FEF9C3;color:#854D0E;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid #FDE68A;}
-    .month-multi-wrap{position:relative;min-width:160px;}
-    .month-multi-btn{border:1px solid var(--border);border-radius:8px;padding:7px 28px 7px 10px;font-size:.82rem;background:var(--surface2);color:var(--text);cursor:pointer;width:100%;text-align:left;position:relative;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-    .month-multi-btn::after{content:'▾';position:absolute;right:9px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.7rem;}
-    .month-multi-btn.active-filter{border-color:var(--accent);background:#EFF6FF;color:var(--accent);}
-    .month-dropdown{position:absolute;top:calc(100% + 4px);left:0;z-index:200;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow-lg);padding:6px;min-width:200px;display:none;flex-direction:column;gap:2px;}
-    .month-dropdown.open{display:flex;}
-    .month-opt{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:6px;cursor:pointer;font-size:.8rem;color:var(--text);transition:.1s;}
-    .month-opt:hover{background:var(--surface2);}
-    .month-opt input[type=checkbox]{accent-color:var(--accent);width:13px;height:13px;cursor:pointer;}
-    .month-opt.checked{background:#EFF6FF;color:var(--accent);font-weight:600;}
-    .month-dd-footer{display:flex;gap:5px;padding:5px 4px 2px;border-top:1px solid var(--border);margin-top:3px;}
-    .month-dd-footer button{flex:1;padding:4px 0;border-radius:6px;border:1px solid var(--border);background:var(--surface2);font-size:.72rem;cursor:pointer;font-weight:600;color:var(--muted);}
-    .month-dd-footer button:hover{background:var(--border);}
     .combo-legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:10px;font-size:.72rem;color:var(--muted);}
     .combo-legend span{display:flex;align-items:center;gap:5px;}
     .leg-bar{width:12px;height:12px;border-radius:3px;display:inline-block;flex-shrink:0;}
@@ -178,29 +165,6 @@
     <div class="filter-group"><label>Fecha inicio</label><input type="date" id="dateFrom"/></div>
     <div class="filter-group"><label>Fecha fin</label><input type="date" id="dateTo"/></div>
     <div class="filter-group"><label>Año</label><select id="filterYear"><option value="">Todos</option></select></div>
-    <div class="filter-group"><label>Mes</label>
-      <div class="month-multi-wrap" id="monthMultiWrap">
-        <button class="month-multi-btn" id="monthMultiBtn" onclick="toggleMonthDropdown(event)">Todos los meses</button>
-        <div class="month-dropdown" id="monthDropdown">
-          <div class="month-opt" onclick="toggleMonthOpt(this,'01')"><input type="checkbox" id="mck01"><label for="mck01" style="cursor:pointer">Enero</label></div>
-          <div class="month-opt" onclick="toggleMonthOpt(this,'02')"><input type="checkbox" id="mck02"><label for="mck02" style="cursor:pointer">Febrero</label></div>
-          <div class="month-opt" onclick="toggleMonthOpt(this,'03')"><input type="checkbox" id="mck03"><label for="mck03" style="cursor:pointer">Marzo</label></div>
-          <div class="month-opt" onclick="toggleMonthOpt(this,'04')"><input type="checkbox" id="mck04"><label for="mck04" style="cursor:pointer">Abril</label></div>
-          <div class="month-opt" onclick="toggleMonthOpt(this,'05')"><input type="checkbox" id="mck05"><label for="mck05" style="cursor:pointer">Mayo</label></div>
-          <div class="month-opt" onclick="toggleMonthOpt(this,'06')"><input type="checkbox" id="mck06"><label for="mck06" style="cursor:pointer">Junio</label></div>
-          <div class="month-opt" onclick="toggleMonthOpt(this,'07')"><input type="checkbox" id="mck07"><label for="mck07" style="cursor:pointer">Julio</label></div>
-          <div class="month-opt" onclick="toggleMonthOpt(this,'08')"><input type="checkbox" id="mck08"><label for="mck08" style="cursor:pointer">Agosto</label></div>
-          <div class="month-opt" onclick="toggleMonthOpt(this,'09')"><input type="checkbox" id="mck09"><label for="mck09" style="cursor:pointer">Septiembre</label></div>
-          <div class="month-opt" onclick="toggleMonthOpt(this,'10')"><input type="checkbox" id="mck10"><label for="mck10" style="cursor:pointer">Octubre</label></div>
-          <div class="month-opt" onclick="toggleMonthOpt(this,'11')"><input type="checkbox" id="mck11"><label for="mck11" style="cursor:pointer">Noviembre</label></div>
-          <div class="month-opt" onclick="toggleMonthOpt(this,'12')"><input type="checkbox" id="mck12"><label for="mck12" style="cursor:pointer">Diciembre</label></div>
-          <div class="month-dd-footer">
-            <button onclick="selectAllMonths()">Todos</button>
-            <button onclick="clearAllMonths()">Limpiar</button>
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="filter-group"><label>Moneda</label><select id="filterCurrency"><option value="">Todas</option></select></div>
     <div class="filter-group"><label>Estado</label><select id="filterStatus"><option value="">Todos</option><option value="paid">Pagado / Completada</option><option value="failed">Fallido / Cancelada</option><option value="pending">Pendiente</option></select></div>
     <div class="filter-group"><label>País</label><select id="filterCountry"><option value="">Todos</option></select></div>
@@ -374,23 +338,17 @@ const TZ_OFFSET_MS = 5 * 60 * 60 * 1000; // 5 horas en milisegundos
  * Devuelve "YYYY-MM-DD" en hora Colombia.
  */
 function utcStringToColombiaDate(raw) {
-  if (raw === undefined || raw === null || raw === '') return '';
-  raw = String(raw).trim();
+  if (!raw) return '';
+  raw = raw.trim();
 
   let d;
 
-  // ✅ Soporte para fechas seriales de Excel/Google Sheets, ej: 46027.521886574075
-  // Esto evita que el dashboard descarte filas cuando la fecha llega como número.
-  if (/^\d{5}(\.\d+)?$/.test(raw)) {
-    const serial = Number(raw);
-    const utcMs = (serial - 25569) * 86400 * 1000;
-    d = new Date(utcMs);
-  }
   // Formato dLocal: "11/27/2025 03:01:49" o "11/27/2025 3:01:49"
-  else if (/^\d{1,2}\/\d{1,2}\/\d{4}/.test(raw)) {
+  if (/^\d{1,2}\/\d{1,2}\/\d{4}/.test(raw)) {
     const parts = raw.split(' ');
     const [m, day, y] = parts[0].split('/');
     const time = parts[1] || '00:00:00';
+    // Construir ISO string explícito en UTC
     const isoStr = `${y}-${m.padStart(2,'0')}-${day.padStart(2,'0')}T${time}Z`;
     d = new Date(isoStr);
   }
@@ -398,9 +356,11 @@ function utcStringToColombiaDate(raw) {
   else if (/^\d{4}-\d{2}-\d{2}/.test(raw)) {
     const hasTime = raw.includes(' ') || raw.includes('T');
     if (hasTime) {
+      // Reemplazar espacio por T y añadir Z para indicar UTC
       const isoStr = raw.replace(' ', 'T').replace(/Z?$/, 'Z');
       d = new Date(isoStr);
     } else {
+      // Solo fecha, sin hora → no hay ambigüedad de zona horaria
       return raw.slice(0, 10);
     }
   } else {
@@ -409,6 +369,7 @@ function utcStringToColombiaDate(raw) {
 
   if (isNaN(d.getTime())) return raw.slice(0, 10);
 
+  // Restar 5 horas (UTC → Colombia)
   const colombiaMs = d.getTime() - TZ_OFFSET_MS;
   const co = new Date(colombiaMs);
 
@@ -418,51 +379,6 @@ function utcStringToColombiaDate(raw) {
   return `${yyyy}-${mm}-${dd}`;
 }
 // ────────────────────────────────────────────────────────────────────────────
-
-// ── Mes multi-select ─────────────────────────────────────────────────────────
-let selectedMonths = new Set(); // vacío = todos
-
-function toggleMonthDropdown(e){
-  e.stopPropagation();
-  document.getElementById('monthDropdown').classList.toggle('open');
-}
-document.addEventListener('click', function(e){
-  const wrap = document.getElementById('monthMultiWrap');
-  if(wrap && !wrap.contains(e.target)){
-    document.getElementById('monthDropdown').classList.remove('open');
-  }
-});
-function toggleMonthOpt(el, mm){
-  // evitar doble toggle por el click en el label/checkbox
-  const cb = el.querySelector('input[type=checkbox]');
-  // Si el click fue directo en el checkbox, ya lo manejó el browser; sincronizar
-  cb.checked = !cb.checked;
-  el.classList.toggle('checked', cb.checked);
-  if(cb.checked) selectedMonths.add(mm); else selectedMonths.delete(mm);
-  updateMonthBtn();
-}
-function selectAllMonths(){
-  selectedMonths.clear();
-  document.querySelectorAll('.month-opt').forEach(el=>{
-    el.querySelector('input').checked=false;
-    el.classList.remove('checked');
-  });
-  updateMonthBtn();
-}
-function clearAllMonths(){ selectAllMonths(); }
-function updateMonthBtn(){
-  const btn = document.getElementById('monthMultiBtn');
-  const MNAMES=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-  if(selectedMonths.size===0){
-    btn.textContent='Todos los meses';
-    btn.classList.remove('active-filter');
-  } else {
-    const labels=[...selectedMonths].sort().map(m=>MNAMES[+m-1]).join(', ');
-    btn.textContent=labels;
-    btn.classList.add('active-filter');
-  }
-}
-// ─────────────────────────────────────────────────────────────────────────────
 
 function parseCSV(text){const rows=[];let cur='',inQ=false,row=[];for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'){inQ=!inQ;continue;}if(c===','&&!inQ){row.push(cur.trim());cur='';continue;}if((c==='\n'||c==='\r')&&!inQ){if(cur||row.length){row.push(cur.trim());rows.push(row);}cur='';row=[];if(c==='\r'&&text[i+1]==='\n')i++;continue;}cur+=c;}if(cur||row.length){row.push(cur.trim());rows.push(row);}return rows;}
 
@@ -490,75 +406,29 @@ function parseStripeRows(rows){
 }
 
 function parseDlocalRows(rows){
-  // Buscar la fila de encabezados de dLocal.
   let hIdx=rows.findIndex(r=>r.some(c=>c.toLowerCase().includes('status')&&r.some(c2=>c2.toLowerCase().includes('país'))));
   if(hIdx<0)hIdx=0;
-
   const h=rows[hIdx].map(x=>x.toLowerCase().trim());
   const idx=n=>h.findIndex(x=>x.includes(n));
-  const findExact=(names)=>h.findIndex(x=>names.some(n=>x===n));
-  const parseNum=v=>{
-    if(v===undefined||v===null)return 0;
-    const cleaned=String(v).trim().replace(/,/g,'');
-    const n=parseFloat(cleaned);
-    return Number.isFinite(n)?n:0;
-  };
-
   const iStat=idx('status'),iCtry=h.findIndex(x=>x==='país'||x.includes('pa\u00eds'));
   const iCurr=idx('checkout currency'),iAmt=idx('monto pagado'),iMeth=idx('método de pago');
-
-  // ✅ CORRECCIÓN dLocal:
-  // Revenue bruto real = "USD Total Amount".
-  // Fee real = "USD Fee".
-  // "USD Amount" es neto después del fee, por eso NO debe usarse como revenue.
-  const iRevenue=findExact(['usd total amount']);
-  const iNet=findExact(['usd amount']);
-  const iFee=findExact(['usd fee']);
-  const iEmail=h.findIndex(x=>x.includes('correo')||x.includes('email'));
-  const iDate=h.findIndex(x=>x.includes('created date'));
-  const iUpdated=h.findIndex(x=>x.includes('last updated'));
-
-  // ── DEBUG: log de índices y primeras filas para diagnóstico ──
-  console.log('[dLocal parser] hIdx='+hIdx+' cols total='+h.length);
-  console.log('[dLocal parser] iStat='+iStat+'('+h[iStat]+') iDate='+iDate+'('+h[iDate]+') iRevenue='+iRevenue+'('+(h[iRevenue]||'NO ENCONTRADA')+') iNet='+iNet+'('+(h[iNet]||'NO ENCONTRADA')+') iFee='+iFee+'('+(h[iFee]||'NO ENCONTRADA')+')');
-  const _sample=rows.slice(hIdx+1,hIdx+4);
-  _sample.forEach((r,i)=>console.log('[dLocal row'+(hIdx+1+i)+'] status='+(r[iStat]||'?')+' revenue_raw='+(iRevenue>=0?(r[iRevenue]||'?'):'NO COL')+' fee_raw='+(iFee>=0?(r[iFee]||'?'):'NO COL')+' date='+(r[iDate]||'?')));
-  // ────────────────────────────────────────────────────────────
-
+  const iUSD=idx('usd amount'),iEmail=h.findIndex(x=>x.includes('correo')||x.includes('email'));
+  const iDate=h.findIndex(x=>x.includes('created date')),iFee=idx('usd fee');
   return rows.slice(hIdx+1).map((r,i)=>{
-    const rawDateValue = iDate >= 0 ? r[iDate] : (iUpdated >= 0 ? r[iUpdated] : '');
-    if((rawDateValue === undefined || rawDateValue === null || String(rawDateValue).trim() === '') && !r[iAmt])return null;
-    if(rawDateValue === undefined || rawDateValue === null || String(rawDateValue).trim() === '')return null; // descartar solo si realmente no hay fecha
-
-    const rs=(r[iStat]||'').toLowerCase().trim();
+    if(!r[iDate]&&!r[iAmt])return null;
+    const rs=(r[iStat]||'').toLowerCase();
     let status='pending';
-    if(rs==='completada'||rs==='paid'||rs==='completed'||rs==='success'||rs==='approved')status='paid';
-    else if(rs==='cancelada'||rs==='failed'||rs==='canceled'||rs==='cancelled'||rs==='rejected')status='failed';
-
+    if(rs==='completada'||rs==='paid')status='paid';
+    else if(rs==='cancelada'||rs==='failed')status='failed';
     // ★ AJUSTE UTC→Colombia: restar 5 horas al timestamp UTC de dLocal
     // dLocal usa formato "MM/DD/YYYY HH:MM:SS"
-    const dateRaw = String(rawDateValue).trim();
+    const dateRaw = (r[iDate]||'').trim();
     const dateCo  = utcStringToColombiaDate(dateRaw);
-
-    const revenueUsd=iRevenue>=0?parseNum(r[iRevenue]):0; // USD Total Amount = bruto
-    const netUsd=iNet>=0?parseNum(r[iNet]):0;             // USD Amount = neto, solo referencia
-    const feeUsd=iFee>=0?parseNum(r[iFee]):0;             // USD Fee = comisión
-
-    return{
-      id:`d${i}`,
-      date:dateCo,
-      currency:(r[iCurr]||'').toLowerCase(),
-      amount:parseNum(r[iAmt]),
-      usd:status==='paid'?revenueUsd:0,       // Revenue bruto que entra en dLocal
-      netUsd:status==='paid'?netUsd:0,        // Neto después del fee, por si luego se quiere mostrar
-      feeUsd:status==='paid'?feeUsd:0,        // Fee solo para transacciones completadas
-      status,
-      declineReason:status==='failed'?'Cancelada':'',
-      email:r[iEmail]||'',
-      method:r[iMeth]||'',
-      country:r[iCtry]||'',
-      gateway:'dlocal'
-    };
+    const usd=parseFloat(r[iUSD]||0)||0;
+    return{id:`d${i}`,date:dateCo,currency:(r[iCurr]||'').toLowerCase(),amount:parseFloat(r[iAmt]||0)||0,
+      usd:status==='paid'?usd:0,feeUsd:iFee>=0?(parseFloat(r[iFee]||0)||0):0,status,
+      declineReason:status==='failed'?'Cancelada':'',email:r[iEmail]||'',
+      method:r[iMeth]||'',country:r[iCtry]||'',gateway:'dlocal'};
   }).filter(Boolean);
 }
 
@@ -606,11 +476,10 @@ function setGateway(gw,btn){
 }
 
 function initFilters(){
-  const VALID_DATE=/^\d{4}-\d{2}-\d{2}$/;
-  const pool=allData(),dates=pool.map(d=>d.date).filter(d=>d&&VALID_DATE.test((d||'').trim())).sort();
+  const pool=allData(),dates=pool.map(d=>d.date).filter(Boolean).sort();
   if(dates.length){document.getElementById('dateFrom').value=dates[0];document.getElementById('dateTo').value=dates[dates.length-1];}
   const yS=document.getElementById('filterYear');yS.innerHTML='<option value="">Todos</option>';
-  [...new Set(pool.filter(d=>d.date&&VALID_DATE.test(d.date.trim())).map(d=>d.date.trim().slice(0,4)))].sort().reverse().forEach(y=>{const o=document.createElement('option');o.value=y;o.textContent=y;yS.appendChild(o);});
+  [...new Set(pool.map(d=>d.date.slice(0,4)))].sort().reverse().forEach(y=>{const o=document.createElement('option');o.value=y;o.textContent=y;yS.appendChild(o);});
   const cS=document.getElementById('filterCurrency');cS.innerHTML='<option value="">Todas</option>';
   [...new Set(pool.map(d=>d.currency))].sort().forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c.toUpperCase();cS.appendChild(o);});
   const ctS=document.getElementById('filterCountry');ctS.innerHTML='<option value="">Todos</option>';
@@ -621,13 +490,9 @@ function applyFilters(){
   const from=document.getElementById('dateFrom').value,to=document.getElementById('dateTo').value;
   const year=document.getElementById('filterYear').value,curr=document.getElementById('filterCurrency').value;
   const status=document.getElementById('filterStatus').value,country=document.getElementById('filterCountry').value;
-  const VDATE=/^\d{4}-\d{2}-\d{2}$/;
   filteredData=allData().filter(r=>{
-    if(!r.date||!VDATE.test(r.date))return false;
     if(from&&r.date<from)return false;if(to&&r.date>to)return false;
-    if(year&&r.date.slice(0,4)!==year)return false;
-    if(selectedMonths.size>0&&!selectedMonths.has(r.date.slice(5,7)))return false;
-    if(curr&&r.currency!==curr)return false;
+    if(year&&r.date.slice(0,4)!==year)return false;if(curr&&r.currency!==curr)return false;
     if(country&&r.country!==country)return false;
     if(status==='paid'&&!isPaid(r))return false;if(status==='failed'&&!isFailed(r))return false;if(status==='pending'&&!isPending(r))return false;
     return true;
@@ -635,11 +500,9 @@ function applyFilters(){
 }
 
 function resetFilters(){
-  initFilters();currentPage=1;
+  initFilters();filteredData=allData();currentPage=1;
   ['filterStatus','filterYear','filterCurrency','filterCountry','tableStatusFilter'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  selectAllMonths();
-  const ts=document.getElementById('tableSearch');if(ts)ts.value='';
-  applyFilters(); // usa applyFilters para que VDATE y todos los guards se apliquen
+  const ts=document.getElementById('tableSearch');if(ts)ts.value='';updateAll();
 }
 
 function updateKPIs(){
@@ -673,11 +536,9 @@ function monthKey(d){return d.slice(0,7);}
 function quarterKey(d){const[y,m]=d.split('-').map(Number);return`${y}-Q${Math.ceil(m/3)}`;}
 function groupKey(d,g){if(g==='week')return weekKey(d);if(g==='month')return monthKey(d);if(g==='quarter')return quarterKey(d);return d;}
 function weekLabel(mon){const m=new Date(mon+'T00:00:00'),s=new Date(m);s.setDate(s.getDate()+6);return`${m.getDate()}/${m.getMonth()+1}–${s.getDate()}/${s.getMonth()+1}`;}
-function isValidDate(d){return d&&/^\d{4}-\d{2}-\d{2}/.test(d);}
 function groupLabel(k,g){
-  if(!k||k==='undefined'||!isValidDate(k.length>=10?k.slice(0,10):k))return k||'';
   if(g==='week')return weekLabel(k);
-  if(g==='month'){const[y,m]=k.split('-');return`${MONTH_NAMES[+m-1]||''} ${y}`;}
+  if(g==='month'){const[y,m]=k.split('-');return`${MONTH_NAMES[+m-1]} ${y}`;}
   if(g==='quarter')return k.replace('-',' ');return k;
 }
 
@@ -692,9 +553,7 @@ function buildCombo(){
   dc('combo');
   const sRev={},dRev={},sTx={},dTx={};
   filteredData.forEach(r=>{
-    if(!r.date||!/^\d{4}-\d{2}-\d{2}/.test(r.date))return;
     const k=groupKey(r.date,comboGroup);
-    if(!k||k==='NaN-NaN-NaN')return;
     if(r.gateway==='stripe'){
       sTx[k]=(sTx[k]||0)+1;
       if(isPaid(r)) sRev[k]=(sRev[k]||0)+r.usd;
@@ -723,7 +582,7 @@ function setTotalGroup(group,btn){
 function buildTotal(){
   dc('total');
   const rev={},tx={};
-  filteredData.forEach(r=>{if(!r.date||!/^\d{4}-\d{2}-\d{2}/.test(r.date))return;const k=groupKey(r.date,totalGroup);if(!k||k==='NaN-NaN-NaN')return;tx[k]=(tx[k]||0)+1;if(isPaid(r))rev[k]=(rev[k]||0)+r.usd;});
+  filteredData.forEach(r=>{const k=groupKey(r.date,totalGroup);tx[k]=(tx[k]||0)+1;if(isPaid(r))rev[k]=(rev[k]||0)+r.usd;});
   const keys=Object.keys(rev).length||Object.keys(tx).length?[...new Set([...Object.keys(rev),...Object.keys(tx)])].sort():[];
   const labels=keys.map(k=>groupLabel(k,totalGroup));
   charts.total=new Chart(document.getElementById('cTotal'),{type:'bar',data:{labels,datasets:[{type:'bar',label:'Revenue Total',data:keys.map(k=>+(rev[k]||0).toFixed(2)),backgroundColor:'rgba(37,99,235,0.55)',borderColor:'#2563EB',borderWidth:1.5,borderRadius:4,borderSkipped:false,yAxisID:'yRev',order:2},{type:'line',label:'Tx Totales',data:keys.map(k=>tx[k]||0),borderColor:'#7C3AED',backgroundColor:'rgba(124,58,237,0.12)',borderWidth:2.5,pointRadius:4,pointHoverRadius:6,pointBackgroundColor:'#7C3AED',tension:.4,fill:false,yAxisID:'yTx',order:1}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:10,cornerRadius:8,callbacks:{label:ctx=>{if(ctx.dataset.label==='Revenue Total')return` Revenue: $${fmt(ctx.parsed.y,2)}`;return` Transacciones: ${fmt(ctx.parsed.y)} tx`;}}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:10}}},yRev:{type:'linear',position:'left',grid:{color:'#F1F5F9'},ticks:{color:'#2563EB',font:{size:10},callback:v=>'$'+fmt(v,0)},title:{display:true,text:'Revenue (USD)',color:'#94A3B8',font:{size:9}}},yTx:{type:'linear',position:'right',grid:{display:false},ticks:{color:'#7C3AED',font:{size:10},callback:v=>fmt(v)+' tx'},title:{display:true,text:'N° Transacciones',color:'#94A3B8',font:{size:9}}}}}});
@@ -769,7 +628,7 @@ function buildDayOfMonth(){
   dc('dom');
   const source=dayMetric==='revenue'?filteredData.filter(isPaid):filteredData;
   const byMonth={};
-  source.forEach(r=>{if(!r.date||!/^\d{4}-\d{2}-\d{2}/.test(r.date))return;const mk=r.date.slice(0,7),day=parseInt(r.date.slice(8,10));if(!mk||!day)return;if(!byMonth[mk])byMonth[mk]=Array(32).fill(0);byMonth[mk][day]+=(dayMetric==='revenue'?r.usd:1);});
+  source.forEach(r=>{const mk=r.date.slice(0,7),day=parseInt(r.date.slice(8,10));if(!byMonth[mk])byMonth[mk]=Array(32).fill(0);byMonth[mk][day]+=(dayMetric==='revenue'?r.usd:1);});
   const months=Object.keys(byMonth).sort(),labels=Array.from({length:31},(_,i)=>String(i+1));
   const datasets=months.map((mk,idx)=>{const[y,m]=mk.split('-'),color=MONTH_COLORS[idx%MONTH_COLORS.length];return{label:`${MONTH_NAMES[+m-1]} ${y}`,data:Array.from({length:31},(_,i)=>byMonth[mk][i+1]||null),borderColor:color,backgroundColor:color+'18',borderWidth:2,pointRadius:3,pointHoverRadius:5,tension:.35,hidden:dayHidden.has(mk),monthKey:mk};});
   charts.dom=new Chart(document.getElementById('cDayOfMonth'),{type:'line',data:{labels,datasets},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:9,cornerRadius:8,callbacks:{label:ctx=>{if(ctx.parsed.y===null)return null;return` ${ctx.dataset.label}: ${dayMetric==='revenue'?fmtUSD(ctx.parsed.y):fmt(ctx.parsed.y)+' tx'}`;},title:items=>`Día ${items[0].label} del mes`}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:10}},title:{display:true,text:'Día del mes',color:'#94A3B8',font:{size:10}}},y:{grid:{color:'#F1F5F9'},ticks:{color:'#94A3B8',font:{size:10},callback:v=>dayMetric==='revenue'?'$'+fmt(v,0):fmt(v)}}}}});
@@ -783,7 +642,7 @@ function buildWeekOfMonth(){
   dc('wom');
   const source=weekMetric==='revenue'?filteredData.filter(isPaid):filteredData;
   const byMonth={};
-  source.forEach(r=>{if(!r.date||!/^\d{4}-\d{2}-\d{2}/.test(r.date))return;const mk=r.date.slice(0,7),day=parseInt(r.date.slice(8,10)),wk=weekOfMonth(day);if(!mk||!day)return;if(!byMonth[mk])byMonth[mk]=[0,0,0,0,0];byMonth[mk][wk]+=(weekMetric==='revenue'?r.usd:1);});
+  source.forEach(r=>{const mk=r.date.slice(0,7),day=parseInt(r.date.slice(8,10)),wk=weekOfMonth(day);if(!byMonth[mk])byMonth[mk]=[0,0,0,0,0];byMonth[mk][wk]+=(weekMetric==='revenue'?r.usd:1);});
   const months=Object.keys(byMonth).sort();
   const wLabels=['Week 1 (1–7)','Week 2 (8–14)','Week 3 (15–21)','Week 4 (22–28)','Week 5 (29–31)'];
   const datasets=months.map((mk,idx)=>{const[y,m]=mk.split('-'),color=MONTH_COLORS[idx%MONTH_COLORS.length];return{label:`${MONTH_NAMES[+m-1]} ${y}`,data:[...byMonth[mk]],borderColor:color,backgroundColor:color+'18',borderWidth:2,pointRadius:5,pointHoverRadius:7,tension:.35,hidden:weekHidden.has(mk),monthKey:mk};});
@@ -805,25 +664,5 @@ function statusChip(r){const cls=r.status==='paid'?'sc-paid':r.status==='failed'
 function renderTable(){
   const rows=getTableData(),total=rows.length,pages=Math.ceil(total/rowsPerPage)||1;currentPage=Math.min(currentPage,pages);
   const slice=rows.slice((currentPage-1)*rowsPerPage,currentPage*rowsPerPage);
-  document.getElementById('tableBody').innerHTML=slice.map(r=>`<tr><td style="color:var(--muted);font-size:.74rem">${r.date}</td><td>${r.gateway==='stripe'?'<span class="gwc gwcgwc-s">Stripe</span>':'<span class="gwc gwc-d">dLocal</span>'}</td><td><span class="fb">${r.currency.toUpperCase()}</span></td><td style="font-size:.76rem;font-weight:600">${r.country||'—'}</td><td style="font-weight:600">${fmt(r.amount,r.amount<1000?2:0)}</td><td style="font-weight:700;color:var(--accent)">${r.usd>0?fmtUSD(r.usd):'—'}</td><td>${statusChip(r)}</td><td style="color:var(--muted);font-size:.74rem;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.method||(r.declineReason?r.declineReason.replace(/_/g,' '):'—')}</td><td style="color:var(--muted);font-size:.73rem;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.email}</td></tr>`).join('')||`<tr><td colspan="9" style="text-align:center;padding:22px;color:var(--muted)">Sin resultados</td></tr>`;
-  document.getElementById('tableInfo').textContent=`Mostrando ${Math.min(slice.length,rowsPerPage)} de ${total} filas`;
-  const pag=document.getElementById('pagination');pag.innerHTML='';
-  const start=Math.max(1,currentPage-3),end=Math.min(pages,start+6);
-  for(let p=start;p<=end;p++){const btn=document.createElement('button');btn.className='pb'+(p===currentPage?' act':'');btn.textContent=p;btn.onclick=()=>{currentPage=p;renderTable();};pag.appendChild(btn);}
-}
+  document.getElementById('tableBody').innerHTML=slice.map(r=>`<tr><td style="color:var(--muted);font-size:.74rem">${r.date}</td><td>${r.gateway==='stripe'?'<span class="gwc gwc
 
-function updateAll(){
-  updateKPIs();
-  buildCombo();
-  buildTotal();
-  buildGwBar();buildPayMethod();buildStatusDough();buildCurrBar();buildCountryBar();buildDeclineBar();buildHistogram();buildFeeCompare();
-  buildTopClients();
-  dayHidden=new Set();weekHidden=new Set();
-  buildDayOfMonth();buildWeekOfMonth();
-  renderTable();
-}
-
-document.addEventListener('DOMContentLoaded',reloadData);
-</script>
-</body>
-</html>
