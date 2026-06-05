@@ -46,11 +46,39 @@
     .page-header{margin-bottom:18px;}
     .page-header h1{font-size:1.4rem;font-weight:800;letter-spacing:-.5px;}
     .page-header p{color:var(--muted);font-size:.85rem;margin-top:3px;}
+
+    /* ── FILTER BAR ── */
     .filter-bar{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 16px;display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-bottom:18px;box-shadow:var(--shadow);}
     .filter-group{display:flex;flex-direction:column;gap:4px;min-width:120px;}
     .filter-group label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);}
     .filter-group select,.filter-group input{border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:.82rem;background:var(--surface2);color:var(--text);outline:none;transition:.15s;}
     .filter-group select:focus,.filter-group input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.1);}
+
+    /* Período rápido */
+    .quick-group{display:flex;flex-direction:column;gap:4px;}
+    .quick-btns{display:flex;gap:5px;flex-wrap:wrap;}
+    .qb{padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);font-size:.78rem;font-weight:700;cursor:pointer;color:var(--muted);transition:.15s;line-height:1;}
+    .qb:hover{border-color:var(--accent);color:var(--accent);}
+    .qb.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+
+    /* Mes multiselect */
+    .month-dropdown-wrap{position:relative;}
+    .month-trigger{border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:.82rem;background:var(--surface2);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:150px;user-select:none;transition:.15s;}
+    .month-trigger:hover{border-color:var(--accent);}
+    .month-trigger.has-sel{border-color:var(--accent);background:#EFF6FF;color:var(--accent);}
+    .month-trigger .arrow{font-size:.65rem;color:var(--muted);flex-shrink:0;}
+    .month-panel{position:absolute;top:calc(100% + 5px);left:0;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px;z-index:200;display:none;grid-template-columns:repeat(4,1fr);gap:5px;min-width:224px;box-shadow:var(--shadow-lg);}
+    .month-panel.open{display:grid;}
+    .mc{padding:5px 0;border-radius:6px;border:1px solid var(--border);font-size:.72rem;font-weight:700;cursor:pointer;text-align:center;background:var(--surface2);color:var(--muted);transition:.12s;}
+    .mc:hover{border-color:var(--accent);color:var(--accent);}
+    .mc.sel{background:var(--accent);color:#fff;border-color:var(--accent);}
+    .panel-footer{grid-column:1/-1;display:flex;justify-content:flex-end;gap:6px;margin-top:6px;padding-top:8px;border-top:1px solid var(--border);}
+    .pf-btn{padding:4px 10px;border-radius:6px;border:1px solid var(--border);font-size:.74rem;font-weight:700;cursor:pointer;background:var(--surface2);color:var(--muted);transition:.12s;}
+    .pf-btn:hover{background:var(--border);}
+    .pf-btn.apply{background:var(--accent);color:#fff;border-color:var(--accent);}
+    .pf-btn.apply:hover{background:#1d4ed8;}
+    .month-count-badge{display:none;background:var(--accent);color:#fff;font-size:.6rem;font-weight:700;padding:1px 5px;border-radius:99px;margin-left:3px;vertical-align:middle;}
+
     .btn{padding:7px 16px;border-radius:8px;border:none;cursor:pointer;font-size:.82rem;font-weight:600;transition:.15s;}
     .btn-primary{background:var(--accent);color:#fff;}.btn-primary:hover{background:#1d4ed8;}
     .btn-ghost{background:var(--surface2);color:var(--muted);border:1px solid var(--border);}.btn-ghost:hover{background:var(--border);}
@@ -168,13 +196,65 @@
     <p id="gwSub">Stripe + dLocal &middot; An&aacute;lisis &middot; SegurosFly &middot; Fechas ajustadas a UTC&minus;5 (Colombia)</p>
   </div>
 
+  <!-- ════════════════════════════════════════
+       FILTER BAR
+       ════════════════════════════════════════ -->
   <div class="filter-bar">
+
+    <!-- Fechas -->
     <div class="filter-group"><label>Fecha inicio</label><input type="date" id="dateFrom"/></div>
     <div class="filter-group"><label>Fecha fin</label><input type="date" id="dateTo"/></div>
+
+    <!-- Año -->
     <div class="filter-group"><label>A&ntilde;o</label><select id="filterYear"><option value="">Todos</option></select></div>
+
+    <!-- ── NUEVO: Mes multiselect ── -->
+    <div class="filter-group" style="min-width:155px">
+      <label>
+        Mes
+        <span class="month-count-badge" id="monthCountBadge">0</span>
+      </label>
+      <div class="month-dropdown-wrap" id="monthDropWrap">
+        <div class="month-trigger" id="monthTrigger">
+          <span id="monthTriggerLabel">Todos los meses</span>
+          <span class="arrow">&#9660;</span>
+        </div>
+        <div class="month-panel" id="monthPanel">
+          <div class="mc" data-m="1">Ene</div><div class="mc" data-m="2">Feb</div>
+          <div class="mc" data-m="3">Mar</div><div class="mc" data-m="4">Abr</div>
+          <div class="mc" data-m="5">May</div><div class="mc" data-m="6">Jun</div>
+          <div class="mc" data-m="7">Jul</div><div class="mc" data-m="8">Ago</div>
+          <div class="mc" data-m="9">Sep</div><div class="mc" data-m="10">Oct</div>
+          <div class="mc" data-m="11">Nov</div><div class="mc" data-m="12">Dic</div>
+          <div class="panel-footer">
+            <button class="pf-btn" id="clearMonthsBtn">Limpiar</button>
+            <button class="pf-btn apply" id="applyMonthsBtn">Aplicar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Moneda -->
     <div class="filter-group"><label>Moneda</label><select id="filterCurrency"><option value="">Todas</option></select></div>
+
+    <!-- Estado -->
     <div class="filter-group"><label>Estado</label><select id="filterStatus"><option value="">Todos</option><option value="paid">Pagado / Completada</option><option value="failed">Fallido / Cancelada</option><option value="pending">Pendiente</option></select></div>
+
+    <!-- País -->
     <div class="filter-group"><label>Pa&iacute;s</label><select id="filterCountry"><option value="">Todos</option></select></div>
+
+    <!-- ── NUEVO: Período rápido ── -->
+    <div class="quick-group">
+      <label style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);">Per&iacute;odo r&aacute;pido</label>
+      <div class="quick-btns">
+        <button class="qb" data-q="today"   onclick="handleQuick(this)">Hoy</button>
+        <button class="qb" data-q="yesterday" onclick="handleQuick(this)">Ayer</button>
+        <button class="qb" data-q="week"    onclick="handleQuick(this)">Esta semana</button>
+        <button class="qb" data-q="month"   onclick="handleQuick(this)">Este mes</button>
+      </div>
+    </div>
+
+    <!-- Botones acción -->
     <div style="display:flex;gap:7px;align-self:flex-end;flex-wrap:wrap">
       <button class="btn btn-primary" onclick="applyFilters()">Aplicar</button>
       <button class="btn btn-ghost" onclick="resetFilters()">Limpiar</button>
@@ -355,28 +435,129 @@
 const SHEET_ID      = '1jxhWM3-ULgKBqnZ0EHuKPvNhXUD3MVcXzT1xp97xqFw';
 const GID_STRIPE    = '0';
 const GID_DLOCAL    = '1125754235';
-const TZ_OFFSET_MS  = 5 * 60 * 60 * 1000; // UTC-5 = 18000000 ms
-
+const TZ_OFFSET_MS  = 5 * 60 * 60 * 1000;
 const MONTH_COLORS  = ['#2563EB','#0EA5E9','#7C3AED','#10B981','#F59E0B','#EF4444','#EC4899','#14B8A6','#F97316','#84CC16','#6366F1','#D97706'];
 const MONTH_NAMES   = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 const P             = ['#2563EB','#0EA5E9','#7C3AED','#10B981','#F59E0B','#EF4444','#EC4899','#14B8A6','#F97316','#84CC16'];
 const VALID_DATE    = /^\d{4}-\d{2}-\d{2}$/;
 
 // ═══════════════════════════════════════════════════════════════════
-//  ZONA HORARIA
-//
-//  AMBAS fuentes exportan timestamps en UTC.
-//  Validado: dLocal muestra "03/06/2026 16:00" en el Sheet
-//            y en el portal dLocal aparece "11:00 AM" (hora Colombia).
-//  16:00 UTC - 5h = 11:00 Colombia. Confirmado.
-//
-//  El bug anterior: parsear "11/27/2025 03:01:49" con new Date() sin
-//  indicar UTC hace que JS lo interprete como LOCAL, no UTC,
-//  dando un resultado incorrecto antes de restar las 5h.
-//  SOLUCION: reconstruir siempre el timestamp como ISO UTC explicito.
+//  MES MULTISELECT — lógica del dropdown
 // ═══════════════════════════════════════════════════════════════════
+let selectedMonths = new Set(); // números 1-12
 
-/** Convierte ms UTC a "YYYY-MM-DD" en hora Colombia. */
+(function initMonthDropdown() {
+  const trigger = document.getElementById('monthTrigger');
+  const panel   = document.getElementById('monthPanel');
+  const wrap    = document.getElementById('monthDropWrap');
+
+  trigger.addEventListener('click', e => { e.stopPropagation(); panel.classList.toggle('open'); });
+  document.addEventListener('click', e => { if (!wrap.contains(e.target)) panel.classList.remove('open'); });
+
+  document.querySelectorAll('.mc').forEach(el => {
+    el.addEventListener('click', () => {
+      const m = +el.dataset.m;
+      if (selectedMonths.has(m)) { selectedMonths.delete(m); el.classList.remove('sel'); }
+      else                        { selectedMonths.add(m);    el.classList.add('sel');    }
+      updateMonthTriggerLabel();
+    });
+  });
+
+  document.getElementById('clearMonthsBtn').addEventListener('click', () => {
+    selectedMonths.clear();
+    document.querySelectorAll('.mc').forEach(el => el.classList.remove('sel'));
+    updateMonthTriggerLabel();
+  });
+
+  document.getElementById('applyMonthsBtn').addEventListener('click', () => {
+    panel.classList.remove('open');
+    applyFilters();
+  });
+})();
+
+function updateMonthTriggerLabel() {
+  const n      = selectedMonths.size;
+  const trigger = document.getElementById('monthTrigger');
+  const lbl     = document.getElementById('monthTriggerLabel');
+  const badge   = document.getElementById('monthCountBadge');
+  if (n === 0) {
+    lbl.textContent = 'Todos los meses';
+    trigger.classList.remove('has-sel');
+    badge.style.display = 'none';
+  } else if (n === 1) {
+    lbl.textContent = MONTH_NAMES[[...selectedMonths][0] - 1];
+    trigger.classList.add('has-sel');
+    badge.style.display = 'none';
+  } else if (n <= 3) {
+    lbl.textContent = [...selectedMonths].sort((a,b)=>a-b).map(m=>MONTH_NAMES[m-1]).join(', ');
+    trigger.classList.add('has-sel');
+    badge.style.display = 'inline';
+    badge.textContent = n;
+  } else {
+    lbl.textContent = n + ' meses selec.';
+    trigger.classList.add('has-sel');
+    badge.style.display = 'inline';
+    badge.textContent = n;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  PERÍODO RÁPIDO
+// ═══════════════════════════════════════════════════════════════════
+let activeQuickPeriod = null;
+
+function handleQuick(btn) {
+  const q = btn.dataset.q;
+  // Toggle: si ya estaba activo, lo desactiva y limpia fechas
+  if (activeQuickPeriod === q) {
+    btn.classList.remove('active');
+    activeQuickPeriod = null;
+    document.getElementById('dateFrom').value = '';
+    document.getElementById('dateTo').value   = '';
+    applyFilters();
+    return;
+  }
+  document.querySelectorAll('.qb').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeQuickPeriod = q;
+
+  // Calcular fechas en hora Colombia (UTC-5)
+  const nowUTC  = Date.now();
+  const nowCO   = new Date(nowUTC - TZ_OFFSET_MS); // "UTC clock" shifted to CO
+  const todayCO = nowCO.toISOString().slice(0, 10);
+
+  const df = document.getElementById('dateFrom');
+  const dt = document.getElementById('dateTo');
+
+  if (q === 'today') {
+    df.value = todayCO;
+    dt.value = todayCO;
+  } else if (q === 'yesterday') {
+    const yest = new Date(nowCO);
+    yest.setUTCDate(yest.getUTCDate() - 1);
+    const s = yest.toISOString().slice(0, 10);
+    df.value = s;
+    dt.value = s;
+  } else if (q === 'week') {
+    // Lunes de la semana actual (CO)
+    const day  = nowCO.getUTCDay(); // 0=dom
+    const diff = day === 0 ? -6 : 1 - day;
+    const mon  = new Date(nowCO);
+    mon.setUTCDate(nowCO.getUTCDate() + diff);
+    df.value = mon.toISOString().slice(0, 10);
+    dt.value = todayCO;
+  } else if (q === 'month') {
+    const first = new Date(nowCO);
+    first.setUTCDate(1);
+    df.value = first.toISOString().slice(0, 10);
+    dt.value = todayCO;
+  }
+  applyFilters();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  ZONA HORARIA
+// ═══════════════════════════════════════════════════════════════════
 function msToColDate(ms) {
   const d = new Date(ms - TZ_OFFSET_MS);
   return d.getUTCFullYear() + '-' +
@@ -384,37 +565,26 @@ function msToColDate(ms) {
     String(d.getUTCDate()).padStart(2,'0');
 }
 
-/**
- * Stripe: "YYYY-MM-DD HH:MM:SS" (UTC) → "YYYY-MM-DD" Colombia.
- */
 function stripeToColDate(raw) {
   if (!raw) return '';
   raw = raw.trim().slice(0, 19);
-  if (raw.length === 10) return raw; // solo fecha, sin hora → sin ambiguedad
+  if (raw.length === 10) return raw;
   if (!/^\d{4}-\d{2}-\d{2} \d/.test(raw)) return raw.slice(0,10);
-  const d = new Date(raw.replace(' ','T') + 'Z'); // 'Z' = explicitamente UTC
+  const d = new Date(raw.replace(' ','T') + 'Z');
   if (isNaN(d.getTime())) return raw.slice(0,10);
   return msToColDate(d.getTime());
 }
 
-/**
- * dLocal: "MM/DD/YYYY HH:MM:SS" (UTC) → "YYYY-MM-DD" Colombia.
- * CRITICO: NO usar new Date("11/27/2025 03:01:49") porque JS lo
- * interpreta como LOCAL, no UTC. Construir ISO UTC manualmente.
- */
 function dlocalToColDate(raw) {
   if (!raw) return '';
   raw = raw.trim();
-  // Capturar: mes/dia/anio hora:min:seg
   const m = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2}):(\d{2})/);
   if (m) {
-    // Construir ISO UTC: "YYYY-MM-DDTHH:MM:SSZ"
     const iso = m[3]+'-'+m[1].padStart(2,'0')+'-'+m[2].padStart(2,'0')+
                 'T'+m[4].padStart(2,'0')+':'+m[5]+':'+m[6]+'Z';
     const d = new Date(iso);
     if (!isNaN(d.getTime())) return msToColDate(d.getTime());
   }
-  // Fallback sin hora: solo fecha (sin ajuste necesario)
   const p = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
   if (p) return p[3]+'-'+p[1].padStart(2,'0')+'-'+p[2].padStart(2,'0');
   return raw.slice(0,10);
@@ -466,7 +636,6 @@ function parseStripeRows(rows) {
 }
 
 function parseDlocalRows(rows) {
-  // Encontrar fila header
   let hIdx=rows.findIndex(r=>
     r.some(c=>c.toLowerCase().includes('status'))&&
     r.some(c=>c.toLowerCase().includes('pa'))
@@ -485,7 +654,6 @@ function parseDlocalRows(rows) {
   const iFee  =fi('usd fee');
   return rows.slice(hIdx+1).map((r,i)=>{
     if(!r[iDate]&&!r[iAmt])return null;
-    // ✅ CORRECTO: dlocalToColDate construye ISO UTC manualmente antes de restar 5h
     const date=dlocalToColDate((r[iDate]||'').trim());
     if(!date||!VALID_DATE.test(date))return null;
     const rs=(r[iStat]||'').toLowerCase();
@@ -581,18 +749,42 @@ function applyFilters(){
   const from=document.getElementById('dateFrom').value,to=document.getElementById('dateTo').value;
   const year=document.getElementById('filterYear').value,curr=document.getElementById('filterCurrency').value;
   const status=document.getElementById('filterStatus').value,country=document.getElementById('filterCountry').value;
+
   filteredData=allData().filter(r=>{
     if(!r.date||!VALID_DATE.test(r.date))return false;
-    if(from&&r.date<from)return false;if(to&&r.date>to)return false;
-    if(year&&r.date.slice(0,4)!==year)return false;if(curr&&r.currency!==curr)return false;
+    if(from&&r.date<from)return false;
+    if(to&&r.date>to)return false;
+    if(year&&r.date.slice(0,4)!==year)return false;
+    if(curr&&r.currency!==curr)return false;
     if(country&&r.country!==country)return false;
-    if(status==='paid'&&!isPaid(r))return false;if(status==='failed'&&!isFailed(r))return false;if(status==='pending'&&!isPend(r))return false;
+    if(status==='paid'&&!isPaid(r))return false;
+    if(status==='failed'&&!isFailed(r))return false;
+    if(status==='pending'&&!isPend(r))return false;
+
+    // ── Filtro de mes (multiselect) ──
+    if(selectedMonths.size>0){
+      const m=parseInt(r.date.slice(5,7),10);
+      if(!selectedMonths.has(m))return false;
+    }
+
     return true;
-  });currentPage=1;updateAll();
+  });
+  currentPage=1;updateAll();
 }
 
 function resetFilters(){
-  initFilters();filteredData=allData();currentPage=1;
+  // Limpiar período rápido
+  activeQuickPeriod=null;
+  document.querySelectorAll('.qb').forEach(b=>b.classList.remove('active'));
+
+  // Limpiar mes multiselect
+  selectedMonths.clear();
+  document.querySelectorAll('.mc').forEach(el=>el.classList.remove('sel'));
+  updateMonthTriggerLabel();
+
+  initFilters();
+  filteredData=allData();
+  currentPage=1;
   ['filterStatus','filterYear','filterCurrency','filterCountry','tableStatusFilter'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   const ts=document.getElementById('tableSearch');if(ts)ts.value='';
   updateAll();
@@ -647,9 +839,6 @@ function groupLabel(k,g){
   if(g==='quarter')return k.replace('-',' ');return k;
 }
 
-// ═══════════════════════════════════════════════════════════════════
-//  GRAFICA COMBO
-// ═══════════════════════════════════════════════════════════════════
 function setComboGroup(g,btn){btn.closest('.tg-bar').querySelectorAll('.tg-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');comboGroup=g;buildCombo();}
 function buildCombo(){
   dc('combo');
@@ -668,9 +857,6 @@ function buildCombo(){
   charts.combo=new Chart(document.getElementById('cCombo'),{type:'bar',data:{labels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:10,cornerRadius:8,callbacks:{label:ctx=>ctx.dataset.label.startsWith('Revenue')?' '+ctx.dataset.label+': $'+fmt(ctx.parsed.y,2):' '+ctx.dataset.label+': '+fmt(ctx.parsed.y)+' tx'}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:10}}},yRev:{type:'linear',position:'left',grid:{color:'#F1F5F9'},ticks:{color:'#6772E5',font:{size:10},callback:v=>'$'+fmt(v,0)},title:{display:true,text:'Revenue (USD)',color:'#94A3B8',font:{size:9}}},yTx:{type:'linear',position:'right',grid:{display:false},ticks:{color:'#94A3B8',font:{size:10},callback:v=>fmt(v)+' tx'},title:{display:true,text:'N\u00ba Transacciones',color:'#94A3B8',font:{size:9}}}}}});
 }
 
-// ═══════════════════════════════════════════════════════════════════
-//  GRAFICA TOTAL
-// ═══════════════════════════════════════════════════════════════════
 function setTotalGroup(g,btn){btn.closest('.tg-bar').querySelectorAll('.tg-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');totalGroup=g;buildTotal();}
 function buildTotal(){
   dc('total');
@@ -683,9 +869,6 @@ function buildTotal(){
   ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:10,cornerRadius:8,callbacks:{label:ctx=>ctx.dataset.label==='Revenue Total'?' Revenue: $'+fmt(ctx.parsed.y,2):' Transacciones: '+fmt(ctx.parsed.y)+' tx'}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:10}}},yRev:{type:'linear',position:'left',grid:{color:'#F1F5F9'},ticks:{color:'#2563EB',font:{size:10},callback:v=>'$'+fmt(v,0)},title:{display:true,text:'Revenue (USD)',color:'#94A3B8',font:{size:9}}},yTx:{type:'linear',position:'right',grid:{display:false},ticks:{color:'#7C3AED',font:{size:10},callback:v=>fmt(v)+' tx'},title:{display:true,text:'N\u00ba Transacciones',color:'#94A3B8',font:{size:9}}}}}});
 }
 
-// ═══════════════════════════════════════════════════════════════════
-//  OTRAS GRAFICAS
-// ═══════════════════════════════════════════════════════════════════
 function buildGwBar(){dc('gb');const sR=filteredData.filter(r=>r.gateway==='stripe'&&isPaid(r)).reduce((s,r)=>s+r.usd,0),dR=filteredData.filter(r=>r.gateway==='dlocal'&&isPaid(r)).reduce((s,r)=>s+r.usd,0),sTx=filteredData.filter(r=>r.gateway==='stripe').length,dTx=filteredData.filter(r=>r.gateway==='dlocal').length;charts.gb=new Chart(document.getElementById('cGwBar'),{type:'bar',data:{labels:['Stripe','dLocal'],datasets:[{data:[sR,dR],backgroundColor:['rgba(103,114,229,.2)','rgba(0,177,79,.18)'],borderColor:['#6772E5','#00B14F'],borderWidth:2,borderRadius:8,borderSkipped:false}]},options:{...bO(),plugins:{legend:{display:false},tooltip:{callbacks:{afterLabel:ctx=>[sTx,dTx][ctx.dataIndex]+' transacciones'},backgroundColor:'#0F172A',bodyColor:'#94A3B8',padding:9,cornerRadius:8}}}});}
 
 function buildPayMethod(){dc('pm');const cnt={};filteredData.filter(r=>r.gateway==='dlocal'&&r.method).forEach(r=>{cnt[r.method]=(cnt[r.method]||0)+1;});const lbs=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]).slice(0,10);charts.pm=new Chart(document.getElementById('cPayMethod'),{type:'bar',data:{labels:lbs,datasets:[{data:lbs.map(l=>cnt[l]),backgroundColor:lbs.map((_,i)=>P[i%P.length]+'33'),borderColor:lbs.map((_,i)=>P[i%P.length]),borderWidth:1.5,borderRadius:6,borderSkipped:false}]},options:{...bO(),indexAxis:'y'}});}
@@ -711,9 +894,6 @@ function buildFeeCompare(){
   charts.fc=new Chart(document.getElementById('cFeeCompare'),{type:'bar',data:{labels:['Stripe','dLocal'],datasets:[{type:'bar',label:'Revenue USD',data:[sRev,dRev],backgroundColor:['rgba(103,114,229,.18)','rgba(0,177,79,.15)'],borderColor:['#6772E5','#00B14F'],borderWidth:2,borderRadius:7,borderSkipped:false,yAxisID:'yLeft',order:2},{type:'bar',label:'Fee USD',data:[sFee,dFee],backgroundColor:['rgba(239,68,68,.18)','rgba(239,68,68,.18)'],borderColor:['#EF4444','#EF4444'],borderWidth:2,borderRadius:7,borderSkipped:false,yAxisID:'yLeft',order:2},{type:'line',label:'Fee %',data:[sPct,dPct],borderColor:'#7C3AED',backgroundColor:'rgba(124,58,237,.12)',borderWidth:2.5,pointRadius:7,pointHoverRadius:9,pointBackgroundColor:'#7C3AED',tension:0,yAxisID:'yRight',order:1}]},options:{responsive:true,plugins:{legend:{display:true,position:'top',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:10,cornerRadius:8,callbacks:{label:ctx=>ctx.dataset.label==='Fee %'?' Fee %: '+fmt(ctx.parsed.y,2)+'%':' '+ctx.dataset.label+': $'+fmt(ctx.parsed.y,2)}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:11}}},yLeft:{position:'left',grid:{color:'#F1F5F9'},ticks:{color:'#94A3B8',font:{size:10},callback:v=>'$'+fmt(v,0)}},yRight:{position:'right',grid:{display:false},ticks:{color:'#7C3AED',font:{size:10},callback:v=>fmt(v,2)+'%'}}}}}); 
 }
 
-// ═══════════════════════════════════════════════════════════════════
-//  TOP CLIENTES
-// ═══════════════════════════════════════════════════════════════════
 function setTopSort(key,btn){topSortKey=key;document.querySelectorAll('.top-sort-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');buildTopClients();}
 function buildTopClients(){
   const byEmail={};
@@ -730,9 +910,6 @@ function buildTopClients(){
   }).join('');
 }
 
-// ═══════════════════════════════════════════════════════════════════
-//  DIA DEL MES
-// ═══════════════════════════════════════════════════════════════════
 function setDayMetric(m,btn){dayMetric=m;btn.closest('.tg-bar').querySelectorAll('.tg-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');buildDayOfMonth();}
 function buildDayOfMonth(){
   dc('dom');
@@ -745,9 +922,6 @@ function buildDayOfMonth(){
   months.forEach((mk,idx)=>{const[y,m]=mk.split('-'),color=MONTH_COLORS[idx%MONTH_COLORS.length];const btn=document.createElement('button');btn.className='month-pill'+(dayHidden.has(mk)?' hidden-ds':'');btn.textContent=MONTH_NAMES[+m-1]+' '+y;btn.style.borderColor=color;btn.style.color=dayHidden.has(mk)?'#94A3B8':color;btn.style.background=dayHidden.has(mk)?'transparent':color+'18';btn.onclick=()=>{const ds=charts.dom.data.datasets.find(d=>d.monthKey===mk);if(!ds)return;ds.hidden=!ds.hidden;if(ds.hidden)dayHidden.add(mk);else dayHidden.delete(mk);charts.dom.update();btn.className='month-pill'+(ds.hidden?' hidden-ds':'');btn.style.color=ds.hidden?'#94A3B8':color;btn.style.background=ds.hidden?'transparent':color+'18';};pe.appendChild(btn);});
 }
 
-// ═══════════════════════════════════════════════════════════════════
-//  SEMANA DEL MES
-// ═══════════════════════════════════════════════════════════════════
 function setWeekMetric(m,btn){weekMetric=m;btn.closest('.tg-bar').querySelectorAll('.tg-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');buildWeekOfMonth();}
 function weekOfMonth(d){if(d<=7)return 0;if(d<=14)return 1;if(d<=21)return 2;if(d<=28)return 3;return 4;}
 function buildWeekOfMonth(){
@@ -763,9 +937,6 @@ function buildWeekOfMonth(){
   for(let w=0;w<5;w++){let bestMk=null,bestVal=-1;months.forEach(mk=>{if(byMonth[mk][w]>bestVal){bestVal=byMonth[mk][w];bestMk=mk;}});const wN=['Week 1','Week 2','Week 3','Week 4','Week 5'][w],wD=['1\u20137','8\u201314','15\u201321','22\u201328','29\u201331'][w];let mL='\u2014',vL='\u2014',color='#94A3B8';if(bestMk&&bestVal>0){const[y,m]=bestMk.split('-');mL=MONTH_NAMES[+m-1]+' '+y;vL=weekMetric==='revenue'?fmtUSD(bestVal):fmt(bestVal)+' tx';color=MONTH_COLORS[months.indexOf(bestMk)%MONTH_COLORS.length];}insEl.innerHTML+='<div class="insight-card"><div class="insight-week">'+wN+' <span style="color:var(--muted);font-weight:400">d\u00edas '+wD+'</span></div><div style="font-size:1.2rem;margin-bottom:4px">\ud83c\udfc6</div><div class="insight-month" style="color:'+color+'">'+mL+'</div><div class="insight-val">'+vL+'</div></div>';}
 }
 
-// ═══════════════════════════════════════════════════════════════════
-//  TABLA
-// ═══════════════════════════════════════════════════════════════════
 function getTableData(){
   const q=document.getElementById('tableSearch').value.toLowerCase(),s=document.getElementById('tableStatusFilter').value;
   let rows=filteredData.filter(r=>{
@@ -788,9 +959,6 @@ function renderTable(){
   for(let p=start;p<=end;p++){const btn=document.createElement('button');btn.className='pb'+(p===currentPage?' act':'');btn.textContent=p;btn.onclick=()=>{currentPage=p;renderTable();};pag.appendChild(btn);}
 }
 
-// ═══════════════════════════════════════════════════════════════════
-//  UPDATE ALL
-// ═══════════════════════════════════════════════════════════════════
 function updateAll(){
   updateKPIs();buildCombo();buildTotal();buildGwBar();buildPayMethod();buildStatusDough();
   buildCurrBar();buildCountryBar();buildDeclineBar();buildHistogram();buildFeeCompare();
