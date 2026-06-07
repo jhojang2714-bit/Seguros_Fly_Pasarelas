@@ -569,8 +569,17 @@ function stripeToColDate(raw) {
   if (!raw) return '';
   raw = raw.trim().slice(0, 19);
   if (raw.length === 10) return raw;
-  if (!/^\d{4}-\d{2}-\d{2} \d/.test(raw)) return raw.slice(0,10);
-  const d = new Date(raw.replace(' ','T') + 'Z');
+  if (!/^\d{4}-\d{2}-\d{2}[ T]\d/.test(raw)) return raw.slice(0,10);
+  // Normalizar: separador espacio→T y hora de 1 dígito→2 dígitos (ISO 8601 estricto)
+  // "2026-06-07 3:15:58" → "2026-06-07T03:15:58Z"
+  const parts = raw.replace('T',' ').split(' ');
+  const datePart = parts[0];
+  const timeParts = (parts[1]||'00:00:00').split(':');
+  const hh = timeParts[0].padStart(2,'0');
+  const mm = (timeParts[1]||'00').padStart(2,'0');
+  const ss = (timeParts[2]||'00').padStart(2,'0');
+  const iso = datePart + 'T' + hh + ':' + mm + ':' + ss + 'Z';
+  const d = new Date(iso);
   if (isNaN(d.getTime())) return raw.slice(0,10);
   return msToColDate(d.getTime());
 }
