@@ -46,21 +46,18 @@
     .page-header{margin-bottom:18px;}
     .page-header h1{font-size:1.4rem;font-weight:800;letter-spacing:-.5px;}
     .page-header p{color:var(--muted);font-size:.85rem;margin-top:3px;}
-
     /* ── FILTER BAR ── */
     .filter-bar{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 16px;display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-bottom:18px;box-shadow:var(--shadow);}
     .filter-group{display:flex;flex-direction:column;gap:4px;min-width:120px;}
     .filter-group label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);}
     .filter-group select,.filter-group input{border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:.82rem;background:var(--surface2);color:var(--text);outline:none;transition:.15s;}
     .filter-group select:focus,.filter-group input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.1);}
-
     /* Período rápido */
     .quick-group{display:flex;flex-direction:column;gap:4px;}
     .quick-btns{display:flex;gap:5px;flex-wrap:wrap;}
     .qb{padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);font-size:.78rem;font-weight:700;cursor:pointer;color:var(--muted);transition:.15s;line-height:1;}
     .qb:hover{border-color:var(--accent);color:var(--accent);}
     .qb.active{background:var(--accent);color:#fff;border-color:var(--accent);}
-
     /* Mes multiselect */
     .month-dropdown-wrap{position:relative;}
     .month-trigger{border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:.82rem;background:var(--surface2);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:150px;user-select:none;transition:.15s;}
@@ -78,7 +75,6 @@
     .pf-btn.apply{background:var(--accent);color:#fff;border-color:var(--accent);}
     .pf-btn.apply:hover{background:#1d4ed8;}
     .month-count-badge{display:none;background:var(--accent);color:#fff;font-size:.6rem;font-weight:700;padding:1px 5px;border-radius:99px;margin-left:3px;vertical-align:middle;}
-
     .btn{padding:7px 16px;border-radius:8px;border:none;cursor:pointer;font-size:.82rem;font-weight:600;transition:.15s;}
     .btn-primary{background:var(--accent);color:#fff;}.btn-primary:hover{background:#1d4ed8;}
     .btn-ghost{background:var(--surface2);color:var(--muted);border:1px solid var(--border);}.btn-ghost:hover{background:var(--border);}
@@ -89,11 +85,11 @@
     .kpi-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;}
     .kpi-card.c-blue::before{background:var(--accent);}.kpi-card.c-teal::before{background:var(--accent2);}.kpi-card.c-purple::before{background:var(--accent3);}
     .kpi-card.c-green::before{background:var(--success);}.kpi-card.c-red::before{background:var(--danger);}
-    .kpi-card.c-stripe::before{background:var(--stripe);}.kpi-card.c-dlocal::before{background:var(--dlocal);}
+    .kpi-card.c-stripe::before{background:var(--stripe);}.kpi-card.c-dlocal::before{background:var(--dlocal);}.kpi-card.c-cash::before{background:#22C55E;}.kpi-card.c-dlocal-tx::before{background:#059669;}
     .kpi-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.95rem;margin-bottom:10px;}
     .c-blue .kpi-icon{background:#EFF6FF;}.c-teal .kpi-icon{background:#F0F9FF;}.c-purple .kpi-icon{background:#F5F3FF;}
     .c-green .kpi-icon{background:#ECFDF5;}.c-red .kpi-icon{background:#FEF2F2;}
-    .c-stripe .kpi-icon{background:#EEF0FD;}.c-dlocal .kpi-icon{background:#ECFDF5;}
+    .c-stripe .kpi-icon{background:#EEF0FD;}.c-dlocal .kpi-icon{background:#ECFDF5;}.c-cash .kpi-icon{background:#DCFCE7;}.c-dlocal-tx .kpi-icon{background:#D1FAE5;}
     .kpi-label{font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:4px;}
     .kpi-value{font-size:1.55rem;font-weight:800;letter-spacing:-1px;line-height:1;}
     .kpi-sub{font-size:.72rem;color:var(--muted);margin-top:4px;}
@@ -171,7 +167,6 @@
 <body>
 <div id="loadingScreen"><div class="spinner"></div><div class="load-text">Cargando datos en tiempo real…</div><div class="load-sub">Conectando con Google Sheets</div></div>
 <div id="errorScreen"><div class="error-icon">&#9888;&#65039;</div><div class="error-title">No se pudieron cargar los datos</div><div class="error-msg" id="errorMsg">Hubo un problema al conectar con Google Sheets.</div><div class="error-hint" id="errorHint"></div></div>
-
 <nav>
   <div class="nav-brand">
     <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -189,25 +184,20 @@
     <span id="lastUpdated">Cargando&hellip;</span>
   </div>
 </nav>
-
 <main>
   <div class="page-header">
     <h1>Dashboard de Pasarelas de Pago</h1>
     <p id="gwSub">Stripe + dLocal &middot; An&aacute;lisis &middot; SegurosFly &middot; Fechas ajustadas a UTC&minus;5 (Colombia)</p>
   </div>
-
   <!-- ════════════════════════════════════════
        FILTER BAR
        ════════════════════════════════════════ -->
   <div class="filter-bar">
-
     <!-- Fechas -->
     <div class="filter-group"><label>Fecha inicio</label><input type="date" id="dateFrom"/></div>
     <div class="filter-group"><label>Fecha fin</label><input type="date" id="dateTo"/></div>
-
     <!-- Año -->
     <div class="filter-group"><label>A&ntilde;o</label><select id="filterYear"><option value="">Todos</option></select></div>
-
     <!-- ── NUEVO: Mes multiselect ── -->
     <div class="filter-group" style="min-width:155px">
       <label>
@@ -233,16 +223,12 @@
         </div>
       </div>
     </div>
-
     <!-- Moneda -->
     <div class="filter-group"><label>Moneda</label><select id="filterCurrency"><option value="">Todas</option></select></div>
-
     <!-- Estado -->
     <div class="filter-group"><label>Estado</label><select id="filterStatus"><option value="">Todos</option><option value="paid">Pagado / Completada</option><option value="failed">Fallido / Cancelada</option><option value="pending">Pendiente</option></select></div>
-
     <!-- País -->
     <div class="filter-group"><label>Pa&iacute;s</label><select id="filterCountry"><option value="">Todos</option></select></div>
-
     <!-- ── NUEVO: Período rápido ── -->
     <div class="quick-group">
       <label style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);">Per&iacute;odo r&aacute;pido</label>
@@ -253,7 +239,6 @@
         <button class="qb" data-q="month"   onclick="handleQuick(this)">Este mes</button>
       </div>
     </div>
-
     <!-- Botones acción -->
     <div style="display:flex;gap:7px;align-self:flex-end;flex-wrap:wrap">
       <button class="btn btn-primary" onclick="applyFilters()">Aplicar</button>
@@ -261,17 +246,17 @@
       <button class="btn btn-reload" onclick="reloadData()">&#8635; Actualizar</button>
     </div>
   </div>
-
   <div class="kpi-grid">
     <div class="kpi-card c-blue"><div class="kpi-icon">&#128181;</div><div class="kpi-label">Revenue Total (USD)</div><div class="kpi-value" id="kpiRev">&mdash;</div><div class="kpi-sub">Solo exitosas</div><span class="kpi-badge bg-green" id="kpiRevSub">&mdash;</span></div>
     <div class="kpi-card c-teal"><div class="kpi-icon">&#128290;</div><div class="kpi-label">Total Transacciones</div><div class="kpi-value" id="kpiTx">&mdash;</div><div class="kpi-sub" id="kpiTxSub">&mdash;</div></div>
     <div class="kpi-card c-purple"><div class="kpi-icon">&#127919;</div><div class="kpi-label">Ticket Promedio (USD)</div><div class="kpi-value" id="kpiAvg">&mdash;</div><div class="kpi-sub" id="kpiAvgSub">&mdash;</div></div>
     <div class="kpi-card c-green"><div class="kpi-icon">&#128101;</div><div class="kpi-label">Clientes &Uacute;nicos</div><div class="kpi-value" id="kpiCust">&mdash;</div><div class="kpi-sub">Emails distintos</div></div>
     <div class="kpi-card c-red"><div class="kpi-icon">&#9888;&#65039;</div><div class="kpi-label">Tasa Fallo/Cancelaci&oacute;n</div><div class="kpi-value" id="kpiFail">&mdash;</div><div class="kpi-sub">% del total</div><span class="kpi-badge" id="kpiFailBadge">&mdash;</span></div>
-    <div class="kpi-card c-stripe"><div class="kpi-icon">&#128179;</div><div class="kpi-label">Stripe Revenue</div><div class="kpi-value" id="kpiStripeRev">&mdash;</div><div class="kpi-sub" id="kpiStripeSub">&mdash;</div><span class="kpi-badge bg-stripe" id="kpiStripeCount">&mdash;</span></div>
-    <div class="kpi-card c-dlocal"><div class="kpi-icon">&#127758;</div><div class="kpi-label">dLocal Revenue</div><div class="kpi-value" id="kpiDlocalRev">&mdash;</div><div class="kpi-sub" id="kpiDlocalSub">&mdash;</div><span class="kpi-badge bg-dlocal" id="kpiDlocalCount">&mdash;</span></div>
+    <div class="kpi-card c-stripe"><div class="kpi-icon">&#128179;</div><div class="kpi-label">Stripe Cash Transaccional (USD)</div><div class="kpi-value" id="kpiStripeRev">&mdash;</div><div class="kpi-sub" id="kpiStripeSub">&mdash;</div><span class="kpi-badge bg-stripe" id="kpiStripeCount">&mdash;</span></div>
+    <div class="kpi-card c-cash"><div class="kpi-icon">&#127974;</div><div class="kpi-label">Stripe Cash Bruto (USD)</div><div class="kpi-value" id="kpiStripeCashBruto">&mdash;</div><div class="kpi-sub" id="kpiStripeCashBrutoSub">&mdash;</div><span class="kpi-badge" id="kpiStripeCashBrutoBadge">&mdash;</span></div>
+    <div class="kpi-card c-dlocal-tx"><div class="kpi-icon">&#127758;</div><div class="kpi-label">dLocal Cash Transaccional (USD)</div><div class="kpi-value" id="kpiDlocalTotal">&mdash;</div><div class="kpi-sub" id="kpiDlocalTotalSub">&mdash;</div></div>
+    <div class="kpi-card c-dlocal"><div class="kpi-icon">&#127758;</div><div class="kpi-label">dLocal Cash Bruto (USD)</div><div class="kpi-value" id="kpiDlocalRev">&mdash;</div><div class="kpi-sub" id="kpiDlocalSub">&mdash;</div><span class="kpi-badge bg-dlocal" id="kpiDlocalCount">&mdash;</span></div>
   </div>
-
   <div class="sdiv">Tendencias temporales</div>
   <div class="cc" style="margin-bottom:13px">
     <div class="ch" style="flex-wrap:wrap;gap:8px">
@@ -291,7 +276,6 @@
     </div>
     <div style="position:relative;height:280px"><canvas id="cCombo"></canvas></div>
   </div>
-
   <div class="cc" style="margin-bottom:13px">
     <div class="ch" style="flex-wrap:wrap;gap:8px">
       <div><div class="ct">Revenue Total (USD) y Transacciones &mdash; Stripe + dLocal</div><div class="cs">Barras = Revenue total (eje izq.) &middot; L&iacute;nea = N&deg; transacciones totales (eje der.)</div></div>
@@ -308,23 +292,19 @@
     </div>
     <div style="position:relative;height:280px"><canvas id="cTotal"></canvas></div>
   </div>
-
   <div class="sdiv">Comparaci&oacute;n por pasarela</div>
   <div class="g3">
     <div class="cc"><div class="ch"><div><div class="ct">Revenue por Pasarela</div><div class="cs">USD &middot; exitosas</div></div></div><canvas id="cGwBar" height="220"></canvas></div>
     <div class="cc"><div class="ch"><div><div class="ct">M&eacute;todo de Pago (dLocal)</div><div class="cs">Por volumen</div></div><span class="cp cp-d">dLocal</span></div><canvas id="cPayMethod" height="220"></canvas></div>
     <div class="cc"><div class="ch"><div><div class="ct">Estado de Pagos</div><div class="cs">Distribuci&oacute;n combinada</div></div></div><canvas id="cStatusDough" height="190"></canvas><div id="statusLegend" style="margin-top:12px"></div></div>
   </div>
-
   <div class="sdiv">An&aacute;lisis por segmento</div>
   <div class="g3">
     <div class="cc"><div class="ch"><div><div class="ct">Revenue por Moneda</div><div class="cs">USD equivalente</div></div></div><canvas id="cCurrBar" height="220"></canvas></div>
     <div class="cc"><div class="ch"><div><div class="ct">Revenue por Pa&iacute;s (dLocal)</div><div class="cs">USD &middot; completadas</div></div><span class="cp cp-d">dLocal</span></div><canvas id="cCountryBar" height="220"></canvas></div>
     <div class="cc"><div class="ch"><div><div class="ct">Razones de Fallo/Cancelaci&oacute;n</div><div class="cs">Top causas</div></div></div><canvas id="cDeclineBar" height="220"></canvas></div>
   </div>
-
   <div class="cc full" style="margin-bottom:13px"><div class="ch"><div><div class="ct">Distribuci&oacute;n de Montos (USD)</div><div class="cs">Histograma &middot; exitosas</div></div></div><canvas id="cHistogram" height="145"></canvas></div>
-
   <div class="sdiv">An&aacute;lisis de fees</div>
   <div class="g2" style="margin-bottom:13px">
     <div class="cc"><div class="ch"><div><div class="ct">Revenue vs Fee por Pasarela</div><div class="cs">Revenue USD, Fee USD y % Fee</div></div></div><canvas id="cFeeCompare" height="220"></canvas></div>
@@ -332,19 +312,21 @@
       <div class="ch" style="margin-bottom:10px"><div><div class="ct">Detalle de Fees</div><div class="cs">Resumen por pasarela &middot; exitosas</div></div></div>
       <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;">
         <div style="display:flex;align-items:center;gap:7px;margin-bottom:10px"><span style="width:10px;height:10px;border-radius:2px;background:#6772E5;display:inline-block"></span><span style="font-size:.78rem;font-weight:700;color:#6772E5">Stripe</span></div>
-        <div class="mini-stat"><span>Revenue Total</span><span style="font-weight:700" id="fcStripeRev">&mdash;</span></div>
+        <div class="mini-stat"><span>Cash Transaccional</span><span style="font-weight:700" id="fcStripeRev">&mdash;</span></div>
         <div class="mini-stat"><span>Fee Total</span><span style="font-weight:700;color:#EF4444" id="fcStripeFee">&mdash;</span></div>
+        <div class="mini-stat"><span>Reembolsos</span><span style="font-weight:700;color:#EF4444" id="fcStripeRefund">&mdash;</span></div>
+        <div class="mini-stat"><span>Cash Bruto</span><span style="font-weight:700;color:#10B981" id="fcStripeCashBruto">&mdash;</span></div>
         <div class="mini-stat"><span>Fee %</span><span style="font-weight:700;color:#7C3AED" id="fcStripePct">&mdash;</span></div>
       </div>
       <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
         <div style="display:flex;align-items:center;gap:7px;margin-bottom:10px"><span style="width:10px;height:10px;border-radius:2px;background:#00B14F;display:inline-block"></span><span style="font-size:.78rem;font-weight:700;color:#00B14F">dLocal</span></div>
-        <div class="mini-stat"><span>Revenue Total</span><span style="font-weight:700" id="fcDlocalRev">&mdash;</span></div>
+        <div class="mini-stat"><span>Cash Transaccional</span><span style="font-weight:700" id="fcDlocalTotal">&mdash;</span></div>
         <div class="mini-stat"><span>Fee Total</span><span style="font-weight:700;color:#EF4444" id="fcDlocalFee">&mdash;</span></div>
+        <div class="mini-stat"><span>Cash Bruto</span><span style="font-weight:700;color:#10B981" id="fcDlocalRev">&mdash;</span></div>
         <div class="mini-stat"><span>Fee %</span><span style="font-weight:700;color:#7C3AED" id="fcDlocalPct">&mdash;</span></div>
       </div>
     </div>
   </div>
-
   <div class="sdiv">Top clientes por email</div>
   <div class="cc full" style="margin-bottom:13px">
     <div class="ch">
@@ -368,7 +350,6 @@
       </table>
     </div>
   </div>
-
   <div class="sdiv">Revenue por d&iacute;a del mes &mdash; comparado por mes</div>
   <div class="cc full" style="margin-bottom:13px">
     <div class="ch">
@@ -381,7 +362,6 @@
     <canvas id="cDayOfMonth" height="180"></canvas>
     <div class="month-pills" id="dayMonthPills"></div>
   </div>
-
   <div class="sdiv">Revenue por semana del mes &mdash; comparado por mes</div>
   <div class="cc full" style="margin-bottom:13px">
     <div class="ch">
@@ -395,7 +375,6 @@
     <div class="month-pills" id="weekMonthPills"></div>
     <div class="insight-grid" id="weekInsights"></div>
   </div>
-
   <div class="sdiv">Detalle de transacciones</div>
   <div class="tc">
     <div class="ttb">
@@ -421,13 +400,11 @@
     <div class="tf"><span id="tableInfo">&mdash;</span><div class="pag" id="pagination"></div></div>
   </div>
 </main>
-
 <footer>
   <strong>SegurosFly</strong> &middot; Dashboard en vivo &middot; Datos desde Google Sheets &middot; Ambas fuentes en UTC &rarr; ajustadas a <strong>UTC&minus;5 (Colombia)</strong><br>
   Sheet ID: <span class="sheet-id">1jxhWM3-ULgKBqnZ0EHuKPvNhXUD3MVcXzT1xp97xqFw</span> &middot;
   Stripe: <span class="sheet-id">gid=0</span> &middot; dLocal: <span class="sheet-id">gid=<span id="dlocalGid">&hellip;</span></span>
 </footer>
-
 <script>
 // ═══════════════════════════════════════════════════════════════════
 //  CONFIGURACION
@@ -440,20 +417,16 @@ const MONTH_COLORS  = ['#2563EB','#0EA5E9','#7C3AED','#10B981','#F59E0B','#EF444
 const MONTH_NAMES   = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 const P             = ['#2563EB','#0EA5E9','#7C3AED','#10B981','#F59E0B','#EF4444','#EC4899','#14B8A6','#F97316','#84CC16'];
 const VALID_DATE    = /^\d{4}-\d{2}-\d{2}$/;
-
 // ═══════════════════════════════════════════════════════════════════
 //  MES MULTISELECT — lógica del dropdown
 // ═══════════════════════════════════════════════════════════════════
 let selectedMonths = new Set(); // números 1-12
-
 (function initMonthDropdown() {
   const trigger = document.getElementById('monthTrigger');
   const panel   = document.getElementById('monthPanel');
   const wrap    = document.getElementById('monthDropWrap');
-
   trigger.addEventListener('click', e => { e.stopPropagation(); panel.classList.toggle('open'); });
   document.addEventListener('click', e => { if (!wrap.contains(e.target)) panel.classList.remove('open'); });
-
   document.querySelectorAll('.mc').forEach(el => {
     el.addEventListener('click', () => {
       const m = +el.dataset.m;
@@ -462,19 +435,16 @@ let selectedMonths = new Set(); // números 1-12
       updateMonthTriggerLabel();
     });
   });
-
   document.getElementById('clearMonthsBtn').addEventListener('click', () => {
     selectedMonths.clear();
     document.querySelectorAll('.mc').forEach(el => el.classList.remove('sel'));
     updateMonthTriggerLabel();
   });
-
   document.getElementById('applyMonthsBtn').addEventListener('click', () => {
     panel.classList.remove('open');
     applyFilters();
   });
 })();
-
 function updateMonthTriggerLabel() {
   const n      = selectedMonths.size;
   const trigger = document.getElementById('monthTrigger');
@@ -500,12 +470,10 @@ function updateMonthTriggerLabel() {
     badge.textContent = n;
   }
 }
-
 // ═══════════════════════════════════════════════════════════════════
 //  PERÍODO RÁPIDO
 // ═══════════════════════════════════════════════════════════════════
 let activeQuickPeriod = null;
-
 function handleQuick(btn) {
   const q = btn.dataset.q;
   // Toggle: si ya estaba activo, lo desactiva y limpia fechas
@@ -520,15 +488,12 @@ function handleQuick(btn) {
   document.querySelectorAll('.qb').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   activeQuickPeriod = q;
-
   // Calcular fechas en hora Colombia (UTC-5)
   const nowUTC  = Date.now();
   const nowCO   = new Date(nowUTC - TZ_OFFSET_MS); // "UTC clock" shifted to CO
   const todayCO = nowCO.toISOString().slice(0, 10);
-
   const df = document.getElementById('dateFrom');
   const dt = document.getElementById('dateTo');
-
   if (q === 'today') {
     df.value = todayCO;
     dt.value = todayCO;
@@ -554,7 +519,6 @@ function handleQuick(btn) {
   }
   applyFilters();
 }
-
 // ═══════════════════════════════════════════════════════════════════
 //  ZONA HORARIA
 // ═══════════════════════════════════════════════════════════════════
@@ -564,7 +528,6 @@ function msToColDate(ms) {
     String(d.getUTCMonth()+1).padStart(2,'0') + '-' +
     String(d.getUTCDate()).padStart(2,'0');
 }
-
 function stripeToColDate(raw) {
   if (!raw) return '';
   raw = raw.trim().slice(0, 19);
@@ -583,7 +546,6 @@ function stripeToColDate(raw) {
   if (isNaN(d.getTime())) return raw.slice(0,10);
   return msToColDate(d.getTime());
 }
-
 function dlocalToColDate(raw) {
   if (!raw) return '';
   raw = raw.trim();
@@ -598,7 +560,6 @@ function dlocalToColDate(raw) {
   if (p) return p[3]+'-'+p[1].padStart(2,'0')+'-'+p[2].padStart(2,'0');
   return raw.slice(0,10);
 }
-
 // ═══════════════════════════════════════════════════════════════════
 //  CSV PARSER
 // ═══════════════════════════════════════════════════════════════════
@@ -617,7 +578,6 @@ function parseCSV(text) {
   if(cur||row.length){row.push(cur.trim());rows.push(row);}
   return rows;
 }
-
 // ═══════════════════════════════════════════════════════════════════
 //  PARSERS
 // ═══════════════════════════════════════════════════════════════════
@@ -626,6 +586,7 @@ function parseStripeRows(rows) {
   const fi = n => h.findIndex(x=>x.includes(n));
   const iDate=fi('created date'),iAmt=fi('amount'),iCurr=fi('currency');
   const iConvAmt=fi('converted amount'),iConvCurr=fi('converted currency');
+  const iConvAmtRef=fi('converted amount refunded');
   const iDec=fi('decline reason'),iStat=fi('status'),iEmail=fi('customer email');
   const iFee=h.findIndex(x=>x.trim()==='fee');
   return rows.slice(1).map((r,i)=>{
@@ -635,15 +596,17 @@ function parseStripeRows(rows) {
     const rs=(r[iStat]||'').toLowerCase();
     const status=rs==='paid'?'paid':rs==='failed'?'failed':'pending';
     const ca=parseFloat(r[iConvAmt]||0)||0;
-    const usd=(r[iConvCurr]||'').toLowerCase()==='usd'?ca:0;
+    const convCurr=(r[iConvCurr]||'').toLowerCase();
+    const usd=convCurr==='usd'?ca:0;
+    const car=parseFloat(r[iConvAmtRef]||0)||0;
+    const refUsd=convCurr==='usd'?car:0;
     return{id:'s'+i,date,currency:(r[iCurr]||'').toLowerCase(),
-      amount:parseFloat(r[iAmt]||0)||0,usd,
+      amount:parseFloat(r[iAmt]||0)||0,usd,refUsd,
       feeUsd:iFee>=0?(parseFloat(r[iFee]||0)||0):0,
       status,declineReason:r[iDec]||'',email:r[iEmail]||'',
       method:'card',country:guessCountry((r[iCurr]||'').toLowerCase()),gateway:'stripe'};
   }).filter(Boolean);
 }
-
 function parseDlocalRows(rows) {
   let hIdx=rows.findIndex(r=>
     r.some(c=>c.toLowerCase().includes('status'))&&
@@ -653,11 +616,12 @@ function parseDlocalRows(rows) {
   const h=rows[hIdx].map(x=>x.toLowerCase().trim());
   const fi=n=>h.findIndex(x=>x.includes(n));
   const iStat =fi('status');
-  const iCtry =h.findIndex(x=>x==='pa\u00eds'||x.includes('pa\u00eds')||x==='pais');
+  const iCtry =h.findIndex(x=>x==='país'||x.includes('país')||x==='pais');
   const iCurr =fi('checkout currency');
   const iAmt  =fi('monto pagado');
-  const iMeth =fi('m\u00e9todo de pago');
+  const iMeth =fi('método de pago');
   const iUSD  =fi('usd amount');
+  const iUSDTotal=fi('usd total amount');
   const iEmail=h.findIndex(x=>x.includes('correo')||x.includes('email'));
   const iDate =h.findIndex(x=>x.includes('created date'));
   const iFee  =fi('usd fee');
@@ -669,21 +633,21 @@ function parseDlocalRows(rows) {
     let status='pending';
     if(rs==='completada'||rs==='paid')status='paid';
     else if(rs==='cancelada'||rs==='failed')status='failed';
-    const usd=parseFloat(r[iUSD]||0)||0;
+    const usd=parseFloat(r[iUSD]||0)||0; // USD Amount = neto (ya con fee descontado) = Cash Bruto
+    const totalUsd=parseFloat(r[iUSDTotal]||0)||0; // USD Total Amount = bruto transaccional = Cash Transaccional
     return{id:'d'+i,date,currency:(r[iCurr]||'').toLowerCase(),
       amount:parseFloat(r[iAmt]||0)||0,
       usd:status==='paid'?usd:0,
+      totalUsd:status==='paid'?totalUsd:0,
       feeUsd:iFee>=0?(parseFloat(r[iFee]||0)||0):0,
       status,declineReason:status==='failed'?'Cancelada':'',
       email:r[iEmail]||'',method:r[iMeth]||'',
       country:r[iCtry]||'',gateway:'dlocal'};
   }).filter(Boolean);
 }
-
 function guessCountry(c){
   return{cop:'CO',ars:'AR',clp:'CL',brl:'BR',mxn:'MX',usd:'',eur:'ES',pyg:'PY',crc:'CR'}[c]||'';
 }
-
 // ═══════════════════════════════════════════════════════════════════
 //  ESTADO GLOBAL
 // ═══════════════════════════════════════════════════════════════════
@@ -693,7 +657,6 @@ const rowsPerPage=15,charts={};
 let comboGroup='day',totalGroup='day';
 let topSortKey='revenue',dayMetric='revenue',weekMetric='revenue';
 let dayHidden=new Set(),weekHidden=new Set();
-
 const allData =()=>activeGW==='stripe'?[...STRIPE_DATA]:activeGW==='dlocal'?[...DLOCAL_DATA]:[...STRIPE_DATA,...DLOCAL_DATA];
 const isPaid  =r=>r.status==='paid';
 const isFailed=r=>r.status==='failed';
@@ -702,16 +665,14 @@ const fmt     =(n,d=0)=>new Intl.NumberFormat('en-US',{minimumFractionDigits:d,m
 const fmtUSD  =n=>'$'+fmt(n,2);
 const csvURL  =gid=>`https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}`;
 const vRows   =data=>data.filter(r=>r.date&&VALID_DATE.test(r.date));
-
 // ═══════════════════════════════════════════════════════════════════
 //  CARGA
 // ═══════════════════════════════════════════════════════════════════
 async function loadSheet(gid){const r=await fetch(csvURL(gid));if(!r.ok)throw new Error('HTTP '+r.status);return r.text();}
-
 async function reloadData(){
   document.getElementById('loadingScreen').style.display='flex';
   document.getElementById('errorScreen').style.display='none';
-  document.getElementById('lastUpdated').textContent='Actualizando\u2026';
+  document.getElementById('lastUpdated').textContent='Actualizando…';
   try{
     const[sCSV,dCSV]=await Promise.all([loadSheet(GID_STRIPE),loadSheet(GID_DLOCAL)]);
     STRIPE_DATA=parseStripeRows(parseCSV(sCSV));
@@ -725,11 +686,10 @@ async function reloadData(){
     document.getElementById('loadingScreen').style.display='none';
     document.getElementById('errorScreen').style.display='flex';
     document.getElementById('errorMsg').textContent='Error: '+err.message;
-    document.getElementById('errorHint').innerHTML='Verifica que el Sheet est\u00e9 compartido p\u00fablicamente. '+
+    document.getElementById('errorHint').innerHTML='Verifica que el Sheet esté compartido públicamente. '+
       '<a href="'+csvURL(GID_DLOCAL)+'" target="_blank" style="color:var(--accent)">Probar CSV dLocal</a>';
   }
 }
-
 // ═══════════════════════════════════════════════════════════════════
 //  GATEWAY / FILTROS
 // ═══════════════════════════════════════════════════════════════════
@@ -737,11 +697,10 @@ function setGateway(gw,btn){
   activeGW=gw;
   document.querySelectorAll('.gw-tab').forEach(t=>t.className='gw-tab');
   btn.classList.add('active-'+gw);
-  document.getElementById('gwSub').textContent={all:'Stripe + dLocal \u00b7 An\u00e1lisis \u00b7 SegurosFly \u00b7 UTC\u22125 Colombia',stripe:'Stripe \u00b7 Card payments \u00b7 SegurosFly \u00b7 UTC\u22125 Colombia',dlocal:'dLocal \u00b7 M\u00e9todos locales \u00b7 SegurosFly \u00b7 UTC\u22125 Colombia'}[gw];
+  document.getElementById('gwSub').textContent={all:'Stripe + dLocal · Análisis · SegurosFly · UTC−5 Colombia',stripe:'Stripe · Card payments · SegurosFly · UTC−5 Colombia',dlocal:'dLocal · Métodos locales · SegurosFly · UTC−5 Colombia'}[gw];
   document.getElementById('tableGwLabel').textContent={all:'Todas',stripe:'Solo Stripe',dlocal:'Solo dLocal'}[gw];
   resetFilters();
 }
-
 function initFilters(){
   const pool=allData();
   const dates=pool.map(d=>d.date).filter(d=>d&&VALID_DATE.test(d)).sort();
@@ -753,12 +712,10 @@ function initFilters(){
   const ctS=document.getElementById('filterCountry');ctS.innerHTML='<option value="">Todos</option>';
   [...new Set(pool.filter(d=>d.country).map(d=>d.country))].sort().forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;ctS.appendChild(o);});
 }
-
 function applyFilters(){
   const from=document.getElementById('dateFrom').value,to=document.getElementById('dateTo').value;
   const year=document.getElementById('filterYear').value,curr=document.getElementById('filterCurrency').value;
   const status=document.getElementById('filterStatus').value,country=document.getElementById('filterCountry').value;
-
   filteredData=allData().filter(r=>{
     if(!r.date||!VALID_DATE.test(r.date))return false;
     if(from&&r.date<from)return false;
@@ -769,28 +726,23 @@ function applyFilters(){
     if(status==='paid'&&!isPaid(r))return false;
     if(status==='failed'&&!isFailed(r))return false;
     if(status==='pending'&&!isPend(r))return false;
-
     // ── Filtro de mes (multiselect) ──
     if(selectedMonths.size>0){
       const m=parseInt(r.date.slice(5,7),10);
       if(!selectedMonths.has(m))return false;
     }
-
     return true;
   });
   currentPage=1;updateAll();
 }
-
 function resetFilters(){
   // Limpiar período rápido
   activeQuickPeriod=null;
   document.querySelectorAll('.qb').forEach(b=>b.classList.remove('active'));
-
   // Limpiar mes multiselect
   selectedMonths.clear();
   document.querySelectorAll('.mc').forEach(el=>el.classList.remove('sel'));
   updateMonthTriggerLabel();
-
   initFilters();
   filteredData=allData();
   currentPage=1;
@@ -798,7 +750,6 @@ function resetFilters(){
   const ts=document.getElementById('tableSearch');if(ts)ts.value='';
   updateAll();
 }
-
 // ═══════════════════════════════════════════════════════════════════
 //  KPIs
 // ═══════════════════════════════════════════════════════════════════
@@ -808,46 +759,57 @@ function updateKPIs(){
   const failRate=filteredData.length?(failed.length/filteredData.length)*100:0;
   const uniq=new Set(filteredData.filter(r=>r.email).map(r=>r.email)).size;
   document.getElementById('kpiRev').textContent=fmtUSD(rev);
-  document.getElementById('kpiRevSub').textContent='\u2713 '+paid.length+' transacciones';
+  document.getElementById('kpiRevSub').textContent='✓ '+paid.length+' transacciones';
   document.getElementById('kpiTx').textContent=fmt(filteredData.length);
-  document.getElementById('kpiTxSub').textContent=paid.length+' exitosas \u00b7 '+failed.length+' fallidas \u00b7 '+pending.length+' pend.';
+  document.getElementById('kpiTxSub').textContent=paid.length+' exitosas · '+failed.length+' fallidas · '+pending.length+' pend.';
   document.getElementById('kpiAvg').textContent=fmtUSD(avg);
-  document.getElementById('kpiAvgSub').textContent=paid.length?'M\u00edn '+fmtUSD(Math.min(...paid.map(r=>r.usd)))+' \u00b7 M\u00e1x '+fmtUSD(Math.max(...paid.map(r=>r.usd))):'—';
+  document.getElementById('kpiAvgSub').textContent=paid.length?'Mín '+fmtUSD(Math.min(...paid.map(r=>r.usd)))+' · Máx '+fmtUSD(Math.max(...paid.map(r=>r.usd))):'—';
   document.getElementById('kpiCust').textContent=fmt(uniq);
   document.getElementById('kpiFail').textContent=fmt(failRate,1)+'%';
   const fb=document.getElementById('kpiFailBadge');
-  fb.textContent=failRate>30?'\u26a0 Alta':failRate>15?'~ Moderada':'\u2713 Baja';
+  fb.textContent=failRate>30?'⚠ Alta':failRate>15?'~ Moderada':'✓ Baja';
   fb.className='kpi-badge '+(failRate>30?'bg-red':failRate>15?'bg-gray':'bg-green');
-  const sRev=filteredData.filter(r=>r.gateway==='stripe'&&isPaid(r)).reduce((s,r)=>s+r.usd,0);
-  const dRev=filteredData.filter(r=>r.gateway==='dlocal'&&isPaid(r)).reduce((s,r)=>s+r.usd,0);
+  const sPaidRows=filteredData.filter(r=>r.gateway==='stripe'&&isPaid(r));
+  const sRev=sPaidRows.reduce((s,r)=>s+r.usd,0);
+  const dPaidRows=filteredData.filter(r=>r.gateway==='dlocal'&&isPaid(r));
+  const dRev=dPaidRows.reduce((s,r)=>s+r.usd,0);
+  const dTotalTx=dPaidRows.reduce((s,r)=>s+(r.totalUsd||0),0);
   const sTx=filteredData.filter(r=>r.gateway==='stripe').length;
   const dTx=filteredData.filter(r=>r.gateway==='dlocal').length;
+  const sFeeTotal=sPaidRows.reduce((s,r)=>s+(r.feeUsd||0),0);
+  const sRefundTotal=sPaidRows.reduce((s,r)=>s+(r.refUsd||0),0);
+  const sCashBruto=sRev-sFeeTotal-sRefundTotal;
   document.getElementById('kpiStripeRev').textContent=fmtUSD(sRev);
-  document.getElementById('kpiStripeSub').textContent=filteredData.filter(r=>r.gateway==='stripe'&&isPaid(r)).length+' tx exitosas';
+  document.getElementById('kpiStripeSub').textContent=sPaidRows.length+' tx exitosas';
   document.getElementById('kpiStripeCount').textContent=sTx+' total';
+  document.getElementById('kpiStripeCashBruto').textContent=fmtUSD(sCashBruto);
+  document.getElementById('kpiStripeCashBrutoSub').textContent=fmtUSD(sFeeTotal)+' fee · '+fmtUSD(sRefundTotal)+' reemb.';
+  const scbPct=sRev>0?(sCashBruto/sRev*100):0;
+  const scbBadge=document.getElementById('kpiStripeCashBrutoBadge');
+  scbBadge.textContent=fmt(scbPct,1)+'% neto';
+  scbBadge.className='kpi-badge '+(scbPct<0?'bg-red':scbPct<90?'bg-gray':'bg-green');
+  document.getElementById('kpiDlocalTotal').textContent=fmtUSD(dTotalTx);
+  document.getElementById('kpiDlocalTotalSub').textContent=dPaidRows.length+' tx completadas';
   document.getElementById('kpiDlocalRev').textContent=fmtUSD(dRev);
-  document.getElementById('kpiDlocalSub').textContent=filteredData.filter(r=>r.gateway==='dlocal'&&isPaid(r)).length+' tx completadas';
+  document.getElementById('kpiDlocalSub').textContent=dPaidRows.length+' tx completadas';
   document.getElementById('kpiDlocalCount').textContent=dTx+' total';
 }
-
 // ═══════════════════════════════════════════════════════════════════
 //  UTILES GRAFICAS
 // ═══════════════════════════════════════════════════════════════════
 function dc(id){if(charts[id]){charts[id].destroy();delete charts[id];}}
 const bO=(e={})=>({responsive:true,plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:9,cornerRadius:8}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:10}}},y:{grid:{color:'#F1F5F9'},ticks:{color:'#94A3B8',font:{size:10}}}},...e});
-
 function weekKey(ds){const d=new Date(ds+'T00:00:00'),day=d.getDay(),diff=day===0?-6:1-day;d.setDate(d.getDate()+diff);return d.toISOString().slice(0,10);}
 function monthKey(d){return d.slice(0,7);}
 function quarterKey(d){const[y,m]=d.split('-').map(Number);return y+'-Q'+Math.ceil(m/3);}
 function groupKey(d,g){if(g==='week')return weekKey(d);if(g==='month')return monthKey(d);if(g==='quarter')return quarterKey(d);return d;}
-function weekLabel(mon){const m=new Date(mon+'T00:00:00'),s=new Date(m);s.setDate(s.getDate()+6);return m.getDate()+'/'+(m.getMonth()+1)+'\u2013'+s.getDate()+'/'+(s.getMonth()+1);}
+function weekLabel(mon){const m=new Date(mon+'T00:00:00'),s=new Date(m);s.setDate(s.getDate()+6);return m.getDate()+'/'+(m.getMonth()+1)+'–'+s.getDate()+'/'+(s.getMonth()+1);}
 function groupLabel(k,g){
   if(!k||!VALID_DATE.test(k.length>=10?k.slice(0,10):k))return k||'';
   if(g==='week')return weekLabel(k);
   if(g==='month'){const[y,m]=k.split('-');return(MONTH_NAMES[+m-1]||'')+' '+y;}
   if(g==='quarter')return k.replace('-',' ');return k;
 }
-
 function setComboGroup(g,btn){btn.closest('.tg-bar').querySelectorAll('.tg-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');comboGroup=g;buildCombo();}
 function buildCombo(){
   dc('combo');
@@ -863,9 +825,8 @@ function buildCombo(){
   if(activeGW!=='stripe')ds.push({type:'bar',label:'Revenue dLocal',data:keys.map(k=>+(dRev[k]||0).toFixed(2)),backgroundColor:'rgba(0,177,79,.55)',borderColor:'#00B14F',borderWidth:1.5,borderRadius:4,borderSkipped:false,yAxisID:'yRev',order:2});
   if(activeGW!=='dlocal')ds.push({type:'line',label:'Tx Stripe',data:keys.map(k=>sTx[k]||0),borderColor:'#6772E5',backgroundColor:'rgba(103,114,229,.12)',borderWidth:2.5,pointRadius:4,pointHoverRadius:6,pointBackgroundColor:'#6772E5',tension:.4,fill:false,yAxisID:'yTx',order:1});
   if(activeGW!=='stripe')ds.push({type:'line',label:'Tx dLocal',data:keys.map(k=>dTx[k]||0),borderColor:'#00B14F',backgroundColor:'rgba(0,177,79,.12)',borderWidth:2.5,pointRadius:4,pointHoverRadius:6,pointBackgroundColor:'#00B14F',tension:.4,fill:false,yAxisID:'yTx',order:1});
-  charts.combo=new Chart(document.getElementById('cCombo'),{type:'bar',data:{labels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:10,cornerRadius:8,callbacks:{label:ctx=>ctx.dataset.label.startsWith('Revenue')?' '+ctx.dataset.label+': $'+fmt(ctx.parsed.y,2):' '+ctx.dataset.label+': '+fmt(ctx.parsed.y)+' tx'}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:10}}},yRev:{type:'linear',position:'left',grid:{color:'#F1F5F9'},ticks:{color:'#6772E5',font:{size:10},callback:v=>'$'+fmt(v,0)},title:{display:true,text:'Revenue (USD)',color:'#94A3B8',font:{size:9}}},yTx:{type:'linear',position:'right',grid:{display:false},ticks:{color:'#94A3B8',font:{size:10},callback:v=>fmt(v)+' tx'},title:{display:true,text:'N\u00ba Transacciones',color:'#94A3B8',font:{size:9}}}}}});
+  charts.combo=new Chart(document.getElementById('cCombo'),{type:'bar',data:{labels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:10,cornerRadius:8,callbacks:{label:ctx=>ctx.dataset.label.startsWith('Revenue')?' '+ctx.dataset.label+': $'+fmt(ctx.parsed.y,2):' '+ctx.dataset.label+': '+fmt(ctx.parsed.y)+' tx'}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:10}}},yRev:{type:'linear',position:'left',grid:{color:'#F1F5F9'},ticks:{color:'#6772E5',font:{size:10},callback:v=>'$'+fmt(v,0)},title:{display:true,text:'Revenue (USD)',color:'#94A3B8',font:{size:9}}},yTx:{type:'linear',position:'right',grid:{display:false},ticks:{color:'#94A3B8',font:{size:10},callback:v=>fmt(v)+' tx'},title:{display:true,text:'Nº Transacciones',color:'#94A3B8',font:{size:9}}}}}});
 }
-
 function setTotalGroup(g,btn){btn.closest('.tg-bar').querySelectorAll('.tg-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');totalGroup=g;buildTotal();}
 function buildTotal(){
   dc('total');
@@ -875,34 +836,30 @@ function buildTotal(){
   charts.total=new Chart(document.getElementById('cTotal'),{type:'bar',data:{labels,datasets:[
     {type:'bar',label:'Revenue Total',data:keys.map(k=>+(rev[k]||0).toFixed(2)),backgroundColor:'rgba(37,99,235,.55)',borderColor:'#2563EB',borderWidth:1.5,borderRadius:4,borderSkipped:false,yAxisID:'yRev',order:2},
     {type:'line',label:'Tx Totales',data:keys.map(k=>tx[k]||0),borderColor:'#7C3AED',backgroundColor:'rgba(124,58,237,.12)',borderWidth:2.5,pointRadius:4,pointHoverRadius:6,pointBackgroundColor:'#7C3AED',tension:.4,fill:false,yAxisID:'yTx',order:1}
-  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:10,cornerRadius:8,callbacks:{label:ctx=>ctx.dataset.label==='Revenue Total'?' Revenue: $'+fmt(ctx.parsed.y,2):' Transacciones: '+fmt(ctx.parsed.y)+' tx'}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:10}}},yRev:{type:'linear',position:'left',grid:{color:'#F1F5F9'},ticks:{color:'#2563EB',font:{size:10},callback:v=>'$'+fmt(v,0)},title:{display:true,text:'Revenue (USD)',color:'#94A3B8',font:{size:9}}},yTx:{type:'linear',position:'right',grid:{display:false},ticks:{color:'#7C3AED',font:{size:10},callback:v=>fmt(v)+' tx'},title:{display:true,text:'N\u00ba Transacciones',color:'#94A3B8',font:{size:9}}}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:10,cornerRadius:8,callbacks:{label:ctx=>ctx.dataset.label==='Revenue Total'?' Revenue: $'+fmt(ctx.parsed.y,2):' Transacciones: '+fmt(ctx.parsed.y)+' tx'}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:10}}},yRev:{type:'linear',position:'left',grid:{color:'#F1F5F9'},ticks:{color:'#2563EB',font:{size:10},callback:v=>'$'+fmt(v,0)},title:{display:true,text:'Revenue (USD)',color:'#94A3B8',font:{size:9}}},yTx:{type:'linear',position:'right',grid:{display:false},ticks:{color:'#7C3AED',font:{size:10},callback:v=>fmt(v)+' tx'},title:{display:true,text:'Nº Transacciones',color:'#94A3B8',font:{size:9}}}}}});
 }
-
 function buildGwBar(){dc('gb');const sR=filteredData.filter(r=>r.gateway==='stripe'&&isPaid(r)).reduce((s,r)=>s+r.usd,0),dR=filteredData.filter(r=>r.gateway==='dlocal'&&isPaid(r)).reduce((s,r)=>s+r.usd,0),sTx=filteredData.filter(r=>r.gateway==='stripe').length,dTx=filteredData.filter(r=>r.gateway==='dlocal').length;charts.gb=new Chart(document.getElementById('cGwBar'),{type:'bar',data:{labels:['Stripe','dLocal'],datasets:[{data:[sR,dR],backgroundColor:['rgba(103,114,229,.2)','rgba(0,177,79,.18)'],borderColor:['#6772E5','#00B14F'],borderWidth:2,borderRadius:8,borderSkipped:false}]},options:{...bO(),plugins:{legend:{display:false},tooltip:{callbacks:{afterLabel:ctx=>[sTx,dTx][ctx.dataIndex]+' transacciones'},backgroundColor:'#0F172A',bodyColor:'#94A3B8',padding:9,cornerRadius:8}}}});}
-
 function buildPayMethod(){dc('pm');const cnt={};filteredData.filter(r=>r.gateway==='dlocal'&&r.method).forEach(r=>{cnt[r.method]=(cnt[r.method]||0)+1;});const lbs=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]).slice(0,10);charts.pm=new Chart(document.getElementById('cPayMethod'),{type:'bar',data:{labels:lbs,datasets:[{data:lbs.map(l=>cnt[l]),backgroundColor:lbs.map((_,i)=>P[i%P.length]+'33'),borderColor:lbs.map((_,i)=>P[i%P.length]),borderWidth:1.5,borderRadius:6,borderSkipped:false}]},options:{...bO(),indexAxis:'y'}});}
-
 function buildStatusDough(){dc('sd');const paid=filteredData.filter(isPaid).length,failed=filteredData.filter(isFailed).length,pending=filteredData.filter(isPend).length,total=filteredData.length||1;charts.sd=new Chart(document.getElementById('cStatusDough'),{type:'doughnut',data:{labels:['Exitosas','Fallidas','Pendientes'],datasets:[{data:[paid,failed,pending],backgroundColor:['#10B981','#EF4444','#F59E0B'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,cutout:'72%',plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',bodyColor:'#94A3B8',padding:9,cornerRadius:8}}}});const leg=document.getElementById('statusLegend'),items=[{l:'Exitosas',c:paid,p:(paid/total*100).toFixed(1),col:'#10B981'},{l:'Fallidas',c:failed,p:(failed/total*100).toFixed(1),col:'#EF4444'},{l:'Pendientes',c:pending,p:(pending/total*100).toFixed(1),col:'#F59E0B'}];leg.innerHTML=items.map(it=>'<div class="mini-stat"><span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:'+it.col+';display:inline-block"></span>'+it.l+'</span><span style="font-weight:700">'+it.c+' <span style="color:var(--muted);font-weight:400">('+it.p+'%)</span></span></div><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:'+it.p+'%;background:'+it.col+'"></div></div>').join('');}
-
 function buildCurrBar(){dc('cb');const m={};filteredData.filter(isPaid).forEach(r=>{m[r.currency.toUpperCase()]=(m[r.currency.toUpperCase()]||0)+r.usd;});const lbs=Object.keys(m).sort((a,b)=>m[b]-m[a]);charts.cb=new Chart(document.getElementById('cCurrBar'),{type:'bar',data:{labels:lbs,datasets:[{data:lbs.map(l=>m[l]),backgroundColor:lbs.map((_,i)=>P[i%P.length]),borderRadius:6,borderSkipped:false}]},options:{...bO(),plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' $'+fmt(ctx.parsed.y,2)},backgroundColor:'#0F172A',bodyColor:'#94A3B8',padding:9,cornerRadius:8}}}});}
-
 function buildCountryBar(){dc('ctb');const m={};filteredData.filter(r=>r.gateway==='dlocal'&&isPaid(r)&&r.country).forEach(r=>{m[r.country]=(m[r.country]||0)+r.usd;});const lbs=Object.keys(m).sort((a,b)=>m[b]-m[a]);charts.ctb=new Chart(document.getElementById('cCountryBar'),{type:'bar',data:{labels:lbs,datasets:[{data:lbs.map(l=>m[l]),backgroundColor:'rgba(0,177,79,.18)',borderColor:'#00B14F',borderWidth:1.5,borderRadius:6,borderSkipped:false}]},options:{...bO(),plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' $'+fmt(ctx.parsed.y,2)},backgroundColor:'#0F172A',bodyColor:'#94A3B8',padding:9,cornerRadius:8}}}});}
-
 function buildDeclineBar(){dc('db');const cnt={};filteredData.filter(isFailed).forEach(r=>{const k=r.declineReason||'Cancelada';cnt[k]=(cnt[k]||0)+1;});const lbs=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]).slice(0,7),nice=s=>s.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());charts.db=new Chart(document.getElementById('cDeclineBar'),{type:'bar',data:{labels:lbs.map(nice),datasets:[{data:lbs.map(l=>cnt[l]),backgroundColor:'rgba(239,68,68,.14)',borderColor:'#EF4444',borderWidth:1.5,borderRadius:6,borderSkipped:false}]},options:{...bO(),indexAxis:'y'}});}
-
-function buildHistogram(){dc('hg');const amounts=filteredData.filter(isPaid).map(r=>r.usd).filter(v=>v>0);if(!amounts.length)return;const bkts=[0,25,50,75,100,125,150,175,200,300],lbs=[],cnts=[];for(let i=0;i<bkts.length-1;i++){lbs.push('$'+bkts[i]+'\u2013'+bkts[i+1]);cnts.push(amounts.filter(a=>a>=bkts[i]&&a<bkts[i+1]).length);}lbs.push('$300+');cnts.push(amounts.filter(a=>a>=300).length);charts.hg=new Chart(document.getElementById('cHistogram'),{type:'bar',data:{labels:lbs,datasets:[{data:cnts,backgroundColor:'rgba(37,99,235,.14)',borderColor:'#2563EB',borderWidth:1.5,borderRadius:4,borderSkipped:false}]},options:{...bO(),plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' '+ctx.parsed.y+' transacciones'},backgroundColor:'#0F172A',bodyColor:'#94A3B8',padding:9,cornerRadius:8}}}});}
-
+function buildHistogram(){dc('hg');const amounts=filteredData.filter(isPaid).map(r=>r.usd).filter(v=>v>0);if(!amounts.length)return;const bkts=[0,25,50,75,100,125,150,175,200,300],lbs=[],cnts=[];for(let i=0;i<bkts.length-1;i++){lbs.push('$'+bkts[i]+'–'+bkts[i+1]);cnts.push(amounts.filter(a=>a>=bkts[i]&&a<bkts[i+1]).length);}lbs.push('$300+');cnts.push(amounts.filter(a=>a>=300).length);charts.hg=new Chart(document.getElementById('cHistogram'),{type:'bar',data:{labels:lbs,datasets:[{data:cnts,backgroundColor:'rgba(37,99,235,.14)',borderColor:'#2563EB',borderWidth:1.5,borderRadius:4,borderSkipped:false}]},options:{...bO(),plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' '+ctx.parsed.y+' transacciones'},backgroundColor:'#0F172A',bodyColor:'#94A3B8',padding:9,cornerRadius:8}}}});}
 function buildFeeCompare(){
   dc('fc');
   const sPaid=filteredData.filter(r=>r.gateway==='stripe'&&isPaid(r)),dPaid=filteredData.filter(r=>r.gateway==='dlocal'&&isPaid(r));
   const sRev=sPaid.reduce((s,r)=>s+r.usd,0),dRev=dPaid.reduce((s,r)=>s+r.usd,0);
+  const dTotal=dPaid.reduce((s,r)=>s+(r.totalUsd||0),0);
   const sFee=sPaid.reduce((s,r)=>s+(r.feeUsd||0),0),dFee=dPaid.reduce((s,r)=>s+(r.feeUsd||0),0);
-  const sPct=sRev>0?(sFee/sRev*100):0,dPct=dRev>0?(dFee/dRev*100):0;
+  const sRefund=sPaid.reduce((s,r)=>s+(r.refUsd||0),0);
+  const sCashBruto=sRev-sFee-sRefund;
+  const sPct=sRev>0?(sFee/sRev*100):0,dPct=dTotal>0?(dFee/dTotal*100):0;
   document.getElementById('fcStripeRev').textContent=fmtUSD(sRev);document.getElementById('fcStripeFee').textContent=fmtUSD(sFee);document.getElementById('fcStripePct').textContent=fmt(sPct,2)+'%';
+  document.getElementById('fcStripeRefund').textContent=fmtUSD(sRefund);document.getElementById('fcStripeCashBruto').textContent=fmtUSD(sCashBruto);
+  document.getElementById('fcDlocalTotal').textContent=fmtUSD(dTotal);
   document.getElementById('fcDlocalRev').textContent=fmtUSD(dRev);document.getElementById('fcDlocalFee').textContent=fmtUSD(dFee);document.getElementById('fcDlocalPct').textContent=fmt(dPct,2)+'%';
-  charts.fc=new Chart(document.getElementById('cFeeCompare'),{type:'bar',data:{labels:['Stripe','dLocal'],datasets:[{type:'bar',label:'Revenue USD',data:[sRev,dRev],backgroundColor:['rgba(103,114,229,.18)','rgba(0,177,79,.15)'],borderColor:['#6772E5','#00B14F'],borderWidth:2,borderRadius:7,borderSkipped:false,yAxisID:'yLeft',order:2},{type:'bar',label:'Fee USD',data:[sFee,dFee],backgroundColor:['rgba(239,68,68,.18)','rgba(239,68,68,.18)'],borderColor:['#EF4444','#EF4444'],borderWidth:2,borderRadius:7,borderSkipped:false,yAxisID:'yLeft',order:2},{type:'line',label:'Fee %',data:[sPct,dPct],borderColor:'#7C3AED',backgroundColor:'rgba(124,58,237,.12)',borderWidth:2.5,pointRadius:7,pointHoverRadius:9,pointBackgroundColor:'#7C3AED',tension:0,yAxisID:'yRight',order:1}]},options:{responsive:true,plugins:{legend:{display:true,position:'top',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:10,cornerRadius:8,callbacks:{label:ctx=>ctx.dataset.label==='Fee %'?' Fee %: '+fmt(ctx.parsed.y,2)+'%':' '+ctx.dataset.label+': $'+fmt(ctx.parsed.y,2)}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:11}}},yLeft:{position:'left',grid:{color:'#F1F5F9'},ticks:{color:'#94A3B8',font:{size:10},callback:v=>'$'+fmt(v,0)}},yRight:{position:'right',grid:{display:false},ticks:{color:'#7C3AED',font:{size:10},callback:v=>fmt(v,2)+'%'}}}}}); 
+  charts.fc=new Chart(document.getElementById('cFeeCompare'),{type:'bar',data:{labels:['Stripe','dLocal'],datasets:[{type:'bar',label:'Revenue USD',data:[sRev,dRev],backgroundColor:['rgba(103,114,229,.18)','rgba(0,177,79,.15)'],borderColor:['#6772E5','#00B14F'],borderWidth:2,borderRadius:7,borderSkipped:false,yAxisID:'yLeft',order:2},{type:'bar',label:'Fee USD',data:[sFee,dFee],backgroundColor:['rgba(239,68,68,.18)','rgba(239,68,68,.18)'],borderColor:['#EF4444','#EF4444'],borderWidth:2,borderRadius:7,borderSkipped:false,yAxisID:'yLeft',order:2},{type:'line',label:'Fee %',data:[sPct,dPct],borderColor:'#7C3AED',backgroundColor:'rgba(124,58,237,.12)',borderWidth:2.5,pointRadius:7,pointHoverRadius:9,pointBackgroundColor:'#7C3AED',tension:0,yAxisID:'yRight',order:1}]},options:{responsive:true,plugins:{legend:{display:true,position:'top',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:10,cornerRadius:8,callbacks:{label:ctx=>ctx.dataset.label==='Fee %'?' Fee %: '+fmt(ctx.parsed.y,2)+'%':' '+ctx.dataset.label+': $'+fmt(ctx.parsed.y,2)}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:11}}},yLeft:{position:'left',grid:{color:'#F1F5F9'},ticks:{color:'#94A3B8',font:{size:10},callback:v=>'$'+fmt(v,0)}},yRight:{position:'right',grid:{display:false},ticks:{color:'#7C3AED',font:{size:10},callback:v=>fmt(v,2)+'%'}}}}});
 }
-
 function setTopSort(key,btn){topSortKey=key;document.querySelectorAll('.top-sort-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');buildTopClients();}
 function buildTopClients(){
   const byEmail={};
@@ -913,12 +870,11 @@ function buildTopClients(){
   const body=document.getElementById('topClientsBody');
   if(!rows.length){body.innerHTML='<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--muted)">Sin datos</td></tr>';return;}
   body.innerHTML=rows.map((r,i)=>{
-    const rank=i+1,badge=rank===1?'<span class="rank-badge rank-1">\ud83e\udd47</span>':rank===2?'<span class="rank-badge rank-2">\ud83e\udd48</span>':rank===3?'<span class="rank-badge rank-3">\ud83e\udd49</span>':'<span class="rank-badge rank-n">'+rank+'</span>';
+    const rank=i+1,badge=rank===1?'<span class="rank-badge rank-1">🥇</span>':rank===2?'<span class="rank-badge rank-2">🥈</span>':rank===3?'<span class="rank-badge rank-3">🥉</span>':'<span class="rank-badge rank-n">'+rank+'</span>';
     const pct=maxRev>0?(r.revenue/maxRev*100):0;
     return '<tr><td>'+badge+'</td><td style="font-size:.76rem;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+r.email+'">'+r.email+'</td><td style="text-align:right;font-weight:700;font-family:monospace">'+fmt(r.count)+'</td><td style="text-align:right;font-weight:700;font-family:monospace;color:var(--accent)">'+fmtUSD(r.revenue)+'</td><td style="text-align:right;font-family:monospace;color:var(--muted)">'+fmtUSD(r.avg)+'</td><td style="white-space:nowrap"><div class="progress-bg" style="width:70px"><div class="progress-fill" style="width:'+pct.toFixed(1)+'%"></div></div> <span style="font-size:.66rem;color:var(--muted)">'+pct.toFixed(0)+'%</span></td></tr>';
   }).join('');
 }
-
 function setDayMetric(m,btn){dayMetric=m;btn.closest('.tg-bar').querySelectorAll('.tg-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');buildDayOfMonth();}
 function buildDayOfMonth(){
   dc('dom');
@@ -926,26 +882,24 @@ function buildDayOfMonth(){
   vRows(src).forEach(r=>{const mk=r.date.slice(0,7),day=parseInt(r.date.slice(8,10));if(!mk||!day)return;if(!byMonth[mk])byMonth[mk]=Array(32).fill(0);byMonth[mk][day]+=dayMetric==='revenue'?r.usd:1;});
   const months=Object.keys(byMonth).sort(),labels=Array.from({length:31},(_,i)=>String(i+1));
   const datasets=months.map((mk,idx)=>{const[y,m]=mk.split('-'),color=MONTH_COLORS[idx%MONTH_COLORS.length];return{label:MONTH_NAMES[+m-1]+' '+y,data:Array.from({length:31},(_,i)=>byMonth[mk][i+1]||null),borderColor:color,backgroundColor:color+'18',borderWidth:2,pointRadius:3,pointHoverRadius:5,tension:.35,hidden:dayHidden.has(mk),monthKey:mk};});
-  charts.dom=new Chart(document.getElementById('cDayOfMonth'),{type:'line',data:{labels,datasets},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:9,cornerRadius:8,callbacks:{label:ctx=>{if(ctx.parsed.y===null)return null;return' '+ctx.dataset.label+': '+(dayMetric==='revenue'?fmtUSD(ctx.parsed.y):fmt(ctx.parsed.y)+' tx');},title:items=>'D\u00eda '+items[0].label+' del mes'}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:10}},title:{display:true,text:'D\u00eda del mes',color:'#94A3B8',font:{size:10}}},y:{grid:{color:'#F1F5F9'},ticks:{color:'#94A3B8',font:{size:10},callback:v=>dayMetric==='revenue'?'$'+fmt(v,0):fmt(v)}}}}});
+  charts.dom=new Chart(document.getElementById('cDayOfMonth'),{type:'line',data:{labels,datasets},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:9,cornerRadius:8,callbacks:{label:ctx=>{if(ctx.parsed.y===null)return null;return' '+ctx.dataset.label+': '+(dayMetric==='revenue'?fmtUSD(ctx.parsed.y):fmt(ctx.parsed.y)+' tx');},title:items=>'Día '+items[0].label+' del mes'}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:10}},title:{display:true,text:'Día del mes',color:'#94A3B8',font:{size:10}}},y:{grid:{color:'#F1F5F9'},ticks:{color:'#94A3B8',font:{size:10},callback:v=>dayMetric==='revenue'?'$'+fmt(v,0):fmt(v)}}}}});
   const pe=document.getElementById('dayMonthPills');pe.innerHTML='';
   months.forEach((mk,idx)=>{const[y,m]=mk.split('-'),color=MONTH_COLORS[idx%MONTH_COLORS.length];const btn=document.createElement('button');btn.className='month-pill'+(dayHidden.has(mk)?' hidden-ds':'');btn.textContent=MONTH_NAMES[+m-1]+' '+y;btn.style.borderColor=color;btn.style.color=dayHidden.has(mk)?'#94A3B8':color;btn.style.background=dayHidden.has(mk)?'transparent':color+'18';btn.onclick=()=>{const ds=charts.dom.data.datasets.find(d=>d.monthKey===mk);if(!ds)return;ds.hidden=!ds.hidden;if(ds.hidden)dayHidden.add(mk);else dayHidden.delete(mk);charts.dom.update();btn.className='month-pill'+(ds.hidden?' hidden-ds':'');btn.style.color=ds.hidden?'#94A3B8':color;btn.style.background=ds.hidden?'transparent':color+'18';};pe.appendChild(btn);});
 }
-
 function setWeekMetric(m,btn){weekMetric=m;btn.closest('.tg-bar').querySelectorAll('.tg-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');buildWeekOfMonth();}
 function weekOfMonth(d){if(d<=7)return 0;if(d<=14)return 1;if(d<=21)return 2;if(d<=28)return 3;return 4;}
 function buildWeekOfMonth(){
   dc('wom');
   const src=weekMetric==='revenue'?filteredData.filter(isPaid):filteredData,byMonth={};
   vRows(src).forEach(r=>{const mk=r.date.slice(0,7),day=parseInt(r.date.slice(8,10)),wk=weekOfMonth(day);if(!mk||!day)return;if(!byMonth[mk])byMonth[mk]=[0,0,0,0,0];byMonth[mk][wk]+=weekMetric==='revenue'?r.usd:1;});
-  const months=Object.keys(byMonth).sort(),wL=['Week 1 (1\u20137)','Week 2 (8\u201314)','Week 3 (15\u201321)','Week 4 (22\u201328)','Week 5 (29\u201331)'];
+  const months=Object.keys(byMonth).sort(),wL=['Week 1 (1–7)','Week 2 (8–14)','Week 3 (15–21)','Week 4 (22–28)','Week 5 (29–31)'];
   const datasets=months.map((mk,idx)=>{const[y,m]=mk.split('-'),color=MONTH_COLORS[idx%MONTH_COLORS.length];return{label:MONTH_NAMES[+m-1]+' '+y,data:[...byMonth[mk]],borderColor:color,backgroundColor:color+'18',borderWidth:2,pointRadius:5,pointHoverRadius:7,tension:.35,hidden:weekHidden.has(mk),monthKey:mk};});
   charts.wom=new Chart(document.getElementById('cWeekOfMonth'),{type:'line',data:{labels:wL,datasets},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:9,cornerRadius:8,callbacks:{label:ctx=>' '+ctx.dataset.label+': '+(weekMetric==='revenue'?fmtUSD(ctx.parsed.y):fmt(ctx.parsed.y)+' tx')}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:10}}},y:{grid:{color:'#F1F5F9'},ticks:{color:'#94A3B8',font:{size:10},callback:v=>weekMetric==='revenue'?'$'+fmt(v,0):fmt(v)}}}}});
   const pe=document.getElementById('weekMonthPills');pe.innerHTML='';
   months.forEach((mk,idx)=>{const[y,m]=mk.split('-'),color=MONTH_COLORS[idx%MONTH_COLORS.length];const btn=document.createElement('button');btn.className='month-pill'+(weekHidden.has(mk)?' hidden-ds':'');btn.textContent=MONTH_NAMES[+m-1]+' '+y;btn.style.borderColor=color;btn.style.color=weekHidden.has(mk)?'#94A3B8':color;btn.style.background=weekHidden.has(mk)?'transparent':color+'18';btn.onclick=()=>{const ds=charts.wom.data.datasets.find(d=>d.monthKey===mk);if(!ds)return;ds.hidden=!ds.hidden;if(ds.hidden)weekHidden.add(mk);else weekHidden.delete(mk);charts.wom.update();btn.className='month-pill'+(ds.hidden?' hidden-ds':'');btn.style.color=ds.hidden?'#94A3B8':color;btn.style.background=ds.hidden?'transparent':color+'18';};pe.appendChild(btn);});
   const insEl=document.getElementById('weekInsights');insEl.innerHTML='';
-  for(let w=0;w<5;w++){let bestMk=null,bestVal=-1;months.forEach(mk=>{if(byMonth[mk][w]>bestVal){bestVal=byMonth[mk][w];bestMk=mk;}});const wN=['Week 1','Week 2','Week 3','Week 4','Week 5'][w],wD=['1\u20137','8\u201314','15\u201321','22\u201328','29\u201331'][w];let mL='\u2014',vL='\u2014',color='#94A3B8';if(bestMk&&bestVal>0){const[y,m]=bestMk.split('-');mL=MONTH_NAMES[+m-1]+' '+y;vL=weekMetric==='revenue'?fmtUSD(bestVal):fmt(bestVal)+' tx';color=MONTH_COLORS[months.indexOf(bestMk)%MONTH_COLORS.length];}insEl.innerHTML+='<div class="insight-card"><div class="insight-week">'+wN+' <span style="color:var(--muted);font-weight:400">d\u00edas '+wD+'</span></div><div style="font-size:1.2rem;margin-bottom:4px">\ud83c\udfc6</div><div class="insight-month" style="color:'+color+'">'+mL+'</div><div class="insight-val">'+vL+'</div></div>';}
+  for(let w=0;w<5;w++){let bestMk=null,bestVal=-1;months.forEach(mk=>{if(byMonth[mk][w]>bestVal){bestVal=byMonth[mk][w];bestMk=mk;}});const wN=['Week 1','Week 2','Week 3','Week 4','Week 5'][w],wD=['1–7','8–14','15–21','22–28','29–31'][w];let mL='—',vL='—',color='#94A3B8';if(bestMk&&bestVal>0){const[y,m]=bestMk.split('-');mL=MONTH_NAMES[+m-1]+' '+y;vL=weekMetric==='revenue'?fmtUSD(bestVal):fmt(bestVal)+' tx';color=MONTH_COLORS[months.indexOf(bestMk)%MONTH_COLORS.length];}insEl.innerHTML+='<div class="insight-card"><div class="insight-week">'+wN+' <span style="color:var(--muted);font-weight:400">días '+wD+'</span></div><div style="font-size:1.2rem;margin-bottom:4px">🏆</div><div class="insight-month" style="color:'+color+'">'+mL+'</div><div class="insight-val">'+vL+'</div></div>';}
 }
-
 function getTableData(){
   const q=document.getElementById('tableSearch').value.toLowerCase(),s=document.getElementById('tableStatusFilter').value;
   let rows=filteredData.filter(r=>{
@@ -961,19 +915,17 @@ function statusChip(r){const cls=r.status==='paid'?'sc-paid':r.status==='failed'
 function renderTable(){
   const rows=getTableData(),total=rows.length,pages=Math.ceil(total/rowsPerPage)||1;currentPage=Math.min(currentPage,pages);
   const slice=rows.slice((currentPage-1)*rowsPerPage,currentPage*rowsPerPage);
-  document.getElementById('tableBody').innerHTML=slice.map(r=>'<tr><td style="color:var(--muted);font-size:.74rem">'+r.date+'</td><td>'+(r.gateway==='stripe'?'<span class="gwc gwc-s">Stripe</span>':'<span class="gwc gwc-d">dLocal</span>')+'</td><td><span class="fb">'+r.currency.toUpperCase()+'</span></td><td style="font-size:.76rem;font-weight:600">'+(r.country||'\u2014')+'</td><td style="font-weight:600">'+fmt(r.amount,r.amount<1000?2:0)+'</td><td style="font-weight:700;color:var(--accent)">'+(r.usd>0?fmtUSD(r.usd):'\u2014')+'</td><td>'+statusChip(r)+'</td><td style="color:var(--muted);font-size:.74rem;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(r.method||(r.declineReason?r.declineReason.replace(/_/g,' '):'\u2014'))+'</td><td style="color:var(--muted);font-size:.73rem;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+r.email+'</td></tr>').join('')||'<tr><td colspan="9" style="text-align:center;padding:22px;color:var(--muted)">Sin resultados</td></tr>';
+  document.getElementById('tableBody').innerHTML=slice.map(r=>'<tr><td style="color:var(--muted);font-size:.74rem">'+r.date+'</td><td>'+(r.gateway==='stripe'?'<span class="gwc gwc-s">Stripe</span>':'<span class="gwc gwc-d">dLocal</span>')+'</td><td><span class="fb">'+r.currency.toUpperCase()+'</span></td><td style="font-size:.76rem;font-weight:600">'+(r.country||'—')+'</td><td style="font-weight:600">'+fmt(r.amount,r.amount<1000?2:0)+'</td><td style="font-weight:700;color:var(--accent)">'+(r.usd>0?fmtUSD(r.usd):'—')+'</td><td>'+statusChip(r)+'</td><td style="color:var(--muted);font-size:.74rem;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(r.method||(r.declineReason?r.declineReason.replace(/_/g,' '):'—'))+'</td><td style="color:var(--muted);font-size:.73rem;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+r.email+'</td></tr>').join('')||'<tr><td colspan="9" style="text-align:center;padding:22px;color:var(--muted)">Sin resultados</td></tr>';
   document.getElementById('tableInfo').textContent='Mostrando '+Math.min(slice.length,rowsPerPage)+' de '+total+' filas';
   const pag=document.getElementById('pagination');pag.innerHTML='';
   const start=Math.max(1,currentPage-3),end=Math.min(pages,start+6);
   for(let p=start;p<=end;p++){const btn=document.createElement('button');btn.className='pb'+(p===currentPage?' act':'');btn.textContent=p;btn.onclick=()=>{currentPage=p;renderTable();};pag.appendChild(btn);}
 }
-
 function updateAll(){
   updateKPIs();buildCombo();buildTotal();buildGwBar();buildPayMethod();buildStatusDough();
   buildCurrBar();buildCountryBar();buildDeclineBar();buildHistogram();buildFeeCompare();
   buildTopClients();dayHidden=new Set();weekHidden=new Set();buildDayOfMonth();buildWeekOfMonth();renderTable();
 }
-
 document.addEventListener('DOMContentLoaded',reloadData);
 </script>
 </body>
