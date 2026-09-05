@@ -306,6 +306,37 @@
     </div>
     <div style="position:relative;height:280px"><canvas id="cTotal"></canvas></div>
   </div>
+  <div class="sdiv">Resumen por per&iacute;odo</div>
+  <div class="cc full" style="margin-bottom:13px">
+    <div class="ch" style="flex-wrap:wrap;gap:8px">
+      <div><div class="ct">Cash Bruto por Pasarela &mdash; Resumen por Per&iacute;odo</div><div class="cs">Usa los filtros principales &middot; agrupaci&oacute;n interna independiente</div></div>
+      <div class="tg-bar">
+        <button class="tg-btn active" onclick="setSummaryGroup('day',this)">D&iacute;a</button>
+        <button class="tg-btn" onclick="setSummaryGroup('week',this)">Semana</button>
+        <button class="tg-btn" onclick="setSummaryGroup('month',this)">Mes</button>
+        <button class="tg-btn" onclick="setSummaryGroup('quarter',this)">Trimestre</button>
+      </div>
+    </div>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr>
+          <th>Fecha</th>
+          <th style="text-align:right">Total Transacciones</th>
+          <th style="text-align:right">Cash Transaccional (USD)</th>
+          <th style="text-align:right">Cash Bruto Total (USD)</th>
+          <th>Moneda</th>
+          <th>Pa&iacute;s</th>
+          <th style="text-align:right">Stripe Cash Bruto (USD)</th>
+          <th style="text-align:right">% Stripe</th>
+          <th style="text-align:right">Fee Stripe</th>
+          <th style="text-align:right">dLocal Cash Bruto (USD)</th>
+          <th style="text-align:right">% dLocal</th>
+          <th style="text-align:right">Fee dLocal</th>
+        </tr></thead>
+        <tbody id="summaryTableBody"></tbody>
+      </table>
+    </div>
+  </div>
   <div class="sdiv">Comparaci&oacute;n por pasarela</div>
   <div class="g3">
     <div class="cc"><div class="ch"><div><div class="ct">Cash Bruto por Pasarela</div><div class="cs">USD &middot; exitosas</div></div></div><canvas id="cGwBar" height="220"></canvas></div>
@@ -668,7 +699,7 @@ function guessCountry(c){
 let STRIPE_DATA=[],DLOCAL_DATA=[],activeGW='all',filteredData=[];
 let sortKey='date',sortDir=-1,currentPage=1;
 const rowsPerPage=15,charts={};
-let comboGroup='day',totalGroup='day';
+let comboGroup='day',totalGroup='day',summaryGroup='day';
 let topSortKey='revenue',dayMetric='revenue',weekMetric='revenue';
 let dayHidden=new Set(),weekHidden=new Set();
 const allData =()=>activeGW==='stripe'?[...STRIPE_DATA]:activeGW==='dlocal'?[...DLOCAL_DATA]:[...STRIPE_DATA,...DLOCAL_DATA];
@@ -868,6 +899,52 @@ function buildTotal(){
     {type:'line',label:'Tx Totales',data:keys.map(k=>tx[k]||0),borderColor:'#7C3AED',backgroundColor:'rgba(124,58,237,.12)',borderWidth:2.5,pointRadius:4,pointHoverRadius:6,pointBackgroundColor:'#7C3AED',tension:.4,fill:false,yAxisID:'yTx',order:1}
   ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:10,cornerRadius:8,callbacks:{label:ctx=>ctx.dataset.label==='Cash Bruto Total'?' Cash Bruto: $'+fmt(ctx.parsed.y,2):' Transacciones: '+fmt(ctx.parsed.y)+' tx'}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:10}}},yRev:{type:'linear',position:'left',grid:{color:'#F1F5F9'},ticks:{color:'#2563EB',font:{size:10},callback:v=>'$'+fmt(v,0)},title:{display:true,text:'Cash Bruto (USD)',color:'#94A3B8',font:{size:9}}},yTx:{type:'linear',position:'right',grid:{display:false},ticks:{color:'#7C3AED',font:{size:10},callback:v=>fmt(v)+' tx'},title:{display:true,text:'Nº Transacciones',color:'#94A3B8',font:{size:9}}}}}});
 }
+function setSummaryGroup(g,btn){btn.closest('.tg-bar').querySelectorAll('.tg-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');summaryGroup=g;buildSummaryTable();}
+function buildSummaryTable(){
+  const byKey={};
+  vRows(filteredData).forEach(r=>{
+    const k=groupKey(r.date,summaryGroup);if(!k)return;
+    if(!byKey[k])byKey[k]={tx:0,sCashTx:0,sFee:0,sCashBruto:0,dCashTx:0,dFee:0,dCashBruto:0,currencies:new Set(),countries:new Set()};
+    const b=byKey[k];
+    b.tx++;
+    if(r.currency)b.currencies.add(r.currency.toUpperCase());
+    if(r.country)b.countries.add(r.country);
+    if(!isPaid(r))return;
+    if(r.gateway==='stripe'){
+      b.sCashTx+=r.usd;
+      b.sFee+=(r.feeUsd||0);
+      b.sCashBruto+=cashBruto(r);
+    }else{
+      b.dCashTx+=(r.totalUsd||0);
+      b.dFee+=(r.feeUsd||0);
+      b.dCashBruto+=cashBruto(r);
+    }
+  });
+  const keys=Object.keys(byKey).sort();
+  const tbody=document.getElementById('summaryTableBody');
+  if(!keys.length){tbody.innerHTML='<tr><td colspan="12" style="text-align:center;padding:20px;color:var(--muted)">Sin datos</td></tr>';return;}
+  const setLabel=s=>s.size===0?'—':s.size===1?[...s][0]:'Varias ('+s.size+')';
+  tbody.innerHTML=keys.map(k=>{
+    const b=byKey[k];
+    const cashTx=b.sCashTx+b.dCashTx,cashBrutoTotal=b.sCashBruto+b.dCashBruto;
+    const pctS=cashBrutoTotal>0?(b.sCashBruto/cashBrutoTotal*100):0,pctD=cashBrutoTotal>0?(b.dCashBruto/cashBrutoTotal*100):0;
+    const feeSPct=b.sCashBruto>0?(b.sFee/b.sCashBruto*100):0,feeDPct=b.dCashBruto>0?(b.dFee/b.dCashBruto*100):0;
+    return '<tr>'+
+      '<td style="font-weight:600">'+groupLabel(k,summaryGroup)+'</td>'+
+      '<td style="text-align:right">'+fmt(b.tx)+'</td>'+
+      '<td style="text-align:right;font-weight:700">'+fmtUSD(cashTx)+'</td>'+
+      '<td style="text-align:right;font-weight:700;color:var(--accent)">'+fmtUSD(cashBrutoTotal)+'</td>'+
+      '<td style="font-size:.75rem">'+setLabel(b.currencies)+'</td>'+
+      '<td style="font-size:.75rem">'+setLabel(b.countries)+'</td>'+
+      '<td style="text-align:right;font-weight:600;color:#6772E5">'+fmtUSD(b.sCashBruto)+'</td>'+
+      '<td style="text-align:right">'+fmt(pctS,1)+'%</td>'+
+      '<td style="text-align:right;color:#EF4444">'+fmt(feeSPct,2)+'%</td>'+
+      '<td style="text-align:right;font-weight:600;color:#00B14F">'+fmtUSD(b.dCashBruto)+'</td>'+
+      '<td style="text-align:right">'+fmt(pctD,1)+'%</td>'+
+      '<td style="text-align:right;color:#EF4444">'+fmt(feeDPct,2)+'%</td>'+
+      '</tr>';
+  }).join('');
+}
 function buildGwBar(){dc('gb');const sR=filteredData.filter(r=>r.gateway==='stripe'&&isPaid(r)).reduce((s,r)=>s+cashBruto(r),0),dR=filteredData.filter(r=>r.gateway==='dlocal'&&isPaid(r)).reduce((s,r)=>s+cashBruto(r),0),sTx=filteredData.filter(r=>r.gateway==='stripe').length,dTx=filteredData.filter(r=>r.gateway==='dlocal').length;charts.gb=new Chart(document.getElementById('cGwBar'),{type:'bar',data:{labels:['Stripe','dLocal'],datasets:[{data:[sR,dR],backgroundColor:['rgba(103,114,229,.2)','rgba(0,177,79,.18)'],borderColor:['#6772E5','#00B14F'],borderWidth:2,borderRadius:8,borderSkipped:false}]},options:{...bO(),plugins:{legend:{display:false},tooltip:{callbacks:{afterLabel:ctx=>[sTx,dTx][ctx.dataIndex]+' transacciones'},backgroundColor:'#0F172A',bodyColor:'#94A3B8',padding:9,cornerRadius:8}}}});}
 function buildPayMethod(){dc('pm');const cnt={};filteredData.filter(r=>r.gateway==='dlocal'&&r.method).forEach(r=>{cnt[r.method]=(cnt[r.method]||0)+1;});const lbs=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]).slice(0,10);charts.pm=new Chart(document.getElementById('cPayMethod'),{type:'bar',data:{labels:lbs,datasets:[{data:lbs.map(l=>cnt[l]),backgroundColor:lbs.map((_,i)=>P[i%P.length]+'33'),borderColor:lbs.map((_,i)=>P[i%P.length]),borderWidth:1.5,borderRadius:6,borderSkipped:false}]},options:{...bO(),indexAxis:'y'}});}
 function buildStatusDough(){dc('sd');const paid=filteredData.filter(isPaid).length,failed=filteredData.filter(isFailed).length,pending=filteredData.filter(isPend).length,total=filteredData.length||1;charts.sd=new Chart(document.getElementById('cStatusDough'),{type:'doughnut',data:{labels:['Exitosas','Fallidas','Pendientes'],datasets:[{data:[paid,failed,pending],backgroundColor:['#10B981','#EF4444','#F59E0B'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,cutout:'72%',plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',bodyColor:'#94A3B8',padding:9,cornerRadius:8}}}});const leg=document.getElementById('statusLegend'),items=[{l:'Exitosas',c:paid,p:(paid/total*100).toFixed(1),col:'#10B981'},{l:'Fallidas',c:failed,p:(failed/total*100).toFixed(1),col:'#EF4444'},{l:'Pendientes',c:pending,p:(pending/total*100).toFixed(1),col:'#F59E0B'}];leg.innerHTML=items.map(it=>'<div class="mini-stat"><span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:'+it.col+';display:inline-block"></span>'+it.l+'</span><span style="font-weight:700">'+it.c+' <span style="color:var(--muted);font-weight:400">('+it.p+'%)</span></span></div><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:'+it.p+'%;background:'+it.col+'"></div></div>').join('');}
@@ -952,7 +1029,7 @@ function renderTable(){
   for(let p=start;p<=end;p++){const btn=document.createElement('button');btn.className='pb'+(p===currentPage?' act':'');btn.textContent=p;btn.onclick=()=>{currentPage=p;renderTable();};pag.appendChild(btn);}
 }
 function updateAll(){
-  updateKPIs();buildCombo();buildTotal();buildGwBar();buildPayMethod();buildStatusDough();
+  updateKPIs();buildCombo();buildTotal();buildSummaryTable();buildGwBar();buildPayMethod();buildStatusDough();
   buildCurrBar();buildCountryBar();buildDeclineBar();buildHistogram();buildFeeCompare();
   buildTopClients();dayHidden=new Set();weekHidden=new Set();buildDayOfMonth();buildWeekOfMonth();renderTable();
 }
