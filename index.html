@@ -247,20 +247,21 @@
     </div>
   </div>
   <div class="kpi-grid">
-    <div class="kpi-card c-blue"><div class="kpi-icon">&#128181;</div><div class="kpi-label">Revenue Total (USD)</div><div class="kpi-value" id="kpiRev">&mdash;</div><div class="kpi-sub">Solo exitosas</div><span class="kpi-badge bg-green" id="kpiRevSub">&mdash;</span></div>
+    <div class="kpi-card c-blue"><div class="kpi-icon">&#128176;</div><div class="kpi-label">Cash Bruto Total (USD)</div><div class="kpi-value" id="kpiRev">&mdash;</div><div class="kpi-sub">Stripe + dLocal &middot; neto</div><span class="kpi-badge bg-green" id="kpiRevSub">&mdash;</span></div>
     <div class="kpi-card c-teal"><div class="kpi-icon">&#128290;</div><div class="kpi-label">Total Transacciones</div><div class="kpi-value" id="kpiTx">&mdash;</div><div class="kpi-sub" id="kpiTxSub">&mdash;</div></div>
     <div class="kpi-card c-purple"><div class="kpi-icon">&#127919;</div><div class="kpi-label">Ticket Promedio (USD)</div><div class="kpi-value" id="kpiAvg">&mdash;</div><div class="kpi-sub" id="kpiAvgSub">&mdash;</div></div>
     <div class="kpi-card c-green"><div class="kpi-icon">&#128101;</div><div class="kpi-label">Clientes &Uacute;nicos</div><div class="kpi-value" id="kpiCust">&mdash;</div><div class="kpi-sub">Emails distintos</div></div>
     <div class="kpi-card c-red"><div class="kpi-icon">&#9888;&#65039;</div><div class="kpi-label">Tasa Fallo/Cancelaci&oacute;n</div><div class="kpi-value" id="kpiFail">&mdash;</div><div class="kpi-sub">% del total</div><span class="kpi-badge" id="kpiFailBadge">&mdash;</span></div>
     <div class="kpi-card c-stripe"><div class="kpi-icon">&#128179;</div><div class="kpi-label">Stripe Cash Transaccional (USD)</div><div class="kpi-value" id="kpiStripeRev">&mdash;</div><div class="kpi-sub" id="kpiStripeSub">&mdash;</div><span class="kpi-badge bg-stripe" id="kpiStripeCount">&mdash;</span></div>
     <div class="kpi-card c-cash"><div class="kpi-icon">&#127974;</div><div class="kpi-label">Stripe Cash Bruto (USD)</div><div class="kpi-value" id="kpiStripeCashBruto">&mdash;</div><div class="kpi-sub" id="kpiStripeCashBrutoSub">&mdash;</div><span class="kpi-badge" id="kpiStripeCashBrutoBadge">&mdash;</span></div>
+    <div class="kpi-card c-red"><div class="kpi-icon">&#128184;</div><div class="kpi-label">Stripe Reembolsos</div><div class="kpi-value" id="kpiStripeRefundAmt">&mdash;</div><div class="kpi-sub" id="kpiStripeRefundSub">&mdash;</div><span class="kpi-badge bg-red" id="kpiStripeRefundCount">&mdash;</span></div>
     <div class="kpi-card c-dlocal-tx"><div class="kpi-icon">&#127758;</div><div class="kpi-label">dLocal Cash Transaccional (USD)</div><div class="kpi-value" id="kpiDlocalTotal">&mdash;</div><div class="kpi-sub" id="kpiDlocalTotalSub">&mdash;</div></div>
     <div class="kpi-card c-dlocal"><div class="kpi-icon">&#127758;</div><div class="kpi-label">dLocal Cash Bruto (USD)</div><div class="kpi-value" id="kpiDlocalRev">&mdash;</div><div class="kpi-sub" id="kpiDlocalSub">&mdash;</div><span class="kpi-badge bg-dlocal" id="kpiDlocalCount">&mdash;</span></div>
   </div>
   <div class="sdiv">Tendencias temporales</div>
   <div class="cc" style="margin-bottom:13px">
     <div class="ch" style="flex-wrap:wrap;gap:8px">
-      <div><div class="ct">Revenue (USD) y Transacciones por Pasarela</div><div class="cs">Barras = Revenue USD (eje izq.) &middot; L&iacute;nea = N&deg; transacciones (eje der.) &middot; UTC&minus;5 Colombia</div></div>
+      <div><div class="ct">Cash Bruto (USD) y Transacciones por Pasarela</div><div class="cs">Barras = Cash Bruto USD (eje izq.) &middot; L&iacute;nea = N&deg; transacciones (eje der.) &middot; UTC&minus;5 Colombia</div></div>
       <div class="tg-bar">
         <button class="tg-btn active" onclick="setComboGroup('day',this)">D&iacute;a</button>
         <button class="tg-btn" onclick="setComboGroup('week',this)">Semana</button>
@@ -269,8 +270,8 @@
       </div>
     </div>
     <div class="combo-legend">
-      <span><span class="leg-bar" style="background:rgba(103,114,229,.6);border:1.5px solid #6772E5"></span>Revenue Stripe</span>
-      <span><span class="leg-bar" style="background:rgba(0,177,79,.55);border:1.5px solid #00B14F"></span>Revenue dLocal</span>
+      <span><span class="leg-bar" style="background:rgba(103,114,229,.6);border:1.5px solid #6772E5"></span>Cash Bruto Stripe</span>
+      <span><span class="leg-bar" style="background:rgba(0,177,79,.55);border:1.5px solid #00B14F"></span>Cash Bruto dLocal</span>
       <span><span class="leg-line" style="background:#6772E5"></span>Tx Stripe</span>
       <span><span class="leg-line" style="background:#00B14F"></span>Tx dLocal</span>
     </div>
@@ -278,7 +279,7 @@
   </div>
   <div class="cc" style="margin-bottom:13px">
     <div class="ch" style="flex-wrap:wrap;gap:8px">
-      <div><div class="ct">Revenue Total (USD) y Transacciones &mdash; Stripe + dLocal</div><div class="cs">Barras = Revenue total (eje izq.) &middot; L&iacute;nea = N&deg; transacciones totales (eje der.)</div></div>
+      <div><div class="ct">Cash Bruto Total (USD) y Transacciones &mdash; Stripe + dLocal</div><div class="cs">Barras = Cash Bruto total (eje izq.) &middot; L&iacute;nea = N&deg; transacciones totales (eje der.)</div></div>
       <div class="tg-bar">
         <button class="tg-btn active" onclick="setTotalGroup('day',this)">D&iacute;a</button>
         <button class="tg-btn" onclick="setTotalGroup('week',this)">Semana</button>
@@ -287,27 +288,27 @@
       </div>
     </div>
     <div class="combo-legend">
-      <span><span class="leg-bar" style="background:rgba(37,99,235,.55);border:1.5px solid #2563EB"></span>Revenue Total</span>
+      <span><span class="leg-bar" style="background:rgba(37,99,235,.55);border:1.5px solid #2563EB"></span>Cash Bruto Total</span>
       <span><span class="leg-line" style="background:#7C3AED"></span>Tx Totales</span>
     </div>
     <div style="position:relative;height:280px"><canvas id="cTotal"></canvas></div>
   </div>
   <div class="sdiv">Comparaci&oacute;n por pasarela</div>
   <div class="g3">
-    <div class="cc"><div class="ch"><div><div class="ct">Revenue por Pasarela</div><div class="cs">USD &middot; exitosas</div></div></div><canvas id="cGwBar" height="220"></canvas></div>
+    <div class="cc"><div class="ch"><div><div class="ct">Cash Bruto por Pasarela</div><div class="cs">USD &middot; exitosas</div></div></div><canvas id="cGwBar" height="220"></canvas></div>
     <div class="cc"><div class="ch"><div><div class="ct">M&eacute;todo de Pago (dLocal)</div><div class="cs">Por volumen</div></div><span class="cp cp-d">dLocal</span></div><canvas id="cPayMethod" height="220"></canvas></div>
     <div class="cc"><div class="ch"><div><div class="ct">Estado de Pagos</div><div class="cs">Distribuci&oacute;n combinada</div></div></div><canvas id="cStatusDough" height="190"></canvas><div id="statusLegend" style="margin-top:12px"></div></div>
   </div>
   <div class="sdiv">An&aacute;lisis por segmento</div>
   <div class="g3">
-    <div class="cc"><div class="ch"><div><div class="ct">Revenue por Moneda</div><div class="cs">USD equivalente</div></div></div><canvas id="cCurrBar" height="220"></canvas></div>
-    <div class="cc"><div class="ch"><div><div class="ct">Revenue por Pa&iacute;s (dLocal)</div><div class="cs">USD &middot; completadas</div></div><span class="cp cp-d">dLocal</span></div><canvas id="cCountryBar" height="220"></canvas></div>
+    <div class="cc"><div class="ch"><div><div class="ct">Cash Bruto por Moneda</div><div class="cs">USD equivalente</div></div></div><canvas id="cCurrBar" height="220"></canvas></div>
+    <div class="cc"><div class="ch"><div><div class="ct">Cash Bruto por Pa&iacute;s (dLocal)</div><div class="cs">USD &middot; completadas</div></div><span class="cp cp-d">dLocal</span></div><canvas id="cCountryBar" height="220"></canvas></div>
     <div class="cc"><div class="ch"><div><div class="ct">Razones de Fallo/Cancelaci&oacute;n</div><div class="cs">Top causas</div></div></div><canvas id="cDeclineBar" height="220"></canvas></div>
   </div>
   <div class="cc full" style="margin-bottom:13px"><div class="ch"><div><div class="ct">Distribuci&oacute;n de Montos (USD)</div><div class="cs">Histograma &middot; exitosas</div></div></div><canvas id="cHistogram" height="145"></canvas></div>
   <div class="sdiv">An&aacute;lisis de fees</div>
   <div class="g2" style="margin-bottom:13px">
-    <div class="cc"><div class="ch"><div><div class="ct">Revenue vs Fee por Pasarela</div><div class="cs">Revenue USD, Fee USD y % Fee</div></div></div><canvas id="cFeeCompare" height="220"></canvas></div>
+    <div class="cc"><div class="ch"><div><div class="ct">Cash Transaccional vs Fee por Pasarela</div><div class="cs">Cash Transaccional USD, Fee USD y % Fee</div></div></div><canvas id="cFeeCompare" height="220"></canvas></div>
     <div class="cc" style="display:flex;flex-direction:column;gap:0">
       <div class="ch" style="margin-bottom:10px"><div><div class="ct">Detalle de Fees</div><div class="cs">Resumen por pasarela &middot; exitosas</div></div></div>
       <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;">
@@ -350,24 +351,24 @@
       </table>
     </div>
   </div>
-  <div class="sdiv">Revenue por d&iacute;a del mes &mdash; comparado por mes</div>
+  <div class="sdiv">Cash Bruto por d&iacute;a del mes &mdash; comparado por mes</div>
   <div class="cc full" style="margin-bottom:13px">
     <div class="ch">
-      <div><div class="ct">Revenue por D&iacute;a del Mes vs Mes del A&ntilde;o</div><div class="cs">Cada l&iacute;nea = un mes &middot; eje X = d&iacute;a 1&ndash;31 &middot; UTC&minus;5 Colombia</div></div>
+      <div><div class="ct">Cash Bruto por D&iacute;a del Mes vs Mes del A&ntilde;o</div><div class="cs">Cada l&iacute;nea = un mes &middot; eje X = d&iacute;a 1&ndash;31 &middot; UTC&minus;5 Colombia</div></div>
       <div class="tg-bar">
-        <button class="tg-btn active" onclick="setDayMetric('revenue',this)">Revenue</button>
+        <button class="tg-btn active" onclick="setDayMetric('revenue',this)">Cash Bruto</button>
         <button class="tg-btn" onclick="setDayMetric('count',this)">N&deg; Pagos</button>
       </div>
     </div>
     <canvas id="cDayOfMonth" height="180"></canvas>
     <div class="month-pills" id="dayMonthPills"></div>
   </div>
-  <div class="sdiv">Revenue por semana del mes &mdash; comparado por mes</div>
+  <div class="sdiv">Cash Bruto por semana del mes &mdash; comparado por mes</div>
   <div class="cc full" style="margin-bottom:13px">
     <div class="ch">
-      <div><div class="ct">Revenue por Semana del Mes vs Mes del A&ntilde;o</div><div class="cs">Week 1=d&iacute;as 1&ndash;7 &middot; Week 2=8&ndash;14 &middot; Week 3=15&ndash;21 &middot; Week 4=22&ndash;28 &middot; Week 5=29&ndash;31</div></div>
+      <div><div class="ct">Cash Bruto por Semana del Mes vs Mes del A&ntilde;o</div><div class="cs">Week 1=d&iacute;as 1&ndash;7 &middot; Week 2=8&ndash;14 &middot; Week 3=15&ndash;21 &middot; Week 4=22&ndash;28 &middot; Week 5=29&ndash;31</div></div>
       <div class="tg-bar">
-        <button class="tg-btn active" onclick="setWeekMetric('revenue',this)">Revenue</button>
+        <button class="tg-btn active" onclick="setWeekMetric('revenue',this)">Cash Bruto</button>
         <button class="tg-btn" onclick="setWeekMetric('count',this)">N&deg; Pagos</button>
       </div>
     </div>
@@ -661,6 +662,9 @@ const allData =()=>activeGW==='stripe'?[...STRIPE_DATA]:activeGW==='dlocal'?[...
 const isPaid  =r=>r.status==='paid';
 const isFailed=r=>r.status==='failed';
 const isPend  =r=>r.status==='pending';
+// Cash Bruto por fila: lo que realmente le queda a la empresa (neto de fee y reembolsos).
+// Stripe: usd (bruto transaccional) - fee - reembolsos. dLocal: usd ya viene neto (USD Amount).
+const cashBruto=r=>r.gateway==='stripe'?(r.usd-(r.feeUsd||0)-(r.refUsd||0)):r.usd;
 const fmt     =(n,d=0)=>new Intl.NumberFormat('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}).format(n);
 const fmtUSD  =n=>'$'+fmt(n,2);
 const csvURL  =gid=>`https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}`;
@@ -758,8 +762,6 @@ function updateKPIs(){
   const rev=paid.reduce((s,r)=>s+r.usd,0),avg=paid.length?rev/paid.length:0;
   const failRate=filteredData.length?(failed.length/filteredData.length)*100:0;
   const uniq=new Set(filteredData.filter(r=>r.email).map(r=>r.email)).size;
-  document.getElementById('kpiRev').textContent=fmtUSD(rev);
-  document.getElementById('kpiRevSub').textContent='✓ '+paid.length+' transacciones';
   document.getElementById('kpiTx').textContent=fmt(filteredData.length);
   document.getElementById('kpiTxSub').textContent=paid.length+' exitosas · '+failed.length+' fallidas · '+pending.length+' pend.';
   document.getElementById('kpiAvg').textContent=fmtUSD(avg);
@@ -779,6 +781,9 @@ function updateKPIs(){
   const sFeeTotal=sPaidRows.reduce((s,r)=>s+(r.feeUsd||0),0);
   const sRefundTotal=sPaidRows.reduce((s,r)=>s+(r.refUsd||0),0);
   const sCashBruto=sRev-sFeeTotal-sRefundTotal;
+  const sRefundedRows=sPaidRows.filter(r=>(r.refUsd||0)>0.005);
+  const sFullRefunds=sRefundedRows.filter(r=>r.refUsd>=r.usd-0.01).length;
+  const sPartialRefunds=sRefundedRows.length-sFullRefunds;
   document.getElementById('kpiStripeRev').textContent=fmtUSD(sRev);
   document.getElementById('kpiStripeSub').textContent=sPaidRows.length+' tx exitosas';
   document.getElementById('kpiStripeCount').textContent=sTx+' total';
@@ -788,11 +793,17 @@ function updateKPIs(){
   const scbBadge=document.getElementById('kpiStripeCashBrutoBadge');
   scbBadge.textContent=fmt(scbPct,1)+'% neto';
   scbBadge.className='kpi-badge '+(scbPct<0?'bg-red':scbPct<90?'bg-gray':'bg-green');
+  document.getElementById('kpiStripeRefundAmt').textContent=fmtUSD(sRefundTotal);
+  document.getElementById('kpiStripeRefundSub').textContent=sPartialRefunds+' parciales · '+sFullRefunds+' totales';
+  document.getElementById('kpiStripeRefundCount').textContent=sRefundedRows.length+' reembolsos';
   document.getElementById('kpiDlocalTotal').textContent=fmtUSD(dTotalTx);
   document.getElementById('kpiDlocalTotalSub').textContent=dPaidRows.length+' tx completadas';
   document.getElementById('kpiDlocalRev').textContent=fmtUSD(dRev);
   document.getElementById('kpiDlocalSub').textContent=dPaidRows.length+' tx completadas';
   document.getElementById('kpiDlocalCount').textContent=dTx+' total';
+  const cashBrutoTotal=sCashBruto+dRev;
+  document.getElementById('kpiRev').textContent=fmtUSD(cashBrutoTotal);
+  document.getElementById('kpiRevSub').textContent='✓ '+(sPaidRows.length+dPaidRows.length)+' transacciones';
 }
 // ═══════════════════════════════════════════════════════════════════
 //  UTILES GRAFICAS
@@ -816,33 +827,33 @@ function buildCombo(){
   const sRev={},dRev={},sTx={},dTx={};
   vRows(filteredData).forEach(r=>{
     const k=groupKey(r.date,comboGroup);if(!k)return;
-    if(r.gateway==='stripe'){sTx[k]=(sTx[k]||0)+1;if(isPaid(r))sRev[k]=(sRev[k]||0)+r.usd;}
-    else{dTx[k]=(dTx[k]||0)+1;if(isPaid(r))dRev[k]=(dRev[k]||0)+r.usd;}
+    if(r.gateway==='stripe'){sTx[k]=(sTx[k]||0)+1;if(isPaid(r))sRev[k]=(sRev[k]||0)+cashBruto(r);}
+    else{dTx[k]=(dTx[k]||0)+1;if(isPaid(r))dRev[k]=(dRev[k]||0)+cashBruto(r);}
   });
   const keys=[...new Set([...Object.keys(sRev),...Object.keys(dRev),...Object.keys(sTx),...Object.keys(dTx)])].sort();
   const labels=keys.map(k=>groupLabel(k,comboGroup)),ds=[];
-  if(activeGW!=='dlocal')ds.push({type:'bar',label:'Revenue Stripe',data:keys.map(k=>+(sRev[k]||0).toFixed(2)),backgroundColor:'rgba(103,114,229,.6)',borderColor:'#6772E5',borderWidth:1.5,borderRadius:4,borderSkipped:false,yAxisID:'yRev',order:2});
-  if(activeGW!=='stripe')ds.push({type:'bar',label:'Revenue dLocal',data:keys.map(k=>+(dRev[k]||0).toFixed(2)),backgroundColor:'rgba(0,177,79,.55)',borderColor:'#00B14F',borderWidth:1.5,borderRadius:4,borderSkipped:false,yAxisID:'yRev',order:2});
+  if(activeGW!=='dlocal')ds.push({type:'bar',label:'Cash Bruto Stripe',data:keys.map(k=>+(sRev[k]||0).toFixed(2)),backgroundColor:'rgba(103,114,229,.6)',borderColor:'#6772E5',borderWidth:1.5,borderRadius:4,borderSkipped:false,yAxisID:'yRev',order:2});
+  if(activeGW!=='stripe')ds.push({type:'bar',label:'Cash Bruto dLocal',data:keys.map(k=>+(dRev[k]||0).toFixed(2)),backgroundColor:'rgba(0,177,79,.55)',borderColor:'#00B14F',borderWidth:1.5,borderRadius:4,borderSkipped:false,yAxisID:'yRev',order:2});
   if(activeGW!=='dlocal')ds.push({type:'line',label:'Tx Stripe',data:keys.map(k=>sTx[k]||0),borderColor:'#6772E5',backgroundColor:'rgba(103,114,229,.12)',borderWidth:2.5,pointRadius:4,pointHoverRadius:6,pointBackgroundColor:'#6772E5',tension:.4,fill:false,yAxisID:'yTx',order:1});
   if(activeGW!=='stripe')ds.push({type:'line',label:'Tx dLocal',data:keys.map(k=>dTx[k]||0),borderColor:'#00B14F',backgroundColor:'rgba(0,177,79,.12)',borderWidth:2.5,pointRadius:4,pointHoverRadius:6,pointBackgroundColor:'#00B14F',tension:.4,fill:false,yAxisID:'yTx',order:1});
-  charts.combo=new Chart(document.getElementById('cCombo'),{type:'bar',data:{labels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:10,cornerRadius:8,callbacks:{label:ctx=>ctx.dataset.label.startsWith('Revenue')?' '+ctx.dataset.label+': $'+fmt(ctx.parsed.y,2):' '+ctx.dataset.label+': '+fmt(ctx.parsed.y)+' tx'}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:10}}},yRev:{type:'linear',position:'left',grid:{color:'#F1F5F9'},ticks:{color:'#6772E5',font:{size:10},callback:v=>'$'+fmt(v,0)},title:{display:true,text:'Revenue (USD)',color:'#94A3B8',font:{size:9}}},yTx:{type:'linear',position:'right',grid:{display:false},ticks:{color:'#94A3B8',font:{size:10},callback:v=>fmt(v)+' tx'},title:{display:true,text:'Nº Transacciones',color:'#94A3B8',font:{size:9}}}}}});
+  charts.combo=new Chart(document.getElementById('cCombo'),{type:'bar',data:{labels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:10,cornerRadius:8,callbacks:{label:ctx=>ctx.dataset.label.startsWith('Cash Bruto')?' '+ctx.dataset.label+': $'+fmt(ctx.parsed.y,2):' '+ctx.dataset.label+': '+fmt(ctx.parsed.y)+' tx'}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:10}}},yRev:{type:'linear',position:'left',grid:{color:'#F1F5F9'},ticks:{color:'#6772E5',font:{size:10},callback:v=>'$'+fmt(v,0)},title:{display:true,text:'Cash Bruto (USD)',color:'#94A3B8',font:{size:9}}},yTx:{type:'linear',position:'right',grid:{display:false},ticks:{color:'#94A3B8',font:{size:10},callback:v=>fmt(v)+' tx'},title:{display:true,text:'Nº Transacciones',color:'#94A3B8',font:{size:9}}}}}});
 }
 function setTotalGroup(g,btn){btn.closest('.tg-bar').querySelectorAll('.tg-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');totalGroup=g;buildTotal();}
 function buildTotal(){
   dc('total');
   const rev={},tx={};
-  vRows(filteredData).forEach(r=>{const k=groupKey(r.date,totalGroup);if(!k)return;tx[k]=(tx[k]||0)+1;if(isPaid(r))rev[k]=(rev[k]||0)+r.usd;});
+  vRows(filteredData).forEach(r=>{const k=groupKey(r.date,totalGroup);if(!k)return;tx[k]=(tx[k]||0)+1;if(isPaid(r))rev[k]=(rev[k]||0)+cashBruto(r);});
   const keys=[...new Set([...Object.keys(rev),...Object.keys(tx)])].sort(),labels=keys.map(k=>groupLabel(k,totalGroup));
   charts.total=new Chart(document.getElementById('cTotal'),{type:'bar',data:{labels,datasets:[
-    {type:'bar',label:'Revenue Total',data:keys.map(k=>+(rev[k]||0).toFixed(2)),backgroundColor:'rgba(37,99,235,.55)',borderColor:'#2563EB',borderWidth:1.5,borderRadius:4,borderSkipped:false,yAxisID:'yRev',order:2},
+    {type:'bar',label:'Cash Bruto Total',data:keys.map(k=>+(rev[k]||0).toFixed(2)),backgroundColor:'rgba(37,99,235,.55)',borderColor:'#2563EB',borderWidth:1.5,borderRadius:4,borderSkipped:false,yAxisID:'yRev',order:2},
     {type:'line',label:'Tx Totales',data:keys.map(k=>tx[k]||0),borderColor:'#7C3AED',backgroundColor:'rgba(124,58,237,.12)',borderWidth:2.5,pointRadius:4,pointHoverRadius:6,pointBackgroundColor:'#7C3AED',tension:.4,fill:false,yAxisID:'yTx',order:1}
-  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:10,cornerRadius:8,callbacks:{label:ctx=>ctx.dataset.label==='Revenue Total'?' Revenue: $'+fmt(ctx.parsed.y,2):' Transacciones: '+fmt(ctx.parsed.y)+' tx'}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:10}}},yRev:{type:'linear',position:'left',grid:{color:'#F1F5F9'},ticks:{color:'#2563EB',font:{size:10},callback:v=>'$'+fmt(v,0)},title:{display:true,text:'Revenue (USD)',color:'#94A3B8',font:{size:9}}},yTx:{type:'linear',position:'right',grid:{display:false},ticks:{color:'#7C3AED',font:{size:10},callback:v=>fmt(v)+' tx'},title:{display:true,text:'Nº Transacciones',color:'#94A3B8',font:{size:9}}}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:10,cornerRadius:8,callbacks:{label:ctx=>ctx.dataset.label==='Cash Bruto Total'?' Cash Bruto: $'+fmt(ctx.parsed.y,2):' Transacciones: '+fmt(ctx.parsed.y)+' tx'}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:10}}},yRev:{type:'linear',position:'left',grid:{color:'#F1F5F9'},ticks:{color:'#2563EB',font:{size:10},callback:v=>'$'+fmt(v,0)},title:{display:true,text:'Cash Bruto (USD)',color:'#94A3B8',font:{size:9}}},yTx:{type:'linear',position:'right',grid:{display:false},ticks:{color:'#7C3AED',font:{size:10},callback:v=>fmt(v)+' tx'},title:{display:true,text:'Nº Transacciones',color:'#94A3B8',font:{size:9}}}}}});
 }
-function buildGwBar(){dc('gb');const sR=filteredData.filter(r=>r.gateway==='stripe'&&isPaid(r)).reduce((s,r)=>s+r.usd,0),dR=filteredData.filter(r=>r.gateway==='dlocal'&&isPaid(r)).reduce((s,r)=>s+r.usd,0),sTx=filteredData.filter(r=>r.gateway==='stripe').length,dTx=filteredData.filter(r=>r.gateway==='dlocal').length;charts.gb=new Chart(document.getElementById('cGwBar'),{type:'bar',data:{labels:['Stripe','dLocal'],datasets:[{data:[sR,dR],backgroundColor:['rgba(103,114,229,.2)','rgba(0,177,79,.18)'],borderColor:['#6772E5','#00B14F'],borderWidth:2,borderRadius:8,borderSkipped:false}]},options:{...bO(),plugins:{legend:{display:false},tooltip:{callbacks:{afterLabel:ctx=>[sTx,dTx][ctx.dataIndex]+' transacciones'},backgroundColor:'#0F172A',bodyColor:'#94A3B8',padding:9,cornerRadius:8}}}});}
+function buildGwBar(){dc('gb');const sR=filteredData.filter(r=>r.gateway==='stripe'&&isPaid(r)).reduce((s,r)=>s+cashBruto(r),0),dR=filteredData.filter(r=>r.gateway==='dlocal'&&isPaid(r)).reduce((s,r)=>s+cashBruto(r),0),sTx=filteredData.filter(r=>r.gateway==='stripe').length,dTx=filteredData.filter(r=>r.gateway==='dlocal').length;charts.gb=new Chart(document.getElementById('cGwBar'),{type:'bar',data:{labels:['Stripe','dLocal'],datasets:[{data:[sR,dR],backgroundColor:['rgba(103,114,229,.2)','rgba(0,177,79,.18)'],borderColor:['#6772E5','#00B14F'],borderWidth:2,borderRadius:8,borderSkipped:false}]},options:{...bO(),plugins:{legend:{display:false},tooltip:{callbacks:{afterLabel:ctx=>[sTx,dTx][ctx.dataIndex]+' transacciones'},backgroundColor:'#0F172A',bodyColor:'#94A3B8',padding:9,cornerRadius:8}}}});}
 function buildPayMethod(){dc('pm');const cnt={};filteredData.filter(r=>r.gateway==='dlocal'&&r.method).forEach(r=>{cnt[r.method]=(cnt[r.method]||0)+1;});const lbs=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]).slice(0,10);charts.pm=new Chart(document.getElementById('cPayMethod'),{type:'bar',data:{labels:lbs,datasets:[{data:lbs.map(l=>cnt[l]),backgroundColor:lbs.map((_,i)=>P[i%P.length]+'33'),borderColor:lbs.map((_,i)=>P[i%P.length]),borderWidth:1.5,borderRadius:6,borderSkipped:false}]},options:{...bO(),indexAxis:'y'}});}
 function buildStatusDough(){dc('sd');const paid=filteredData.filter(isPaid).length,failed=filteredData.filter(isFailed).length,pending=filteredData.filter(isPend).length,total=filteredData.length||1;charts.sd=new Chart(document.getElementById('cStatusDough'),{type:'doughnut',data:{labels:['Exitosas','Fallidas','Pendientes'],datasets:[{data:[paid,failed,pending],backgroundColor:['#10B981','#EF4444','#F59E0B'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,cutout:'72%',plugins:{legend:{display:false},tooltip:{backgroundColor:'#0F172A',bodyColor:'#94A3B8',padding:9,cornerRadius:8}}}});const leg=document.getElementById('statusLegend'),items=[{l:'Exitosas',c:paid,p:(paid/total*100).toFixed(1),col:'#10B981'},{l:'Fallidas',c:failed,p:(failed/total*100).toFixed(1),col:'#EF4444'},{l:'Pendientes',c:pending,p:(pending/total*100).toFixed(1),col:'#F59E0B'}];leg.innerHTML=items.map(it=>'<div class="mini-stat"><span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:'+it.col+';display:inline-block"></span>'+it.l+'</span><span style="font-weight:700">'+it.c+' <span style="color:var(--muted);font-weight:400">('+it.p+'%)</span></span></div><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:'+it.p+'%;background:'+it.col+'"></div></div>').join('');}
-function buildCurrBar(){dc('cb');const m={};filteredData.filter(isPaid).forEach(r=>{m[r.currency.toUpperCase()]=(m[r.currency.toUpperCase()]||0)+r.usd;});const lbs=Object.keys(m).sort((a,b)=>m[b]-m[a]);charts.cb=new Chart(document.getElementById('cCurrBar'),{type:'bar',data:{labels:lbs,datasets:[{data:lbs.map(l=>m[l]),backgroundColor:lbs.map((_,i)=>P[i%P.length]),borderRadius:6,borderSkipped:false}]},options:{...bO(),plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' $'+fmt(ctx.parsed.y,2)},backgroundColor:'#0F172A',bodyColor:'#94A3B8',padding:9,cornerRadius:8}}}});}
-function buildCountryBar(){dc('ctb');const m={};filteredData.filter(r=>r.gateway==='dlocal'&&isPaid(r)&&r.country).forEach(r=>{m[r.country]=(m[r.country]||0)+r.usd;});const lbs=Object.keys(m).sort((a,b)=>m[b]-m[a]);charts.ctb=new Chart(document.getElementById('cCountryBar'),{type:'bar',data:{labels:lbs,datasets:[{data:lbs.map(l=>m[l]),backgroundColor:'rgba(0,177,79,.18)',borderColor:'#00B14F',borderWidth:1.5,borderRadius:6,borderSkipped:false}]},options:{...bO(),plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' $'+fmt(ctx.parsed.y,2)},backgroundColor:'#0F172A',bodyColor:'#94A3B8',padding:9,cornerRadius:8}}}});}
+function buildCurrBar(){dc('cb');const m={};filteredData.filter(isPaid).forEach(r=>{m[r.currency.toUpperCase()]=(m[r.currency.toUpperCase()]||0)+cashBruto(r);});const lbs=Object.keys(m).sort((a,b)=>m[b]-m[a]);charts.cb=new Chart(document.getElementById('cCurrBar'),{type:'bar',data:{labels:lbs,datasets:[{data:lbs.map(l=>m[l]),backgroundColor:lbs.map((_,i)=>P[i%P.length]),borderRadius:6,borderSkipped:false}]},options:{...bO(),plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' $'+fmt(ctx.parsed.y,2)},backgroundColor:'#0F172A',bodyColor:'#94A3B8',padding:9,cornerRadius:8}}}});}
+function buildCountryBar(){dc('ctb');const m={};filteredData.filter(r=>r.gateway==='dlocal'&&isPaid(r)&&r.country).forEach(r=>{m[r.country]=(m[r.country]||0)+cashBruto(r);});const lbs=Object.keys(m).sort((a,b)=>m[b]-m[a]);charts.ctb=new Chart(document.getElementById('cCountryBar'),{type:'bar',data:{labels:lbs,datasets:[{data:lbs.map(l=>m[l]),backgroundColor:'rgba(0,177,79,.18)',borderColor:'#00B14F',borderWidth:1.5,borderRadius:6,borderSkipped:false}]},options:{...bO(),plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' $'+fmt(ctx.parsed.y,2)},backgroundColor:'#0F172A',bodyColor:'#94A3B8',padding:9,cornerRadius:8}}}});}
 function buildDeclineBar(){dc('db');const cnt={};filteredData.filter(isFailed).forEach(r=>{const k=r.declineReason||'Cancelada';cnt[k]=(cnt[k]||0)+1;});const lbs=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]).slice(0,7),nice=s=>s.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());charts.db=new Chart(document.getElementById('cDeclineBar'),{type:'bar',data:{labels:lbs.map(nice),datasets:[{data:lbs.map(l=>cnt[l]),backgroundColor:'rgba(239,68,68,.14)',borderColor:'#EF4444',borderWidth:1.5,borderRadius:6,borderSkipped:false}]},options:{...bO(),indexAxis:'y'}});}
 function buildHistogram(){dc('hg');const amounts=filteredData.filter(isPaid).map(r=>r.usd).filter(v=>v>0);if(!amounts.length)return;const bkts=[0,25,50,75,100,125,150,175,200,300],lbs=[],cnts=[];for(let i=0;i<bkts.length-1;i++){lbs.push('$'+bkts[i]+'–'+bkts[i+1]);cnts.push(amounts.filter(a=>a>=bkts[i]&&a<bkts[i+1]).length);}lbs.push('$300+');cnts.push(amounts.filter(a=>a>=300).length);charts.hg=new Chart(document.getElementById('cHistogram'),{type:'bar',data:{labels:lbs,datasets:[{data:cnts,backgroundColor:'rgba(37,99,235,.14)',borderColor:'#2563EB',borderWidth:1.5,borderRadius:4,borderSkipped:false}]},options:{...bO(),plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' '+ctx.parsed.y+' transacciones'},backgroundColor:'#0F172A',bodyColor:'#94A3B8',padding:9,cornerRadius:8}}}});}
 function buildFeeCompare(){
@@ -858,7 +869,7 @@ function buildFeeCompare(){
   document.getElementById('fcStripeRefund').textContent=fmtUSD(sRefund);document.getElementById('fcStripeCashBruto').textContent=fmtUSD(sCashBruto);
   document.getElementById('fcDlocalTotal').textContent=fmtUSD(dTotal);
   document.getElementById('fcDlocalRev').textContent=fmtUSD(dRev);document.getElementById('fcDlocalFee').textContent=fmtUSD(dFee);document.getElementById('fcDlocalPct').textContent=fmt(dPct,2)+'%';
-  charts.fc=new Chart(document.getElementById('cFeeCompare'),{type:'bar',data:{labels:['Stripe','dLocal'],datasets:[{type:'bar',label:'Revenue USD',data:[sRev,dRev],backgroundColor:['rgba(103,114,229,.18)','rgba(0,177,79,.15)'],borderColor:['#6772E5','#00B14F'],borderWidth:2,borderRadius:7,borderSkipped:false,yAxisID:'yLeft',order:2},{type:'bar',label:'Fee USD',data:[sFee,dFee],backgroundColor:['rgba(239,68,68,.18)','rgba(239,68,68,.18)'],borderColor:['#EF4444','#EF4444'],borderWidth:2,borderRadius:7,borderSkipped:false,yAxisID:'yLeft',order:2},{type:'line',label:'Fee %',data:[sPct,dPct],borderColor:'#7C3AED',backgroundColor:'rgba(124,58,237,.12)',borderWidth:2.5,pointRadius:7,pointHoverRadius:9,pointBackgroundColor:'#7C3AED',tension:0,yAxisID:'yRight',order:1}]},options:{responsive:true,plugins:{legend:{display:true,position:'top',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:10,cornerRadius:8,callbacks:{label:ctx=>ctx.dataset.label==='Fee %'?' Fee %: '+fmt(ctx.parsed.y,2)+'%':' '+ctx.dataset.label+': $'+fmt(ctx.parsed.y,2)}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:11}}},yLeft:{position:'left',grid:{color:'#F1F5F9'},ticks:{color:'#94A3B8',font:{size:10},callback:v=>'$'+fmt(v,0)}},yRight:{position:'right',grid:{display:false},ticks:{color:'#7C3AED',font:{size:10},callback:v=>fmt(v,2)+'%'}}}}});
+  charts.fc=new Chart(document.getElementById('cFeeCompare'),{type:'bar',data:{labels:['Stripe','dLocal'],datasets:[{type:'bar',label:'Cash Transaccional USD',data:[sRev,dTotal],backgroundColor:['rgba(103,114,229,.18)','rgba(0,177,79,.15)'],borderColor:['#6772E5','#00B14F'],borderWidth:2,borderRadius:7,borderSkipped:false,yAxisID:'yLeft',order:2},{type:'bar',label:'Fee USD',data:[sFee,dFee],backgroundColor:['rgba(239,68,68,.18)','rgba(239,68,68,.18)'],borderColor:['#EF4444','#EF4444'],borderWidth:2,borderRadius:7,borderSkipped:false,yAxisID:'yLeft',order:2},{type:'line',label:'Fee %',data:[sPct,dPct],borderColor:'#7C3AED',backgroundColor:'rgba(124,58,237,.12)',borderWidth:2.5,pointRadius:7,pointHoverRadius:9,pointBackgroundColor:'#7C3AED',tension:0,yAxisID:'yRight',order:1}]},options:{responsive:true,plugins:{legend:{display:true,position:'top',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0F172A',titleColor:'#fff',bodyColor:'#94A3B8',padding:10,cornerRadius:8,callbacks:{label:ctx=>ctx.dataset.label==='Fee %'?' Fee %: '+fmt(ctx.parsed.y,2)+'%':' '+ctx.dataset.label+': $'+fmt(ctx.parsed.y,2)}}},scales:{x:{grid:{display:false},ticks:{color:'#94A3B8',font:{size:11}}},yLeft:{position:'left',grid:{color:'#F1F5F9'},ticks:{color:'#94A3B8',font:{size:10},callback:v=>'$'+fmt(v,0)}},yRight:{position:'right',grid:{display:false},ticks:{color:'#7C3AED',font:{size:10},callback:v=>fmt(v,2)+'%'}}}}});
 }
 function setTopSort(key,btn){topSortKey=key;document.querySelectorAll('.top-sort-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');buildTopClients();}
 function buildTopClients(){
