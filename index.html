@@ -123,6 +123,7 @@
     tbody tr:hover{background:var(--surface2);}
     tbody tr:last-child{border-bottom:none;}
     tbody td{padding:8px 13px;}
+    #summaryTotalsRow td{padding:8px 13px;font-size:.79rem;}
     .sc{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:99px;font-size:.68rem;font-weight:600;}
     .sc-paid{background:#DCFCE7;color:#166534;}.sc-failed{background:#FEE2E2;color:#991B1B;}.sc-pending{background:#FEF9C3;color:#854D0E;}
     .gwc{display:inline-flex;align-items:center;padding:2px 7px;border-radius:99px;font-size:.66rem;font-weight:700;}
@@ -330,7 +331,9 @@
           <th style="text-align:right">dLocal Cash Bruto (USD)</th>
           <th style="text-align:right">% dLocal</th>
           <th style="text-align:right">Fee dLocal</th>
-        </tr></thead>
+        </tr>
+        <tr id="summaryTotalsRow" style="background:var(--surface2);font-weight:700;border-bottom:2px solid var(--border)"></tr>
+        </thead>
         <tbody id="summaryTableBody"></tbody>
       </table>
     </div>
@@ -918,7 +921,27 @@ function buildSummaryTable(){
   });
   const keys=Object.keys(byKey).sort();
   const tbody=document.getElementById('summaryTableBody');
-  if(!keys.length){tbody.innerHTML='<tr><td colspan="10" style="text-align:center;padding:20px;color:var(--muted)">Sin datos</td></tr>';return;}
+  const totRow=document.getElementById('summaryTotalsRow');
+  if(!keys.length){
+    tbody.innerHTML='<tr><td colspan="10" style="text-align:center;padding:20px;color:var(--muted)">Sin datos</td></tr>';
+    totRow.innerHTML='<td colspan="10" style="text-align:center;color:var(--muted)">&mdash;</td>';
+    return;
+  }
+  const tot={tx:0,sCashTx:0,sFee:0,sCashBruto:0,dCashTx:0,dFee:0,dCashBruto:0};
+  keys.forEach(k=>{const b=byKey[k];tot.tx+=b.tx;tot.sCashTx+=b.sCashTx;tot.sFee+=b.sFee;tot.sCashBruto+=b.sCashBruto;tot.dCashTx+=b.dCashTx;tot.dFee+=b.dFee;tot.dCashBruto+=b.dCashBruto;});
+  const totCashTx=tot.sCashTx+tot.dCashTx,totCashBruto=tot.sCashBruto+tot.dCashBruto;
+  const totPctS=totCashBruto>0?(tot.sCashBruto/totCashBruto*100):0,totPctD=totCashBruto>0?(tot.dCashBruto/totCashBruto*100):0;
+  const totFeeSPct=tot.sCashBruto>0?(tot.sFee/tot.sCashBruto*100):0,totFeeDPct=tot.dCashBruto>0?(tot.dFee/tot.dCashBruto*100):0;
+  totRow.innerHTML='<td>Total</td>'+
+    '<td style="text-align:right">'+fmt(tot.tx)+'</td>'+
+    '<td style="text-align:right">'+fmtUSD(totCashTx)+'</td>'+
+    '<td style="text-align:right;color:var(--accent)">'+fmtUSD(totCashBruto)+'</td>'+
+    '<td style="text-align:right;color:#6772E5">'+fmtUSD(tot.sCashBruto)+'</td>'+
+    '<td style="text-align:right">'+fmt(totPctS,1)+'%</td>'+
+    '<td style="text-align:right;color:#EF4444">'+fmt(totFeeSPct,2)+'%</td>'+
+    '<td style="text-align:right;color:#00B14F">'+fmtUSD(tot.dCashBruto)+'</td>'+
+    '<td style="text-align:right">'+fmt(totPctD,1)+'%</td>'+
+    '<td style="text-align:right;color:#EF4444">'+fmt(totFeeDPct,2)+'%</td>';
   tbody.innerHTML=keys.map(k=>{
     const b=byKey[k];
     const cashTx=b.sCashTx+b.dCashTx,cashBrutoTotal=b.sCashBruto+b.dCashBruto;
