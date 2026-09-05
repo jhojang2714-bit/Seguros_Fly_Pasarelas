@@ -85,7 +85,7 @@
     .kpi-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;}
     .kpi-card.c-blue::before{background:var(--accent);}.kpi-card.c-teal::before{background:var(--accent2);}.kpi-card.c-purple::before{background:var(--accent3);}
     .kpi-card.c-green::before{background:var(--success);}.kpi-card.c-red::before{background:var(--danger);}
-    .kpi-card.c-stripe::before{background:var(--stripe);}.kpi-card.c-dlocal::before{background:var(--dlocal);}.kpi-card.c-cash::before{background:#22C55E;}.kpi-card.c-dlocal-tx::before{background:#059669;}
+    .kpi-card.c-stripe::before{background:var(--stripe);}.kpi-card.c-dlocal::before{background:var(--dlocal);}.kpi-card.c-cash::before{background:#22C55E;}.kpi-card.c-dlocal-tx::before{background:#059669;}.kpi-card.c-fee::before{background:linear-gradient(180deg,#6772E5 50%,#00B14F 50%);}
     .kpi-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.95rem;margin-bottom:10px;}
     .c-blue .kpi-icon{background:#EFF6FF;}.c-teal .kpi-icon{background:#F0F9FF;}.c-purple .kpi-icon{background:#F5F3FF;}
     .c-green .kpi-icon{background:#ECFDF5;}.c-red .kpi-icon{background:#FEF2F2;}
@@ -257,6 +257,19 @@
     <div class="kpi-card c-red"><div class="kpi-icon">&#128184;</div><div class="kpi-label">Stripe Reembolsos</div><div class="kpi-value" id="kpiStripeRefundAmt">&mdash;</div><div class="kpi-sub" id="kpiStripeRefundSub">&mdash;</div><span class="kpi-badge bg-red" id="kpiStripeRefundCount">&mdash;</span></div>
     <div class="kpi-card c-dlocal-tx"><div class="kpi-icon">&#127758;</div><div class="kpi-label">dLocal Cash Transaccional (USD)</div><div class="kpi-value" id="kpiDlocalTotal">&mdash;</div><div class="kpi-sub" id="kpiDlocalTotalSub">&mdash;</div></div>
     <div class="kpi-card c-dlocal"><div class="kpi-icon">&#127758;</div><div class="kpi-label">dLocal Cash Bruto (USD)</div><div class="kpi-value" id="kpiDlocalRev">&mdash;</div><div class="kpi-sub" id="kpiDlocalSub">&mdash;</div><span class="kpi-badge bg-dlocal" id="kpiDlocalCount">&mdash;</span></div>
+    <div class="kpi-card c-fee">
+      <div class="kpi-label">Fee por Pasarela</div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:8px">
+        <span style="font-size:.78rem;font-weight:700;color:#6772E5">Stripe</span>
+        <span style="font-weight:800;font-size:1.05rem" id="kpiFeeStripeAmt">&mdash;</span>
+      </div>
+      <div style="font-size:.68rem;color:var(--muted);text-align:right" id="kpiFeeStripePct">&mdash;</div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:8px">
+        <span style="font-size:.78rem;font-weight:700;color:#00B14F">dLocal</span>
+        <span style="font-weight:800;font-size:1.05rem" id="kpiFeeDlocalAmt">&mdash;</span>
+      </div>
+      <div style="font-size:.68rem;color:var(--muted);text-align:right" id="kpiFeeDlocalPct">&mdash;</div>
+    </div>
   </div>
   <div class="sdiv">Tendencias temporales</div>
   <div class="cc" style="margin-bottom:13px">
@@ -779,6 +792,7 @@ function updateKPIs(){
   const sTx=filteredData.filter(r=>r.gateway==='stripe').length;
   const dTx=filteredData.filter(r=>r.gateway==='dlocal').length;
   const sFeeTotal=sPaidRows.reduce((s,r)=>s+(r.feeUsd||0),0);
+  const dFeeTotal=dPaidRows.reduce((s,r)=>s+(r.feeUsd||0),0);
   const sRefundTotal=sPaidRows.reduce((s,r)=>s+(r.refUsd||0),0);
   const sCashBruto=sRev-sFeeTotal-sRefundTotal;
   const sRefundedRows=sPaidRows.filter(r=>(r.refUsd||0)>0.005);
@@ -804,6 +818,11 @@ function updateKPIs(){
   const cashBrutoTotal=sCashBruto+dRev;
   document.getElementById('kpiRev').textContent=fmtUSD(cashBrutoTotal);
   document.getElementById('kpiRevSub').textContent='✓ '+(sPaidRows.length+dPaidRows.length)+' transacciones';
+  const sFeePct=sRev>0?(sFeeTotal/sRev*100):0,dFeePct=dTotalTx>0?(dFeeTotal/dTotalTx*100):0;
+  document.getElementById('kpiFeeStripeAmt').textContent=fmtUSD(sFeeTotal);
+  document.getElementById('kpiFeeStripePct').textContent=fmt(sFeePct,2)+'% del cash transaccional';
+  document.getElementById('kpiFeeDlocalAmt').textContent=fmtUSD(dFeeTotal);
+  document.getElementById('kpiFeeDlocalPct').textContent=fmt(dFeePct,2)+'% del cash transaccional';
 }
 // ═══════════════════════════════════════════════════════════════════
 //  UTILES GRAFICAS
