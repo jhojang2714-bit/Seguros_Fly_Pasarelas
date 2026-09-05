@@ -324,8 +324,6 @@
           <th style="text-align:right">Total Transacciones</th>
           <th style="text-align:right">Cash Transaccional (USD)</th>
           <th style="text-align:right">Cash Bruto Total (USD)</th>
-          <th>Moneda</th>
-          <th>Pa&iacute;s</th>
           <th style="text-align:right">Stripe Cash Bruto (USD)</th>
           <th style="text-align:right">% Stripe</th>
           <th style="text-align:right">Fee Stripe</th>
@@ -904,11 +902,9 @@ function buildSummaryTable(){
   const byKey={};
   vRows(filteredData).forEach(r=>{
     const k=groupKey(r.date,summaryGroup);if(!k)return;
-    if(!byKey[k])byKey[k]={tx:0,sCashTx:0,sFee:0,sCashBruto:0,dCashTx:0,dFee:0,dCashBruto:0,currencies:new Set(),countries:new Set()};
+    if(!byKey[k])byKey[k]={tx:0,sCashTx:0,sFee:0,sCashBruto:0,dCashTx:0,dFee:0,dCashBruto:0};
     const b=byKey[k];
     b.tx++;
-    if(r.currency)b.currencies.add(r.currency.toUpperCase());
-    if(r.country)b.countries.add(r.country);
     if(!isPaid(r))return;
     if(r.gateway==='stripe'){
       b.sCashTx+=r.usd;
@@ -922,8 +918,7 @@ function buildSummaryTable(){
   });
   const keys=Object.keys(byKey).sort();
   const tbody=document.getElementById('summaryTableBody');
-  if(!keys.length){tbody.innerHTML='<tr><td colspan="12" style="text-align:center;padding:20px;color:var(--muted)">Sin datos</td></tr>';return;}
-  const setLabel=s=>s.size===0?'—':s.size===1?[...s][0]:'Varias ('+s.size+')';
+  if(!keys.length){tbody.innerHTML='<tr><td colspan="10" style="text-align:center;padding:20px;color:var(--muted)">Sin datos</td></tr>';return;}
   tbody.innerHTML=keys.map(k=>{
     const b=byKey[k];
     const cashTx=b.sCashTx+b.dCashTx,cashBrutoTotal=b.sCashBruto+b.dCashBruto;
@@ -934,8 +929,6 @@ function buildSummaryTable(){
       '<td style="text-align:right">'+fmt(b.tx)+'</td>'+
       '<td style="text-align:right;font-weight:700">'+fmtUSD(cashTx)+'</td>'+
       '<td style="text-align:right;font-weight:700;color:var(--accent)">'+fmtUSD(cashBrutoTotal)+'</td>'+
-      '<td style="font-size:.75rem">'+setLabel(b.currencies)+'</td>'+
-      '<td style="font-size:.75rem">'+setLabel(b.countries)+'</td>'+
       '<td style="text-align:right;font-weight:600;color:#6772E5">'+fmtUSD(b.sCashBruto)+'</td>'+
       '<td style="text-align:right">'+fmt(pctS,1)+'%</td>'+
       '<td style="text-align:right;color:#EF4444">'+fmt(feeSPct,2)+'%</td>'+
